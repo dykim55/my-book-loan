@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
+    
+<sqlMapConfig>
+	<!-- 이 셋팅은 SqlMapClient를 제어하는 셋팅값이다. 주로 트랜잭션 관리에 사용된다. -->
+	<settings 
+		cacheModelsEnabled="true" 
+		enhancementEnabled="true"
+		lazyLoadingEnabled="true" 
+		useStatementNamespaces="true" />
+
+	<typeHandler 
+		callback="org.springframework.orm.ibatis.support.BlobByteArrayTypeHandler"
+		jdbcType="BLOB" javaType="[B" />
+	
+    <sqlMap resource="sqlmaps/sample.xml"/>
+    <sqlMap resource="sqlmaps/login.xml"/>
+</sqlMapConfig>

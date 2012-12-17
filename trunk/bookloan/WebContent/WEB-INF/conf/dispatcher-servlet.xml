@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+    <!-- jstl view resolver -->
+    <bean id="jspViewResolver" class="com.company.CustomViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="order" value="2" />
+    </bean>
+
+    <bean name="jsonView" class="net.sf.json.spring.web.servlet.view.JsonView" />
+    
+    <bean id="beanViewResolver"
+        class="org.springframework.web.servlet.view.BeanNameViewResolver">
+        <property name="order" value="1" />
+    </bean>
+
+    <bean id="loginInterceptor" class="com.company.LoginInterceptor">
+        <property name="loginUrl" value="/login/loginView.do"/>
+        
+        <!-- 인증예외목록 -->
+        <property name="exceptions">
+            <map>
+                <entry key="/login/loginView.do" value="/login/loginView.do"/>
+                <entry key="/login/login.do" value="/login/login.do"/>
+            </map>
+        </property>
+        
+    </bean>
+
+    <bean id="handlerMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">
+        <property name="interceptors">
+            <list>
+                <ref bean="loginInterceptor"/>
+            </list>
+        </property>
+    </bean>
+
+    <!-- multipartResolver -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+
+</beans>
