@@ -1,0 +1,10 @@
+﻿{
+    "ipInfo": { 
+        "queryStartIP": "4.4.4.0", 
+        "queryEndIP": "4.4.4.256",
+        "ipResponses": [
+            { "startIP": "4.4.4.1", "endIP": "4.4.4.5"},
+            { "startIP": "4.4.4.10", "endIP": "4.4.4.15"}
+        ]
+    }
+}

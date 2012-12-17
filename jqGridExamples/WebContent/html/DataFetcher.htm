@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0050)http://www.ok-soft-gmbh.com/jqGrid/DataFetcher.htm -->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>How to dynamically pass all of the jqgrid cell value when deleting a row</title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+
+    <!-- link rel="stylesheet" type="text/css" href="../css/redmond/jquery-ui-1.9.1.custom.css"/ -->
+    <link rel="stylesheet" type="text/css" href="../css/pepper-grinder/jquery-ui-1.9.1.custom.css"/>
+    <link rel="stylesheet" type="text/css" href="http://www.ok-soft-gmbh.com/jqGrid/jquery.jqGrid-3.7.1/src/css/ui.jqgrid.css" />
+    <link rel="stylesheet" type="text/css" href="http://www.ok-soft-gmbh.com/jqGrid/jquery.jqGrid-3.7.1/src/css/jquery.searchFilter.css" />
+    
+    <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../js/jquery-ui-1.9.1.custom.min.js"></script>
+    <script type="text/javascript" src="http://www.ok-soft-gmbh.com/jqGrid/jquery.jqGrid-3.7.1/src/i18n/grid.locale-en.js"></script>
+    <script type="text/javascript" src="http://www.ok-soft-gmbh.com/jqGrid/jquery.jqGrid-3.7.1/js/jquery.jqGrid.min.js"></script>
+    
+    <script type="text/javascript">
+    //<![CDATA[
+    jQuery(document).ready(function() {
+        jQuery("#list").jqGrid(
+            { url:'./DataFetcher.xml',
+              datatype: 'xml',
+              ajaxGridOptions: { contentType: 'application/json; charset=utf-8' },
+              mtype: 'GET',
+              colNames:['UserId','Message'],
+              colModel:[
+                  {name:'UserId',index:'UserId',width:75, editable:false,align: 'left'},
+                  {name:'Message',index:'Message',width:200, editable:true,align: 'left'}
+              ],
+              pager: jQuery('#pager'),
+              rowNum:10,
+              rowList:[10,20,30],
+              sortname:'UserId',
+              sortorder: "asc",
+              viewrecords: true,
+              imgpath: 'jqgrid/css/images',
+              caption: 'MESSAGE',
+              editurl:'RowManipulator.php',
+              height: 350,
+              width: 1000});
+        
+        jQuery("#list").jqGrid('navGrid','#pager',{},
+            {height:280,reloadAfterSubmit:true},
+            {height:280,reloadAfterSubmit:true},
+            {onclickSubmit: function(rp_ge, postdata){
+               alert('postdata='+postdata);
+               alert('UserId='+$('#list').getCell(postdata, 'UserId'));
+               alert('Message='+$('#list').getCell(postdata, 'Message'));
+               rp_ge.url = 'RowManipulator.php?' +
+                           jQuery.param({UserId: $('#list').getCell(postdata, 'UserId'),
+                                         Message: $('#list').getCell(postdata, 'Message')});
+            },
+            reloadAfterSubmit:true},
+            {sopt:['cn','eq']});
+    });
+    //]]>
+    </script>
+</head>
+
+<body>
+<table id="list"></table>
+<div id="pager"></div>
+</body>
+</html>
