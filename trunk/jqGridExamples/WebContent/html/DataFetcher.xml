@@ -1,0 +1,18 @@
+<?xml version ="1.0" encoding="utf-8"?>
+<rows>
+  <page>1</page>
+  <total>1</total>
+  <records>3</records>
+    <row id='1'>
+      <cell>user1</cell>
+      <cell>hello</cell>
+    </row>
+    <row id='2'>
+      <cell>user1</cell>
+      <cell>hola</cell>
+    </row>
+    <row id='3'>
+      <cell>user2</cell>
+      <cell>hi</cell>
+    </row>
+</rows>

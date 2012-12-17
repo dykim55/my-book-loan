@@ -1,0 +1,229 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0062)http://www.ok-soft-gmbh.com/jqGrid/SimpleLocalGridHeaders4.htm -->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Just simple local grid</title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    
+    <!-- link rel="stylesheet" type="text/css" href="../css/redmond/jquery-ui-1.9.1.custom.css"/ -->
+    <link rel="stylesheet" type="text/css" href="../css/pepper-grinder/jquery-ui-1.9.1.custom.css"/>
+    <link rel="stylesheet" type="text/css" href="http://www.ok-soft-gmbh.com/jqGrid/jquery.jqGrid-4.1.2/css/ui.jqgrid.css" />
+    <link rel="stylesheet" type="text/css" href="http://www.ok-soft-gmbh.com/jqGrid/jquery.jqGrid-4.1.2/plugin/ui.multiselect.css" />
+    
+    <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../js/jquery-ui-1.9.1.custom.min.js"></script>
+    <script type="text/javascript" src="http://www.ok-soft-gmbh.com/jqGrid/jquery.jqGrid-4.1.2/js/i18n/grid.locale-en.js"></script>
+    <script type="text/javascript" src="http://www.ok-soft-gmbh.com/jqGrid/jquery.jqGrid-4.1.2/js/jquery.jqGrid.src.js"></script>
+    <script type="text/javascript" src="http://www.ok-soft-gmbh.com/jqGrid/jquery.jqGrid-4.1.2/plugin/ui.multiselect.js"></script>
+    
+    <script type="text/javascript">
+        $.jgrid.no_legacy_api = true;
+        $.jgrid.useJSON = true;
+    </script>
+    <script type="text/javascript" src="http://www.ok-soft-gmbh.com/jqGrid/jquery.jqGrid-4.1.2/js/jquery.jqGrid.src.multicol.js"></script>
+        
+    <style type="text/css">
+        .ui-jqgrid .ui-jqgrid-htable th.ui-th-column-header {
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            padding-top: 1px;
+            height: 19px
+        }
+    </style>
+    
+    <script type="text/javascript">
+    //<![CDATA[
+    /*global $ */
+    /*jslint browser: true, plusplus: true */
+    $.jgrid.formatter.integer.thousandsSeparator = ',';
+    $.jgrid.formatter.number.thousandsSeparator = ',';
+    $.jgrid.formatter.currency.thousandsSeparator = ',';
+    $(function () {
+        'use strict';
+        var mydata = [
+                {id: "1",  invdate: "2007-10-01", name: "test",   note: "note",   amount: "200.00", tax: "10.00", closed: true,  ship_via: "TN", total: "210.00"},
+                {id: "2",  invdate: "2007-10-02", name: "test2",  note: "note2",  amount: "300.00", tax: "20.00", closed: false, ship_via: "FE", total: "320.00"},
+                {id: "3",  invdate: "2007-09-01", name: "test3",  note: "note3",  amount: "400.00", tax: "30.00", closed: false, ship_via: "FE", total: "430.00"},
+                {id: "4",  invdate: "2007-10-04", name: "test4",  note: "note4",  amount: "200.00", tax: "10.00", closed: true,  ship_via: "TN", total: "210.00"},
+                {id: "5",  invdate: "2007-10-31", name: "test5",  note: "note5",  amount: "300.00", tax: "20.00", closed: false, ship_via: "FE", total: "320.00"},
+                {id: "6",  invdate: "2007-09-06", name: "test6",  note: "note6",  amount: "400.00", tax: "30.00", closed: false, ship_via: "FE", total: "430.00"},
+                {id: "7",  invdate: "2007-10-04", name: "test7",  note: "note7",  amount: "200.00", tax: "10.00", closed: true,  ship_via: "TN", total: "210.00"},
+                {id: "8",  invdate: "2007-10-03", name: "test8",  note: "note8",  amount: "300.00", tax: "20.00", closed: false, ship_via: "FE", total: "320.00"},
+                {id: "9",  invdate: "2007-09-01", name: "test9",  note: "note9",  amount: "400.00", tax: "30.00", closed: false, ship_via: "TN", total: "430.00"},
+                {id: "10", invdate: "2007-09-08", name: "test10", note: "note10", amount: "500.00", tax: "30.00", closed: true,  ship_via: "TN", total: "530.00"},
+                {id: "11", invdate: "2007-09-08", name: "test11", note: "note11", amount: "500.00", tax: "30.00", closed: false, ship_via: "FE", total: "530.00"},
+                {id: "12", invdate: "2007-09-10", name: "test12", note: "note12", amount: "500.00", tax: "30.00", closed: false, ship_via: "FE", total: "530.00"}
+            ],
+            grid = $("#list"),
+            denySelectionOnDoubleClick = function ($el) {
+                // see http://stackoverflow.com/questions/2132172/disable-text-highlighting-on-double-click-in-jquery/2132230#2132230
+                if ($.browser.mozilla) {//Firefox
+                    $el.css('MozUserSelect', 'none');
+                } else if ($.browser.msie) {//IE
+                    $el.bind('selectstart', function () {
+                        return false;
+                    });
+                } else {//Opera, etc.
+                    $el.mousedown(function () {
+                        return false;
+                    });
+                }
+            },
+            insertColumnGroupHeader = function (mygrid, startColumnName, numberOfColumns, titleText) {
+                var ts = mygrid[0], p = ts.p, i, cmi, skip = 0, $tr, colHeader, iCol, width, $th,
+                    colModel = p.colModel,
+                    ths = ts.grid.headers,
+                    $gview = mygrid.closest("div.ui-jqgrid-view"),
+                    $gbox = $gview.parent(),
+                    $hdiv = $gview.children("div.ui-jqgrid-hdiv"),
+                    $bdiv = $gview.children("div.ui-jqgrid-bdiv"),
+                    $btable = $bdiv.find("table.ui-jqgrid-btable"),
+                    $hbox = $hdiv.children("div.ui-jqgrid-hbox"),
+                    $htable = $hbox.children("table.ui-jqgrid-htable"),
+                    $thead = $htable.children("thead"),
+                    theadInTable,
+                    originalResizeStop;
+    
+                mygrid.prepend($thead);
+                $tr = $('<tr class="ui-jqgrid-labels" role="rowheader"></tr>');
+                for (i = 0; i < colModel.length; i++) {
+                    $th = $(ths[i].el);
+                    cmi = colModel[i];
+                    if (cmi.name !== startColumnName) {
+                        if (skip === 0) {
+                            denySelectionOnDoubleClick($th); // needed for Firefox
+                            $th.attr("rowspan", "2");
+                        } else {
+                            denySelectionOnDoubleClick($th);
+                            $th.css({"padding-top": "2px", height: "19px"});
+                            $tr.append(ths[i].el);
+                            skip--;
+                        }
+                    } else {
+                        colHeader = $('<th class="ui-state-default ui-th-column-header ui-th-ltr" colspan="' + numberOfColumns +
+                            '" role="columnheader">' + titleText + '</th>');
+                        width = 0;
+                        for (iCol = 0; iCol < numberOfColumns; iCol++) {
+                            if ($.browser.webkit) {
+                                width += $(ths[i + iCol].el).outerWidth();
+                            } else {
+                                width += $(ths[i + iCol].el).width() - 1;
+                            }
+                        }
+                        denySelectionOnDoubleClick($th);
+                        $th.before(colHeader);
+                        $tr.append(ths[i].el);
+                        if ($.browser.webkit) {
+                            colHeader.width(width);
+                        }// else {
+                        //    colHeader.width(width - 1);
+                        //}
+                        skip = numberOfColumns - 1;
+                    }
+                }
+                theadInTable = mygrid.children("thead");
+                theadInTable.append($tr[0]);
+                $htable.append(theadInTable);
+                $htable[0].style.cssText = ""; // must be removed after every column resizing !!!
+    
+                $hdiv[0].style.cssText = "";
+                $hbox.css("padding-right", "0"); // remove padding-right: 20px !!!
+                $bdiv[0].style.cssText = "height: 100%;"; // remove width
+                $btable[0].style.cssText = ""; // remove width
+                width = $btable.width();
+                $gview.width(width);
+                $gbox.width(width);
+    
+                // preserve orig event
+                if ($.isFunction(p.resizeStop)) {
+                    originalResizeStop = p.resizeStop;
+                }
+                p.resizeStop = function (nw, idx) {
+                    var gboxWidth = $gbox.width(),
+                        btableWidth1 = $btable.width(),
+                        htableWidth1 = $htable.width(),
+                        btableWidth2,
+                        htableWidth2,
+                        newWidth;
+    
+                    $hbox.css("padding-right", "0"); // remove padding-right: 20px !!!
+                    $btable[0].style.cssText = ""; // remove width
+                    $htable[0].style.cssText = ""; // remove width
+    
+                    if (gboxWidth < btableWidth1) {
+                        // increasing of the grid width
+                        // we need first of all increase the width of gview and gbox
+                        // to have the width of btable or htable be calculated based
+                        // on the grid contain
+                        $gview.width(htableWidth1);
+                        $gbox.width(htableWidth1);
+                        $gbox.children("div.ui-jqgrid-pager").width(htableWidth1); // set pager width
+                    }
+    
+                    gboxWidth = $gbox.width();
+    
+                    btableWidth2 = $btable.width(); // must be get AFTER remove width CSS
+                    htableWidth2 = $htable.width(); // must be get AFTER remove width CSS
+                    newWidth = Math.max(btableWidth2, htableWidth2);
+    
+                    // reducing the size of gview, gbox and the pager base on the width of htable
+                    $gview.width(newWidth);
+                    $gbox.width(newWidth);
+                    $gbox.children("div.ui-jqgrid-pager").width(newWidth); // set pager width
+                    $gview.children("div.ui-jqgrid-toppager").width(newWidth); // set toppager width
+    
+                    // ui-jqgrid-toppager
+                    //$gview.parent().width(width);
+                    if ($.isFunction(originalResizeStop)) {
+                        originalResizeStop.call(ts, nw, idx);
+                    }
+                };
+            };
+    
+        grid.jqGrid({
+            datatype: 'local',
+            data: mydata,
+            colNames: ['Inv No', 'Date', 'Client', 'Amount', 'Tax', 'Total', 'Closed', 'Shipped via', 'Notes'],
+            colModel: [
+                {name: 'id', index: 'id', width: 65, align: 'center', sorttype: 'int', hidden: true},
+                {name: 'invdate', index: 'invdate', width: 80, align: 'center', sorttype: 'date', formatter: 'date', formatoptions: {newformat: 'd-M-Y'}, datefmt: 'd-M-Y'},
+                {name: 'name', index: 'name', width: 70},
+                {name: 'amount', index: 'amount', width: 75, formatter: 'number', sorttype: 'number', align: 'right'},
+                {name: 'tax', index: 'tax', width: 55, formatter: 'number', sorttype: 'number', align: 'right'},
+                {name: 'total', index: 'total', width: 65, formatter: 'number', sorttype: 'number', align: 'right'},
+                {name: 'closed', index: 'closed', width: 75, align: 'center', formatter: 'checkbox', edittype: 'checkbox', editoptions: {value: 'Yes:No', defaultValue: 'Yes'}},
+                {name: 'ship_via', index: 'ship_via', width: 100, align: 'center', formatter: 'select', edittype: 'select', editoptions: {value: 'FE:FedEx;TN:TNT;IN:Intim', defaultValue: 'Intime'}},
+                {name: 'note', index: 'note', width: 70, sortable: false}
+            ],
+            rowNum: 10,
+            rowList: [5, 10, 20],
+            pager: '#pager',
+            //toppager: true,
+            gridview: true,
+            rownumbers: true,
+            shrinkToFit: false,
+            sortname: 'invdate',
+            viewrecords: true,
+            sortorder: 'desc',
+            caption: 'Just simple local grid',
+            height: '100%'
+        });
+        insertColumnGroupHeader(grid, 'amount', 3, '<em>Price</em>');
+    });
+    //]]>
+    </script>
+
+</head>
+<body>
+<table id="list">
+  <tbody>
+  <tr>
+    <td></td>
+  </tr>
+  </tbody>
+</table>
+<div id="pager"></div>
+</body>
+</html>

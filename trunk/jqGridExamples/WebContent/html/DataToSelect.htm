@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0051)http://www.ok-soft-gmbh.com/jqGrid/DataToSelect.htm -->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Demonstration how programatically select grid row which are not on the first page</title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+
+    <!-- link rel="stylesheet" type="text/css" href="../css/redmond/jquery-ui-1.9.1.custom.css"/ -->
+    <link rel="stylesheet" type="text/css" href="../css/pepper-grinder/jquery-ui-1.9.1.custom.css"/>
+    <link rel="stylesheet" type="text/css" href="http://www.ok-soft-gmbh.com/jqGrid/jquery.jqGrid-3.7.2/css/ui.jqgrid.css" />
+    
+    <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../js/jquery-ui-1.9.1.custom.min.js"></script>
+    <script type="text/javascript" src="http://www.ok-soft-gmbh.com/jqGrid/jquery.jqGrid-3.7.2/src/i18n/grid.locale-en.js"></script>
+    <script type="text/javascript" src="http://www.ok-soft-gmbh.com/jqGrid/jquery.jqGrid-3.7.2/js/jquery.jqGrid.min.js"></script>
+    <script type="text/javascript" src="http://www.ok-soft-gmbh.com/jqGrid/json2.js"></script>
+    
+    <script type="text/javascript">
+    //<![CDATA[
+    jQuery(document).ready(function () {
+        var ud;
+        $("#list").jqGrid({
+            url: './DataToSelect.txt',
+            datatype: 'json',
+            mtype: 'GET',
+            loadonce: true,
+            jsonReader: { repeatitems: false },
+            colModel: [
+                { name: 'ID', key: true, width: 60, align: "center", hidden: false },
+                { name: 'Sigla', width: 80, sortable: false, hidden: false },
+                { name: 'Name', width: 180, sortable: false, hidden: false },
+                { name: 'Region', width: 180, sortable: false, hidden: false }
+            ],
+            rowNum: 10,
+            rowList: [10, 20, 300],
+            loadComplete: function(data) {
+                if (jQuery("#list").getGridParam('datatype') === "json") {
+                    // data.userdata is the same as jQuery("#list").getGridParam('userData');
+                    var userdata = jQuery("#list").getGridParam('userData'); // the same as data.userdata
+                    var curPage = jQuery("#list").getGridParam('page');  // is 1
+                    if (curPage !== userdata.page) {
+                        setTimeout(function(){
+                            jQuery("#list").setGridParam({ page: userdata.page }).trigger("reloadGrid");
+                            jQuery("#list").setSelection (userdata.selId, true);
+                        },100);
+                    }
+                    else {
+                        jQuery("#list").setSelection (userdata.selId, true);
+                    }
+                }
+            },
+            pager: "#pager",
+            viewrecords: true,
+            gridview: true,
+            rownumbers: true,
+            height: 230,
+            caption: 'Lista province'
+        }).jqGrid('navGrid', '#pager', { edit: true, add: true, del: false, search: true },
+                        {}, // use default settings for edit
+                        {}, // use default settings for add
+                        {}, // delete instead that del:false we need this
+                        {multipleSearch : true} // enable the advanced searching
+                        );
+                });
+    //]]>
+    </script>
+</head>
+
+<body>
+<table id="list">
+  <tbody>
+  <tr>
+    <td></td>
+  </tr>
+  </tbody>
+</table>
+<div id="pager"></div>
+</body>
+</html>

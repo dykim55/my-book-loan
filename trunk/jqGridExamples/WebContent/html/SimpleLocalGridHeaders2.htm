@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0062)http://www.ok-soft-gmbh.com/jqGrid/SimpleLocalGridHeaders2.htm -->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Just simple local grid</title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    
+    <!-- link rel="stylesheet" type="text/css" href="../css/redmond/jquery-ui-1.9.1.custom.css"/ -->
+    <link rel="stylesheet" type="text/css" href="../css/pepper-grinder/jquery-ui-1.9.1.custom.css"/>
+    <link rel="stylesheet" type="text/css" href="http://www.ok-soft-gmbh.com/jqGrid/jquery.jqGrid-4.0.0/css/ui.jqgrid.css" />
+    
+    <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../js/jquery-ui-1.9.1.custom.min.js"></script>
+    <script type="text/javascript" src="http://www.ok-soft-gmbh.com/jqGrid/jquery.jqGrid-4.0.0/js/i18n/grid.locale-en.js"></script>
+    <script type="text/javascript" src="http://www.ok-soft-gmbh.com/jqGrid/jquery.jqGrid-4.0.0/js/jquery.jqGrid.src.js"></script>
+    
+    <!-- jquery.jqGrid-4.4.1 버전은 헤더클릭시 오류가 있음! -->
+    
+    <script type="text/javascript">
+    //<![CDATA[
+        $(document).ready(function () {
+            var mydata = [
+                    {id:"1", invdate:"2007-10-01",name:"test_test_test_test_test",  note:"note",  amount:"200.00",tax:"10.00",closed:true, ship_via:"TN",total:"210.00"},
+                    {id:"2", invdate:"2007-10-02",name:"test2222222222222222", note:"note2", amount:"300.00",tax:"20.00",closed:false,ship_via:"FE",total:"320.00"},
+                    {id:"3", invdate:"2007-09-01",name:"test3", note:"note3", amount:"400.00",tax:"30.00",closed:false,ship_via:"FE",total:"430.00"},
+                    {id:"4", invdate:"2007-10-04",name:"test4444444444444444", note:"note4", amount:"200.00",tax:"10.00",closed:true ,ship_via:"TN",total:"210.00"},
+                    {id:"5", invdate:"2007-10-31",name:"test5", note:"note5", amount:"300.00",tax:"20.00",closed:false,ship_via:"FE",total:"320.00"},
+                    {id:"6", invdate:"2007-09-06",name:"test6", note:"note6", amount:"400.00",tax:"30.00",closed:false,ship_via:"FE",total:"430.00"},
+                    {id:"7", invdate:"2007-10-04",name:"test7", note:"note7", amount:"200.00",tax:"10.00",closed:true ,ship_via:"TN",total:"210.00"},
+                    {id:"8", invdate:"2007-10-03",name:"test8", note:"note8", amount:"300.00",tax:"20.00",closed:false,ship_via:"FE",total:"320.00"},
+                    {id:"9", invdate:"2007-09-01",name:"test9", note:"note9", amount:"400.00",tax:"30.00",closed:false,ship_via:"TN",total:"430.00"},
+                    {id:"10",invdate:"2007-09-08",name:"test10",note:"note10",amount:"500.00",tax:"30.00",closed:true ,ship_via:"TN",total:"530.00"},
+                    {id:"11",invdate:"2007-09-08",name:"test11",note:"note11",amount:"500.00",tax:"30.00",closed:false,ship_via:"FE",total:"530.00"},
+                    {id:"12",invdate:"2007-09-10",name:"test12",note:"note12",amount:"500.00",tax:"30.00",closed:false,ship_via:"FE",total:"530.00"}
+                ],
+                mygrid = $("#list"),
+                colModel, i, cmi, skip = 0, ths, $tr;
+
+            mygrid.jqGrid({
+                datatype:'local',
+                data: mydata,
+                colNames:['Inv No','Date','Client A','Client B','Amount','Tax','Total','Closed','Shipped via','Notes'],
+                colModel:[
+                    {name:'id',index:'id',width:70,align:'center',sorttype: 'int'},
+                    {name:'invdate',index:'invdate',width:80, align:'center', sorttype:'date', formatter:'date', formatoptions: {newformat:'d-M-Y'}, datefmt: 'd-M-Y'},
+                    {name:'name',index:'name', width:70, cellattr: function(rowId, tv, rawObject, cm, rdata) { if (Number(rowId) < 5) { return ' colspan=2' }} },
+                    {name:'nameB',index:'nameB', width:70, cellattr: function(rowId, tv, rawObject, cm, rdata) { if (Number(rowId) < 5) { return ' style="display:none;"' }}},
+                    {name:'amount',index:'amount',width:100, formatter:'number', align:'right'},
+                    {name:'tax',index:'tax',width:70, formatter:'number', align:'right'},
+                    {name:'total',index:'total',width:120, formatter:'number', align:'right'},
+                    {name:'closed',index:'closed',width:110,align:'center', formatter: 'checkbox', edittype:'checkbox',editoptions:{value:'Yes:No',defaultValue:'Yes'}},
+                    {name:'ship_via',index:'ship_via',width:120,align:'center', formatter:'select', edittype:'select',editoptions:{value:'FE:FedEx;TN:TNT;IN:Intim',defaultValue:'Intime'}},
+                    {name:'note',index:'note',width:100,sortable:false}
+                ],
+                rowNum:10,
+                rowList:[5,10,20],
+                pager: '#pager',
+                gridview:true,
+                rownumbers:true,
+                sortname: 'invdate',
+                viewrecords: true,
+                sortorder: 'desc',
+                caption:'Just simple local grid',
+                height: '100%'
+            });
+
+            colModel = mygrid[0].p.colModel;
+            ths = mygrid[0].grid.headers;
+            var gview = mygrid.closest("div.ui-jqgrid-view");
+            var thead = gview.find("table.ui-jqgrid-htable > thead");
+            mygrid.prepend(thead);
+            $tr = $("<tr>");
+            for(i=0;i<colModel.length;i++) {
+                cmi = colModel[i];
+                if (cmi.name !== 'amount') {
+                    var width = ths[i].width;
+                    if (skip === 0) {
+                        $(ths[i].el).attr("rowspan", "2");
+                    } else {
+                        $tr.append(ths[i].el);
+                        skip--;
+                    }
+                } else {
+                    var colHeader = $('<th class="ui-state-default ui-th-ltr" colspan="3" role="columnheader">Information about the Price</th>');
+                    colHeader.width(ths[i].width + ths[i+1].width + ths[i+2].width+10); // 2*
+                    $(ths[i].el).before(colHeader);
+                    $tr.append(ths[i].el);
+                    skip = 2;
+                }
+            }
+            var theadInTable = mygrid.children("thead");
+            theadInTable.append($tr[0]);
+            gview.find("table.ui-jqgrid-htable").append(theadInTable);
+        });
+    //]]>
+    </script>
+
+</head>
+<body>
+<table id="list">
+  <tbody>
+  <tr>
+    <td></td>
+  </tr>
+  </tbody>
+</table>
+<div id="pager"></div>
+</body>
+</html>
