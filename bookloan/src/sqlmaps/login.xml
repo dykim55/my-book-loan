@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="login">
+
+	<typeAlias alias="UsrDTO" type="com.company.book.dto.UsrDTO"/>
+	
+    <select id="selectLoginInfo" resultClass="UsrDTO">
+        SELECT
+			USR_USID
+			,USR_PSWD
+			,USR_POSI
+			,USR_NAME
+			,USR_RENO
+			,USR_PHNO
+			,USR_HDPH
+			,USR_EMIL
+			,USR_USFG
+			,USR_CAMP
+			,USR_WKNM
+			,USR_UPDT
+			,USR_CMNT        
+        FROM
+            MFC_USR
+        WHERE USR_USID = #usr_usid# 
+        <isNotEmpty prepend="AND" property="usr_pswd">
+            USR_PSWD = #usr_pswd#
+        </isNotEmpty>
+    </select>
+    
+</sqlMap>

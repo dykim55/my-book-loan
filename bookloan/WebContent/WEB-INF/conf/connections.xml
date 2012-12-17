@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+데이터베이스 연결정보를 설정하고 빈을 생성한다. 
+ -->
+<!-- AOP 사용을 위한 schema를 set -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+
+	<!-- 트랜잭션 관리자를 선언 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+     
+	<!-- 트랜잭션 관리 대상 메소드와 rollback조건을 설정한다. -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="*" propagation="REQUIRED" read-only="false" rollback-for="Exception"/>
+		</tx:attributes>
+	</tx:advice>
+    
+    <!-- 트랜잭션 관리 대상 클래스를 선언한다. -->
+    <aop:config>
+        <aop:pointcut id="transactionOperation"
+            expression="execution(* com.cyberone.card.*.*Service.*(..))" />
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="transactionOperation" />
+    </aop:config>
+    
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+		<property name="url" value="jdbc:oracle:thin:@10.4.1.116:1521:EwhaDev" />
+		<property name="username" value="card" />
+		<property name="password" value="card" />
+	</bean>
+
+	<bean id="connection" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation" value="/WEB-INF/conf/sqlmap-config.xml" />
+		<property name="dataSource" ref="dataSource" />
+		<property name="lobHandler"><ref bean="oracleLobhandler"/></property>
+	</bean>
+
+	<!-- ========================= LOB CONFIGURATION ========================= -->
+	<bean id="nativeJdbcExtractor" 
+		class="org.springframework.jdbc.support.nativejdbc.SimpleNativeJdbcExtractor" 
+		lazy-init="true"/>
+ 
+	<bean id="oracleLobhandler" 
+		class="org.springframework.jdbc.support.lob.OracleLobHandler" lazy-init="true">
+		<property name="nativeJdbcExtractor">
+			<ref local="nativeJdbcExtractor"/>
+		</property>
+	</bean>    
+</beans>

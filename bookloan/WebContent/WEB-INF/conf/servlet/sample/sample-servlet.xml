@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <bean name="/sample/sampleView.do" class="com.company.book.sample.SampleController">
+        <property name="success"><value>/WEB-INF/jsp/sample/sample.jsp</value></property>
+    </bean>
+
+	<bean name="/sample/sampleSearch.ajax" class="com.company.book.sample.SampleController">
+	    <property name="sampleService" ref="sampleService" />
+	    <property name="success"><value>jsonView</value></property>
+	</bean>
+
+</beans>

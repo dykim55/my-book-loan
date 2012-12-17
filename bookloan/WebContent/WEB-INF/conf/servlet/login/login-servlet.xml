@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <!-- 로그인뷰 -->
+    <bean name="/login/loginView.do" class="com.company.book.login.LoginController">
+        <property name="success"><value>/WEB-INF/jsp/login/login.jsp</value></property>
+    </bean>
+
+	<!-- 로그인 -->
+	<bean name="/login/login.do" class="com.company.book.login.LoginController">
+	    <property name="loginService" ref="loginService" />
+	    <!-- property name="success"><value>redirect:/search/searchStudentIssueView.do</value></property -->
+	    <property name="success"><value>redirect:/direct/studentIssueView.do</value></property>
+		<property name="failure"><value>/login/login.jsp</value></property>
+	</bean>
+
+    <!-- 로그아웃 --> 
+    <bean name="/login/logout.do" class="com.company.book.login.LoginController">
+        <property name="loginService" ref="loginService" />
+        <property name="success"><value>redirect:/login/loginView.do</value></property>
+    </bean>
+
+</beans>

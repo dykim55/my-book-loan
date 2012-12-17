@@ -1,0 +1,146 @@
+.tr_highlight td {
+	background: #a7a7a7;
+}
+/* -------------------------------------------------------------------------------------
+	Paging
+------------------------------------------------------------------------------------- */
+.page {
+	padding: 20px 0 10px;
+	font-size: 0;
+	text-align: center;
+	background: #fff;
+}
+
+.page img {
+	margin: 2px;
+	vertical-align: top;
+}
+
+.page span {
+	display: inline-block;
+	padding: 0 10px;
+	font-size: 13px;
+	font-family: arial;
+}
+
+.page span .current {
+	display: inline-block;
+	padding: 0 3px;
+	color: #0f7c70;
+	font-weight: bold;
+}
+
+.page span a {
+	display: inline-block;
+	padding: 0 3px;
+	color: #647b8b
+}
+
+.page_input {
+	ime-mode: disabled;
+	width: 30px;
+	text-align: center;
+}
+
+/* -------------------------------------------------------------------------------------
+	list, view, write Table
+------------------------------------------------------------------------------------- */
+.autoTbl {
+	width: auto !important;
+}
+
+.grid {
+	background: #fff;
+	border: 1px solid #cacaca;
+	table-layout: fixed;;
+}
+
+.grid thead th {
+	height: 30px;
+	color: #fff;
+	background: #95c2bd;
+	border: 1px solid #ececec;
+}
+
+.grid tbody td {
+	padding: 5px 0;
+	color: #666;
+	text-align: center;
+	width:auto;
+	border: 1px solid #ddd;
+	border-top: none;
+	white-space:normal;
+	word-wrap:break-word;
+}
+
+.grid tbody td.txtLeft {
+	padding-left: 10px;
+	text-align: left;
+}
+
+.grid tbody td.noData {
+	height: 100px;
+}
+
+.grid thead th.first {
+	border-left: none;
+}
+
+.grid thead th.last {
+	border-right: none;
+}
+
+.grid tbody td.first {
+	border-left: none;
+}
+
+.grid tbody td.last {
+	border-right: none;
+}
+.grid tbody tr {
+	height: 10px;
+}
+
+.grid tfoot  td {
+	padding: 5px 0;
+	color: #666;
+	text-align: center;
+	width:auto;
+	border: 1px solid #ddd;
+	border-top: none;
+}
+
+
+.grid tr.trColor td {
+	background: #f7f7f7;
+}
+
+.grid.scrollTbl {
+	width: 800px;
+	height: 300px;
+	overflow: auto;
+}
+
+/*
+	Dialog
+	*/
+.coDialog { /* 		display:none;  */
+	position: absolute;
+	left: 50%;
+	top: 50px;
+	z-index: 100;
+	margin-left: -250px;
+}
+
+.coAlphaLayer { /* 		display:none; */
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 10;
+	width: 100%;
+	height: 100%;
+	background: #000;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	filter: progid : DXImageTransform.Microsoft.Alpha ( Opacity = 50 );
+	opacity: .5;
+}
