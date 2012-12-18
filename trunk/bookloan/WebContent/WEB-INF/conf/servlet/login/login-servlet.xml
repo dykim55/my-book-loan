@@ -12,7 +12,7 @@
 	<bean name="/login/login.do" class="com.company.book.login.LoginController">
 	    <property name="loginService" ref="loginService" />
 	    <!-- property name="success"><value>redirect:/search/searchStudentIssueView.do</value></property -->
-	    <property name="success"><value>redirect:/direct/studentIssueView.do</value></property>
+	    <property name="success"><value>redirect:/member/memberView.do</value></property>
 		<property name="failure"><value>/login/login.jsp</value></property>
 	</bean>
 

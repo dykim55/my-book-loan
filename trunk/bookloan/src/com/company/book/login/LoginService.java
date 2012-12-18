@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import com.company.card.dto.UsrDTO;
+import com.company.book.dto.UsrDTO;
 import com.ibatis.sqlmap.client.SqlMapClient;
 
 /**
