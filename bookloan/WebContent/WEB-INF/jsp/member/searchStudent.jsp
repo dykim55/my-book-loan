@@ -1,5 +1,4 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import= "com.cyberone.util.CodeSelect;" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-Transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -132,15 +131,15 @@
             </tr>
             <tr>                
                 <th>발급장소</th>
-                <td><%=CodeSelect.makeCodeSelect("p_isdi", "전체", "his_isdi", "", "") %></td>
+                <td></td>
             </tr>        
             <tr>                    
                 <th>신분구분</th>
-                <td><%=CodeSelect.makeCodeSelect("p_iddi", "전체", "bas_iddi", "", "1") %></td>
+                <td></td>
             </tr>        
             <tr>                    
                 <th>재적상태</th>
-                <td><%=CodeSelect.makeCodeSelect("p_sdco", "전체", "bas_sdco", "", "") %></td>
+                <td></td>
             </tr>
             <tr>
                 <th>학과</th>
@@ -164,7 +163,7 @@
             </tr>
             <tr>                    
                 <th>발급사유</th>
-                <td><%=CodeSelect.makeCodeSelect("p_rsco", "전체", "his_rsco", "", "") %></td>
+                <td></td>
             </tr>
             
         </table>
