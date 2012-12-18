@@ -9,7 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.company.UserSession;
 import com.company.UserSessionManager;
-import com.company.card.dto.UsrDTO;
+import com.company.book.dto.UsrDTO;
 import com.company.framework.mvc.controller.SIVController;
 import com.company.util.DataUtils;
 

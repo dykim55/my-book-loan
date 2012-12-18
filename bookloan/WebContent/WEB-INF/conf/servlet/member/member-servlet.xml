@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <!-- 멤버관리뷰 -->
+    <bean name="/member/memberView.do" class="com.company.book.member.MemberController">
+        <property name="success"><value>/WEB-INF/jsp/member/memberManagement.jsp</value></property>
+    </bean>
+
+</beans>

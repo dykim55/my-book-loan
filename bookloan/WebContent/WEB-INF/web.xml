@@ -11,7 +11,7 @@
   <context-param>
     <param-name>webAppRootKey</param-name>
     <param-value>
-            card
+            book
         </param-value>
   </context-param>
   <listener>
