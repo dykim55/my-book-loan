@@ -227,7 +227,10 @@ body .ui-tooltip { border-width: 2px; }
 
 /* Component containers
 ----------------------------------*/
+.ui-widget { font-family: "¸¼Àº °íµñ", MalgunGothic, "³ª´®°íµñ", NanumGothic, "Segoe UI", ±¼¸², Gulim, sans-serif, Lucida Grande,Lucida Sans,Arial,sans-serif; font-size: .8em; }
+/*
 .ui-widget { font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif; font-size: 1.1em; }
+*/
 .ui-widget .ui-widget { font-size: 1em; }
 .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif; font-size: 1em; }
 .ui-widget-content { border: 1px solid #d9d6c4; background: #eceadf url(images/ui-bg_fine-grain_10_eceadf_60x60.png) 50% 50% repeat; color: #1f1f1f; }
