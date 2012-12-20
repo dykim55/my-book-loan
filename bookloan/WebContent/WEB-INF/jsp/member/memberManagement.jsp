@@ -12,14 +12,14 @@
     <link href="${pageContext.request.contextPath}/css/pepper-grinder/jquery-ui-1.9.1.custom.css" type="text/css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/jqGrid-3.8.2/ui.jqgrid.css" type="text/css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/jqGrid-3.8.2/ui.multiselect.css" type="text/css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/css/pro_dropdown_3.css" type="text/css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/pro_dropdown_5.css" type="text/css" rel="stylesheet">
 
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-1.8.2.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-ui-1.9.1.custom.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jqGrid-3.8.2/ui.multiselect.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jqGrid-3.8.2/i18n/grid.locale-en.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jqGrid-3.8.2/jquery.jqGrid.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/stuHover.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/hover_menu5.js"></script>
 
     <script type="text/javascript">
         //<![CDATA[
@@ -167,12 +167,22 @@
 
     <div class="title">Member Management</div>
 
+<div id="outer">
+<ul id="menu">
+<li class="sub" id="no1"><a class="select" href="#nogo">대여관리</a></li>
+<li class="sub" id="no3"><a href="#nogo">도서관리</a></li>
+<li class="sub" id="li_2"><a href="#nogo">회원관리</a></li>
+</ul>
+</div>
+<p></p>
+<!-- 
     <ul id="nav">
         <li class="top"><a href="#nogo1" class="top_link on"><span>회원관리</span></a></li>
         <li class="top"><a href="#nogo1" class="top_link"><span>도서관리</span></a></li>
         <li class="top"><a href="#nogo1" class="top_link"><span>대여관리</span></a></li>
     </ul>
-
+ -->
+ 
     <div align=center>
         
         <div style="position: relative; width: 1000px; height: 63px;" class="ui-widget">
