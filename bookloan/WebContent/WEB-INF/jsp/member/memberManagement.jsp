@@ -9,49 +9,51 @@
     
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-    <link href="${pageContext.request.contextPath}/css/redmond/jquery-ui-1.9.1.custom.css" type="text/css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/pepper-grinder/jquery-ui-1.9.1.custom.css" type="text/css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/jqGrid-3.8.2/ui.jqgrid.css" type="text/css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/jqGrid-3.8.2/ui.multiselect.css" type="text/css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/pro_dropdown_3.css" type="text/css" rel="stylesheet">
 
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-1.8.2.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-ui-1.9.1.custom.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jqGrid-3.8.2/ui.multiselect.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jqGrid-3.8.2/i18n/grid.locale-en.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jqGrid-3.8.2/jquery.jqGrid.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/stuHover.js"></script>
 
     <script type="text/javascript">
         //<![CDATA[
         $(document).ready(function () {
             var mydata = [
-                    {id:"1", invdate:"2007-10-01",name:"test",  note:"note",  amount:"200.00",tax:"10.00",closed:true, ship_via:"TN",total:"210.00"},
-                    {id:"2", invdate:"2007-10-02",name:"test2", note:"note2", amount:"300.00",tax:"20.00",closed:false,ship_via:"FE",total:"320.00"},
-                    {id:"3", invdate:"2007-09-01",name:"test3", note:"note3", amount:"400.00",tax:"30.00",closed:false,ship_via:"FE",total:"430.00"},
-                    {id:"4", invdate:"2007-10-04",name:"test4", note:"note4", amount:"200.00",tax:"10.00",closed:true ,ship_via:"TN",total:"210.00"},
-                    {id:"5", invdate:"2007-10-31",name:"test5", note:"note5", amount:"300.00",tax:"20.00",closed:false,ship_via:"FE",total:"320.00"},
-                    {id:"6", invdate:"2007-09-06",name:"test6", note:"note6", amount:"400.00",tax:"30.00",closed:false,ship_via:"FE",total:"430.00"},
-                    {id:"7", invdate:"2007-10-04",name:"test7", note:"note7", amount:"200.00",tax:"10.00",closed:true ,ship_via:"TN",total:"210.00"},
-                    {id:"8", invdate:"2007-10-03",name:"test8", note:"note8", amount:"300.00",tax:"20.00",closed:false,ship_via:"FE",total:"320.00"},
-                    {id:"9", invdate:"2007-09-01",name:"test9", note:"note9", amount:"400.00",tax:"30.00",closed:false,ship_via:"TN",total:"430.00"},
-                    {id:"10",invdate:"2007-09-08",name:"test10",note:"note10",amount:"500.00",tax:"30.00",closed:true ,ship_via:"TN",total:"530.00"},
-                    {id:"11",invdate:"2007-09-08",name:"test11",note:"note11",amount:"500.00",tax:"30.00",closed:false,ship_via:"FE",total:"530.00"},
-                    {id:"12",invdate:"2007-09-10",name:"test12",note:"note12",amount:"500.00",tax:"30.00",closed:false,ship_via:"FE",total:"530.00"}
+                    {m_area:"1", m_no:"999999", m_name:"홍길동",  m_birth_dt:"19730205",  m_calr_tp:"1", m_tel_no:"0222939696", m_cell_no:"01023696985", m_addr:"서울특별시 노원구 공릉2동 화랑타운아파트", m_email:"gildonghong@hotmail.com"},
+                    {m_area:"1", m_no:"999999", m_name:"홍길동",  m_birth_dt:"19730205",  m_calr_tp:"1", m_tel_no:"0222939696", m_cell_no:"01023696985", m_addr:"서울특별시 노원구 공릉2동 화랑타운아파트", m_email:"gildonghong@hotmail.com"},
+                    {m_area:"1", m_no:"999999", m_name:"홍길동",  m_birth_dt:"19730205",  m_calr_tp:"1", m_tel_no:"0222939696", m_cell_no:"01023696985", m_addr:"서울특별시 노원구 공릉2동 화랑타운아파트", m_email:"gildonghong@hotmail.com"},
+                    {m_area:"1", m_no:"999999", m_name:"홍길동",  m_birth_dt:"19730205",  m_calr_tp:"1", m_tel_no:"0222939696", m_cell_no:"01023696985", m_addr:"서울특별시 노원구 공릉2동 화랑타운아파트", m_email:"gildonghong@hotmail.com"},
+                    {m_area:"1", m_no:"999999", m_name:"홍길동",  m_birth_dt:"19730205",  m_calr_tp:"1", m_tel_no:"0222939696", m_cell_no:"01023696985", m_addr:"서울특별시 노원구 공릉2동 화랑타운아파트", m_email:"gildonghong@hotmail.com"},
+                    {m_area:"1", m_no:"999999", m_name:"홍길동",  m_birth_dt:"19730205",  m_calr_tp:"1", m_tel_no:"0222939696", m_cell_no:"01023696985", m_addr:"서울특별시 노원구 공릉2동 화랑타운아파트", m_email:"gildonghong@hotmail.com"},
+                    {m_area:"1", m_no:"999999", m_name:"홍길동",  m_birth_dt:"19730205",  m_calr_tp:"1", m_tel_no:"0222939696", m_cell_no:"01023696985", m_addr:"서울특별시 노원구 공릉2동 화랑타운아파트", m_email:"gildonghong@hotmail.com"},
+                    {m_area:"1", m_no:"999999", m_name:"홍길동",  m_birth_dt:"19730205",  m_calr_tp:"1", m_tel_no:"0222939696", m_cell_no:"01023696985", m_addr:"서울특별시 노원구 공릉2동 화랑타운아파트", m_email:"gildonghong@hotmail.com"},
+                    {m_area:"1", m_no:"999999", m_name:"홍길동",  m_birth_dt:"19730205",  m_calr_tp:"1", m_tel_no:"0222939696", m_cell_no:"01023696985", m_addr:"서울특별시 노원구 공릉2동 화랑타운아파트", m_email:"gildonghong@hotmail.com"},
+                    {m_area:"1", m_no:"999999", m_name:"홍길동",  m_birth_dt:"19730205",  m_calr_tp:"1", m_tel_no:"0222939696", m_cell_no:"01023696985", m_addr:"서울특별시 노원구 공릉2동 화랑타운아파트", m_email:"gildonghong@hotmail.com"},
+                    {m_area:"1", m_no:"999999", m_name:"홍길동",  m_birth_dt:"19730205",  m_calr_tp:"1", m_tel_no:"0222939696", m_cell_no:"01023696985", m_addr:"서울특별시 노원구 공릉2동 화랑타운아파트", m_email:"gildonghong@hotmail.com"},
+                    {m_area:"1", m_no:"999999", m_name:"홍길동",  m_birth_dt:"19730205",  m_calr_tp:"1", m_tel_no:"0222939696", m_cell_no:"01023696985", m_addr:"서울특별시 노원구 공릉2동 화랑타운아파트", m_email:"gildonghong@hotmail.com"}
                 ],
                 grid = $("#list");
 
             grid.jqGrid({
                 datatype:'local',
                 data: mydata,
-                colNames:['Inv No','Date','Client','Amount','Tax','Total','Closed','Shipped via','Notes'],
+                colNames:['주민센터','고객번호','고객명','생년월일','월력','전화번호','휴대폰번호','주소','이메일'],
                 colModel:[
-                    {name:'id',index:'id',width:70,align:'center',sorttype: 'int'},
-                    {name:'invdate',index:'invdate',width:80, align:'center', sorttype:'date', formatter:'date', formatoptions: {newformat:'d-M-Y'}, datefmt: 'd-M-Y'},
-                    {name:'name',index:'name', width:70},
-                    {name:'amount',index:'amount',width:100, formatter:'number', align:'right'},
-                    {name:'tax',index:'tax',width:70, formatter:'number', align:'right'},
-                    {name:'total',index:'total',width:120, formatter:'number', align:'right'},
-                    {name:'closed',index:'closed',width:110,align:'center', formatter:'checkbox', edittype:'checkbox',editoptions:{value:'Yes:No',defaultValue:'Yes'}},
-                    {name:'ship_via',index:'ship_via',width:120,align:'center',formatter:'select', edittype:'select',editoptions:{value:'FE:FedEx;TN:TNT;IN:Intim',defaultValue:'Intime'}},
-                    {name:'note',index:'note',width:100,sortable:false}
+                    {name:'m_area',index:'id',width:60,align:'center',sorttype: 'int'},
+                    {name:'m_no',index:'invdate',width:60, align:'center'}, 
+                    {name:'m_name',index:'name', width:60},
+                    {name:'m_birth_dt',index:'amount',width:60, align:'right'},
+                    {name:'m_calr_tp',index:'tax',width:40, align:'right'},
+                    {name:'m_tel_no',index:'total',width:80, align:'right'},
+                    {name:'m_cell_no',index:'closed',width:80,align:'center'},
+                    {name:'m_addr',index:'ship_via',width:160,align:'center'},
+                    {name:'m_email',index:'note',width:160,sortable:false}
                 ],
                 rowNum:10,
                 rowList:[5,10,20],
@@ -77,13 +79,59 @@
                     grid.jqGrid('columnChooser');
                 }
             });
+
+            $( "#dialog-form-registration" ).dialog({
+                autoOpen: false,
+                width: 600,
+                modal: true,
+                buttons: {
+                    "등록": function() {
+                    	alert("등록");
+                    },
+                    "취소": function() {
+                        $( this ).dialog( "close" );
+                    }
+                },
+                close: function() {
+                }
+            });
+
+            $( "#dialog-form-modify" ).dialog({
+                autoOpen: false,
+                height: 300,
+                width: 350,
+                modal: true,
+                buttons: {
+                    "수정": function() {
+                    	alert("수정");
+                    },
+                    "취소": function() {
+                        $( this ).dialog( "close" );
+                    }
+                },
+                close: function() {
+                }
+            });
+            
+           
+            $("#onBtnReg").click(function () {
+                $("#dialog-form-registration").dialog("open");
+            });
+            
+            $("#onBtnMdf").click(function () {
+                $("#dialog-form-modify").dialog("open");
+            });
+            
+            
         });
         //]]>
         
         $(function() {
             $("button").button();
+            $("#combobox").combobox();
         });
         
+                
     </script>
     
     <style>
@@ -95,18 +143,21 @@
         
 		.grid_box {background:#ffffff; width:1000px; height:40px; border:0px solid #8eb4ff;}
 		.grid_box .g_areaL {float:left !important; padding:4px 5px 5px 10px; _padding:3px 5px 3px 10px; color:#495b88;}
-		.grid_box .g_areaR {float:right !important; padding:4px 5px 5px 0; _padding:4px 5px 2px 0; color:#495b88; text-align:right;}
+		.grid_box .g_areaR {float:right !important; padding:4px 5px 5px 0px; color:#495b88; text-align:right;}
         
-		.table_insert {clear: both; table-layout:fixed; padding:0; margin:0;}
-		.table_insert table {width:1000px; border-collapse:collapse; padding:0; table-layout:fixed; border:1px solid #dedede;}
-		
-		.table_insert table tbody th {background:#eaf4fe; padding:7px 10px; _padding:8px 10px 6px 10px; border-left:1px solid #dedede; border-right:1px solid #dedede; border-bottom:1px solid #dedede; color:#0a0a0a; font-size: 12px; font-weight:normal; text-align:left; vertical-align:middle;}
-		.table_insert table tbody td {background:#ffffff; padding:3px 10px 2px 10px; border-bottom:1px solid #dedede; color:#8e8e8e; vertical-align:middle;}
-		.table_insert table tbody td img {vertical-align:middle;}
-		.table_insert table tbody td select {font-size:12px; color:#8e8e8e;}
-		.table_insert table tbody td label {margin:0 5px 0 0;cursor:pointer;}
-		.table_insert table tbody td textarea {margin:3px 0;}
-        
+		.ui-dialog-content table {width:1000px; border-collapse:collapse; padding:0; table-layout:fixed; border:0px solid #dedede;}
+		.ui-dialog-content table tbody th {background:#fff url(../css/pepper-grinder/images/ui-bg_fine-grain_15_ffffff_60x60.png) repeat-x; padding:7px 10px; _padding:8px 10px 6px 10px; border-left:1px solid #dedede; border-right:1px solid #dedede; border-bottom:1px solid #dedede; color:#0a0a0a; font-size: 12px; font-weight:normal; text-align:left; }
+		.ui-dialog-content table tbody td {background:none; padding:1px 10px 2px 10px; border-bottom:0px solid #dedede; color:#8e8e8e; text-align:left;}
+		.ui-dialog-content table tbody td input {height: 20px; font-family: "맑은 고딕", MalgunGothic, Lucida Grande,Lucida Sans,Arial,sans-serif; font-size: 12px; vertical-align:middle;}
+		.ui-dialog-content table tbody td select {height: 20px; font-size:12px; color:#8e8e8e;font-family:"맑은 고딕", MalgunGothic}
+
+        .title {
+            margin-top: .5em;
+            width:1000px; 
+            font-size:26px;
+            text-align:left;
+        }
+
     </style>
     
     
@@ -114,59 +165,66 @@
 
 <body>
 
+    <div class="title">Member Management</div>
+
+    <ul id="nav">
+        <li class="top"><a href="#nogo1" class="top_link on"><span>회원관리</span></a></li>
+        <li class="top"><a href="#nogo1" class="top_link"><span>도서관리</span></a></li>
+        <li class="top"><a href="#nogo1" class="top_link"><span>대여관리</span></a></li>
+    </ul>
+
     <div align=center>
-        <div class="table_insert">
-		    <table summary="사은품 관리 조회">
-		      <caption> 사은품 관리 조회 </caption>
-		      <colgroup>
-		        <col style="width:10%;" />
-		        <col style="width:15%;" />
-		        <col style="width:10%;" />
-		        <col style="width:15%;" />
-                <col style="width:10%;" />
-                <col style="width:15%;" />
-                <col style="width:10%;" />
-                <col style="width:15%;" />
-		      </colgroup>
-		      <tbody>
-		        <tr>
-		          <th>지급시작일자</th>
-		          <td><input class="inputtxt" type="text" title="" name="" style="width:20%;" /> ~ <input class="inputtxt" type="text" title="" name="" style="width:20%;" /></td>
-		          <th>사은품관리명</th>
-		          <td><input class="inputtext" type="text" title="사은품관리명" name="" style="width:65%;" /></td>
-                  <th>지급시작일자</th>
-                  <td><input class="inputtxt" type="text" title="" name="" style="width:20%;" /> ~ <input class="inputtxt" type="text" title="" name="" style="width:20%;" /></td>
-                  <th>사은품관리명</th>
-                  <td><input class="inputtext" type="text" title="사은품관리명" name="" style="width:65%;" /></td>
-		        </tr>
-		        <tr>
-		          <th>사용여부</th>
-		          <td><select>
-		              <option>:: 전체 ::</option>
-		            </select></td>
-		          <th>온라인여부</th>
-		          <td><select>
-		              <option>:: 전체 ::</option>
-		            </select></td>
-                  <th>사용여부</th>
-                  <td><select>
-                      <option>:: 전체 ::</option>
-                    </select></td>
-                  <th>온라인여부</th>
-                  <td><select>
-                      <option>:: 전체 ::</option>
-                    </select></td>
-		        </tr>
-		      </tbody>
-		    </table>
-        </div>
         
+        <div style="position: relative; width: 1000px; height: 63px;" class="ui-widget">
+            <div class="ui-dialog-content ui-widget-content" style="background: none; border: 0;">
+            <table>
+              <colgroup>
+                <col style="width:10%;" />
+                <col style="width:15%;" />
+                <col style="width:10%;" />
+                <col style="width:15%;" />
+                <col style="width:10%;" />
+                <col style="width:15%;" />
+                <col style="width:10%;" />
+                <col style="width:15%;" />
+              </colgroup>
+              <tbody>
+                <tr>
+                  <th class="ui-corner-all">주민센터</th>
+                  <td><select>
+                      <option>:: 전체 ::</option>
+                      <option>휘경2동</option>
+                    </select></td>
+                  <th class="ui-corner-all">고객번호</th>
+                  <td><input class="text ui-corner-all" type="text" name="" /></td>
+                  <th class="ui-corner-all">고객명</th>
+                  <td><input class="text ui-corner-all" type="text" name="" /></td>
+                  <th class="ui-corner-all">주민번호</th>
+                  <td><input class="text ui-corner-all" type="text" name="" /></td>
+                </tr>
+                <tr>
+                <td colspan="8"></td>
+                </tr>
+                <tr>
+                  <th class="ui-corner-all">생년월일</th>
+                  <td><input class="text ui-corner-all" type="text" name="" /></td>
+                  <th class="ui-corner-all">전화번호</th>
+                  <td><input class="text ui-corner-all" type="text" name="" /></td>
+                  <th class="ui-corner-all">휴대폰번호</th>
+                  <td><input class="text ui-corner-all" type="text" name="" /></td>
+                  <th class="ui-corner-all">이메일</th>
+                  <td><input class="text ui-corner-all" type="text" name="" /></td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
+        </div>
+    
         <div class="grid_box clfix">
             <div class="g_areaR clfix">
                 <button>회원조회</button>
-            </div>
-            <div class="g_areaL clfix">
-                <button>회원등록</button>
+                <button id="onBtnReg">회원등록</button>
+                <button id="onBtnMdf">회원수정</button>
             </div>
         </div>
         
@@ -181,6 +239,69 @@
 		
     </div>
 
+
+<div id="dialog-form-registration" title="회원등록">
+
+    <form>
+	    <div class="ui-dialog-content ui-widget-content" style="background: none; border: 0;">
+	    <table style="width:500px">
+	      <colgroup>
+	        <col style="width:20%;" />
+	        <col style="width:80%;" />
+	      </colgroup>
+	      <tbody>
+	        <tr>
+	          <th class="ui-corner-all">고객명</th>
+	          <td><input class="text ui-corner-all" style="width:50%" type="text" name="" /></td>
+	        </tr>
+	        <tr>
+	          <th class="ui-corner-all">주민번호</th>
+	          <td><input class="text ui-corner-all" style="width:50%" type="text" name="" /></td>
+	        </tr>
+            <tr>
+              <th class="ui-corner-all">생년월일</th>
+              <td><input class="text ui-corner-all" style="width:50%" type="text" name="" /></td>
+            </tr>
+            <tr>
+              <th class="ui-corner-all">전화번호</th>
+              <td><input class="text ui-corner-all" style="width:50%" type="text" name="" /></td>
+            </tr>
+            <tr>
+              <th class="ui-corner-all">휴대폰번호</th>
+              <td><input class="text ui-corner-all" style="width:50%" type="text" name="" /></td>
+            </tr>
+            <tr>
+              <th class="ui-corner-all">이메일</th>
+              <td><input class="text ui-corner-all" style="width:50%" type="text" name="" /></td>
+            </tr>
+            <tr>
+              <th class="ui-corner-all">주소</th>
+              <td><input class="text ui-corner-all" style="width:100%" type="text" name="" /></td>
+            </tr>
+            <tr>
+              <th class="ui-corner-all">비고</th>
+              <td><input class="text ui-corner-all" style="width:100%" type="text" name="" /></td>
+            </tr>
+            
+	      </tbody>
+	    </table>
+	    </div>
+    </form>
+
+</div>
+
+<div id="dialog-form-modify" title="회원수정">
+    <div class="popupContenet">
+        <div align="center" class="bdCtrl">
+            <a href="#" id="onRegSaveBtn" class="btn"><span>저장</span></a>
+        </div>
+    </div>
+    
+    <!-- button area -->
+    <div class="btnClose">
+        <a id="onPopupRegCloseBtn"  href="#">닫기</a>
+    </div>
+</div>
 
 </body>
 </html>
