@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="member">
+
+    <typeAlias alias="MemberInfoDTO" type="com.company.book.dto.MemberInfoDTO"/>
+    
+    <select id="selectMemberInfo" resultClass="MemberInfoDTO">
+		SELECT 
+		    m_area, 
+		    m_no, 
+		    m_name, 
+		    m_reg_no, 
+		    m_birth_dt, 
+		    m_calr_tp, 
+		    m_tel_no, 
+		    m_cell_no, 
+		    m_email, 
+		    m_addr, 
+		    m_entry_dt, 
+		    m_mbr_cd, 
+		    m_dly_cnt, 
+		    m_cmt, 
+		    m_reg_dt, 
+		    m_reg_id, 
+		    m_mdf_dt, 
+		    m_mdf_id 
+		FROM 
+		    member_info 
+		WHERE 
+		    ROWNUM BETWEEN 1 AND 100;
+    </select>
+		    
+</sqlMap>

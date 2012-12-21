@@ -10,15 +10,15 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
     <link href="${pageContext.request.contextPath}/css/pepper-grinder/jquery-ui-1.9.1.custom.css" type="text/css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/css/jqGrid-3.8.2/ui.jqgrid.css" type="text/css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/css/jqGrid-3.8.2/ui.multiselect.css" type="text/css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/jqGrid-4.4.1/ui.jqgrid.css" type="text/css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/jqGrid-4.4.1/ui.multiselect.css" type="text/css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/pro_dropdown_5.css" type="text/css" rel="stylesheet">
 
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-1.8.2.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-ui-1.9.1.custom.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jqGrid-3.8.2/ui.multiselect.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jqGrid-3.8.2/i18n/grid.locale-en.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jqGrid-3.8.2/jquery.jqGrid.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jqGrid-4.4.1/ui.multiselect.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jqGrid-4.4.1/i18n/grid.locale-en.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jqGrid-4.4.1/jquery.jqGrid.src.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/hover_menu5.js"></script>
 
     <script type="text/javascript">
@@ -41,12 +41,13 @@
                 grid = $("#list");
 
             grid.jqGrid({
-                datatype:'local',
-                data: mydata,
+            	url:  "${pageContext.request.contextPath}/member/searchMemberInfo.do",
+            	datatype: "json",
+            	mtype: 'POST',
                 colNames:['주민센터','고객번호','고객명','생년월일','월력','전화번호','휴대폰번호','주소','이메일'],
                 colModel:[
-                    {name:'m_area',index:'id',width:60,align:'center',sorttype: 'int'},
-                    {name:'m_no',index:'invdate',width:60, align:'center'}, 
+                    {name:'m_area',index:'m_area',width:60,align:'center',sorttype: 'int'},
+                    {name:'m_no',index:'m_no',width:60, align:'center'}, 
                     {name:'m_name',index:'name', width:60},
                     {name:'m_birth_dt',index:'amount',width:60, align:'right'},
                     {name:'m_calr_tp',index:'tax',width:40, align:'right'},
@@ -58,6 +59,18 @@
                 rowNum:10,
                 rowList:[5,10,20],
                 pager: '#pager',
+                postData: { m_no:$("#m_no").val(),
+                	m_name:$("#m_name").val(),
+                	
+                },
+                jsonReader : { 
+                	   page: "page", 
+                	   total: "total", 
+                	   root: "rowData", 
+                	   records: "records",
+                	   repeatitems: false, 
+                	   id: "seq",
+                	  },
                 gridview:true,
                 rownumbers:true,
                 sortname: 'invdate',
@@ -122,14 +135,80 @@
                 $("#dialog-form-modify").dialog("open");
             });
             
+            $("#onBtnSch").click(function () {
+            	alert($("#m_no").val());
+            	alert($("#searchFrm").serializeArray());
+            	alert($("#searchFrm").serializeObject());
+            	
+            	grid.jqGrid('setGridParam',	{ postData:{m_no:$("#m_no").val(), m_name : $("#m_name").val()}}).trigger("reloadGrid");
+            	/*
+                $.ajax({
+	                type: "POST",
+	                url:  "${pageContext.request.contextPath}/member/searchMemberInfo.do",
+	                data: { 
+	                	m_no: $("#m_no").val(),
+	                	m_name: $("#m_name").val()
+	                }, 
+	                dataType: "json",
+	                success: function(msg){
+	                    alert(msg);
+	                },
+	                error: function(res, status, exeption) {
+	                	alert(exeption);
+	                }
+	            }); */
+
+            });
             
         });
         //]]>
         
         $(function() {
             $("button").button();
-            $("#combobox").combobox();
         });
+
+        /** 
+         * jqGrid 
+         * desc   : form의 데이터를 json 형태로 변환해 준다. 
+         * return : 성공시에는 객체(JSON)을 리턴한다. 실패시에는 null을 리턴한다. 
+         */
+         jQuery.fn.serializeObject = function() {
+             var obj = null;    
+             try {        
+                 if ( this[0].tagName && this[0].tagName.toUpperCase() == "FORM" ) {            
+                     var arr = this.serializeArray();            
+                     if ( arr ) {                
+                         obj = {};                
+                         jQuery.each(arr, function() {                    
+                             obj[this.name] = this.value;                
+                         });                         
+                     }//if ( arr ) {        
+                 }    
+             } catch(e) {alert(e.message);}    
+             finally  {
+             }         
+
+             return obj;
+         };            
+        
+        function addFormData() {
+            var arr = $('#searchFrm').serializeArray();
+            alert(arr);
+            var params = {};
+            $.each(arr, function(){
+                var jname;
+                jQuery.each(this, function(i, val){
+                    if (i=="name") {
+                            jname = val;
+                    } else if (i=="value") {
+                            params[jname] = val;
+                    }
+                });
+            });
+            $('#list').appendPostData(params);
+
+            return true;
+        }
         
                 
     </script>
@@ -168,11 +247,11 @@
     <div class="title">Member Management</div>
 
 <div id="outer">
-<ul id="menu">
-<li class="sub" id="no1"><a class="select" href="#nogo">대여관리</a></li>
-<li class="sub" id="no3"><a href="#nogo">도서관리</a></li>
-<li class="sub" id="li_2"><a href="#nogo">회원관리</a></li>
-</ul>
+    <ul id="menu">
+        <li class="sub" id="no1"><a class="select" href="#nogo">대여관리</a></li>
+        <li class="sub" id="no3"><a href="#nogo">도서관리</a></li>
+        <li class="sub" id="li_2"><a href="#nogo">회원관리</a></li>
+    </ul>
 </div>
 <p></p>
 <!-- 
@@ -185,6 +264,7 @@
  
     <div align=center>
         
+        <form action="" method="post" id='searchFrm' name='searchFrm'>
         <div style="position: relative; width: 1000px; height: 63px;" class="ui-widget">
             <div class="ui-dialog-content ui-widget-content" style="background: none; border: 0;">
             <table>
@@ -201,16 +281,16 @@
               <tbody>
                 <tr>
                   <th class="ui-corner-all">주민센터</th>
-                  <td><select>
+                  <td><select id="m_area">
                       <option>:: 전체 ::</option>
                       <option>휘경2동</option>
                     </select></td>
                   <th class="ui-corner-all">고객번호</th>
-                  <td><input class="text ui-corner-all" type="text" name="" /></td>
+                  <td><input class="text ui-corner-all" type="text" id="m_no" /></td>
                   <th class="ui-corner-all">고객명</th>
-                  <td><input class="text ui-corner-all" type="text" name="" /></td>
+                  <td><input class="text ui-corner-all" type="text" id="m_name" /></td>
                   <th class="ui-corner-all">주민번호</th>
-                  <td><input class="text ui-corner-all" type="text" name="" /></td>
+                  <td><input class="text ui-corner-all" type="text" id="m_reg_no" /></td>
                 </tr>
                 <tr>
                 <td colspan="8"></td>
@@ -229,10 +309,11 @@
             </table>
             </div>
         </div>
-    
+        </form>
+        
         <div class="grid_box clfix">
             <div class="g_areaR clfix">
-                <button>회원조회</button>
+                <button id="onBtnSch">회원조회</button>
                 <button id="onBtnReg">회원등록</button>
                 <button id="onBtnMdf">회원수정</button>
             </div>

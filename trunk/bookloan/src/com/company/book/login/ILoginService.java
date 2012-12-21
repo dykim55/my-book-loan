@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import com.company.book.dto.UsrDTO;
+import com.company.book.dto.MngInfoDTO;
 
 
 /**
@@ -13,7 +13,7 @@ import com.company.book.dto.UsrDTO;
  */
 public interface ILoginService {
 
-	public List<UsrDTO> login(UsrDTO dto) throws Exception;
+	public List<MngInfoDTO> login(MngInfoDTO dto) throws Exception;
 	
 	public void logout(HttpSession session) throws Exception;
 

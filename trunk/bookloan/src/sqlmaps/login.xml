@@ -3,28 +3,25 @@
 
 <sqlMap namespace="login">
 
-	<typeAlias alias="UsrDTO" type="com.company.book.dto.UsrDTO"/>
+	<typeAlias alias="MngInfoDTO" type="com.company.book.dto.MngInfoDTO"/>
 	
-    <select id="selectLoginInfo" resultClass="UsrDTO">
-        SELECT
-			USR_USID
-			,USR_PSWD
-			,USR_POSI
-			,USR_NAME
-			,USR_RENO
-			,USR_PHNO
-			,USR_HDPH
-			,USR_EMIL
-			,USR_USFG
-			,USR_CAMP
-			,USR_WKNM
-			,USR_UPDT
-			,USR_CMNT        
-        FROM
-            MFC_USR
-        WHERE USR_USID = #usr_usid# 
-        <isNotEmpty prepend="AND" property="usr_pswd">
-            USR_PSWD = #usr_pswd#
+    <select id="selectLoginInfo" resultClass="MngInfoDTO">
+		SELECT 
+		    m_id, 
+		    m_password, 
+		    m_area, 
+		    m_name, 
+		    m_cell_no, 
+		    m_email, 
+		    m_reg_dt, 
+		    m_reg_id, 
+		    m_mdf_dt, 
+		    m_mdf_id 
+		FROM 
+		    MNG_INFO     
+        WHERE m_id = #m_id# 
+        <isNotEmpty prepend="AND" property="m_password">
+            m_password = #m_password#
         </isNotEmpty>
     </select>
     
