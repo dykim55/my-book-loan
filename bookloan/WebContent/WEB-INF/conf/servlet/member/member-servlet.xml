@@ -8,4 +8,18 @@
         <property name="success"><value>/WEB-INF/jsp/member/memberManagement.jsp</value></property>
     </bean>
 
+    <!-- 멤버 조회 -->
+    <bean name="/member/searchMemberInfo.do" class="com.company.book.member.MemberController">
+        <property name="memberService" ref="memberService" />
+        <property name="success"><value>/WEB-INF/jsp/member/memberManagement.jsp</value></property>
+        <property name="failure"><value>common/error.jsp</value></property>
+    </bean>
+
+    <!-- 멤버 등록/수정 -->
+    <bean name="/member/registrationMember.ajax" class="com.company.book.member.MemberController">
+        <property name="memberService" ref="memberService" />
+        <property name="success"><value>/WEB-INF/jsp/member/memberManagement.jsp</value></property>
+        <property name="failure"><value>common/error.jsp</value></property>
+    </bean>
+
 </beans>

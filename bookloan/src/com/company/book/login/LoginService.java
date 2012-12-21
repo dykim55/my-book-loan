@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import com.company.book.dto.UsrDTO;
+import com.company.book.dto.MngInfoDTO;
 import com.ibatis.sqlmap.client.SqlMapClient;
 
 /**
@@ -16,7 +16,7 @@ public class LoginService implements ILoginService {
 	private SqlMapClient connection;
 
 	@SuppressWarnings("unchecked")
-	public List<UsrDTO> login(UsrDTO dto) throws Exception {
+	public List<MngInfoDTO> login(MngInfoDTO dto) throws Exception {
 		// 1. 사이트 관리자/운영자 여부 확인
 		return connection.queryForList("login.selectLoginInfo", dto);
 	}

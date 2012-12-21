@@ -39,10 +39,10 @@ public class PagingBean {
 	public ModelMap createModelMap(List<?> list,ModelMap map){
 		if(map == null)map = new ModelMap();
 		
-		map.addAttribute("rowList", list);
-		map.addAttribute("totalCount", totalCount);
-		map.addAttribute("page", page);
-		map.addAttribute("rowNum", rowNum);
+		map.addAttribute("rowData", list);
+		//map.addAttribute("totalCount", totalCount);
+		//map.addAttribute("page", page);
+		//map.addAttribute("rowNum", rowNum);
 
 		return map;
 	}

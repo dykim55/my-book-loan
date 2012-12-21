@@ -35,10 +35,10 @@
     </aop:config>
     
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
-		<property name="url" value="jdbc:oracle:thin:@10.4.1.116:1521:EwhaDev" />
-		<property name="username" value="card" />
-		<property name="password" value="card" />
+		<property name="driverClassName" value="cubrid.jdbc.driver.CUBRIDDriver" />
+		<property name="url" value="jdbc:cubrid:localhost:33000:bookloan:::?charset=utf-8" />
+		<property name="username" value="dba" />
+		<property name="password" value="yuri5005" />
 	</bean>
 
 	<bean id="connection" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">

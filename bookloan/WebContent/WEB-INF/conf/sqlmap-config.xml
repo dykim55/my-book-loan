@@ -17,4 +17,5 @@
 	
     <sqlMap resource="sqlmaps/sample.xml"/>
     <sqlMap resource="sqlmaps/login.xml"/>
+    <sqlMap resource="sqlmaps/member.xml"/>
 </sqlMapConfig>

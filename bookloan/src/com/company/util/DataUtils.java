@@ -16,8 +16,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import oracle.sql.CLOB;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -289,7 +287,6 @@ public abstract class DataUtils {
 				|| data instanceof Short
 				|| data instanceof Boolean
 				|| data instanceof Object[]
-                || data instanceof CLOB
 		);
 	}
 	
@@ -318,9 +315,10 @@ public abstract class DataUtils {
 	 */
 	@SuppressWarnings("unused")
 	private static String objectToString(Object dataObj) throws SQLException {
-		if(dataObj == null) 		return "";
-		if(dataObj instanceof CLOB) return ((CLOB)dataObj).stringValue();
-		else						return String.valueOf(dataObj);
+		if(dataObj == null) 		
+			return "";
+		
+		return String.valueOf(dataObj);
 	}
 	
 	

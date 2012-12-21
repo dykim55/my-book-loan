@@ -9,7 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.company.UserSession;
 import com.company.UserSessionManager;
-import com.company.book.dto.UsrDTO;
+import com.company.book.dto.MngInfoDTO;
 import com.company.framework.mvc.controller.SIVController;
 import com.company.util.DataUtils;
 
@@ -36,18 +36,18 @@ public class LoginController extends SIVController {
 		//String	passwd = Utils.seedEncode(strPassword);
 		String	passwd = strPassword;
 
-		UsrDTO dto = (UsrDTO) DataUtils.dtoBuilder(req, UsrDTO.class);
-		dto.setUsr_usid(strId);
+		MngInfoDTO dto = (MngInfoDTO) DataUtils.dtoBuilder(req, MngInfoDTO.class);
+		dto.setM_id(strId);
 		
 		UserSession userSession = new UserSession();
 		
 		if (strId != null && strId.length() > 0) {
-			List<UsrDTO> list = loginService.login(dto);
+			List<MngInfoDTO> list = loginService.login(dto);
 
 			//로그인 아이디 DB조회
 			if (list.size() > 0) {
 				dto = list.get(0);
-				if (!passwd.equals(dto.getUsr_pswd())) {
+				if (!passwd.equals(dto.getM_password())) {
 					result = false;
 				} else {
 					result = true;
