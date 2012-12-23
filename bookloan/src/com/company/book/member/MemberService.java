@@ -12,12 +12,17 @@ public class MemberService implements IMemberService {
 
 	@SuppressWarnings("unchecked")
 	public List<MemberInfoDTO> searchMemberInfo(MemberInfoDTO dto) throws Exception {
+		dto.searchRowCount(connection, "member.selectMemberInfo-count");
 		return connection.queryForList("member.selectMemberInfo", dto);
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<MemberInfoDTO> searchMemberInfoName(MemberInfoDTO dto) throws Exception {
 		return connection.queryForList("member.selectMemberInfoName", dto);
+	}
+	
+	public String getNextMemberNo() throws Exception {
+		return (String)connection.queryForObject("member.getNextMemberNo");
 	}
 	
 	public void insertMemberInfo(MemberInfoDTO dto) throws Exception {

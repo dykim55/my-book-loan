@@ -5,30 +5,96 @@
 
     <typeAlias alias="MemberInfoDTO" type="com.company.book.dto.MemberInfoDTO"/>
     
-    <select id="selectMemberInfo" resultClass="MemberInfoDTO">
+    <sql id="pagingQueryTop">
+    <![CDATA[
+        SELECT * FROM (
+            SELECT
+                ROWNUM AS PAGING_RNUM,
+                PAGING_A.*
+            FROM
+                (
+    ]]>
+    </sql>
+    
+    <sql id="pagingQueryBottom">
+    <![CDATA[
+        ) PAGING_A
+        WHERE
+            ROWNUM <= #rows# * #page#
+        ) PAGING_B
+        WHERE PAGING_RNUM > (#rows# * (#page# - 1))
+    ]]>
+    </sql>
+
+    <sql id="countQueryTop">
+        SELECT COUNT(*) as totalCount FROM (
+    </sql>
+
+    <sql id="countQueryBottom">
+        ) T
+    </sql>
+    
+    <sql id="sqlMemberInfo">
 		SELECT 
-		    m_area, 
-		    m_no, 
-		    m_name, 
-		    m_reg_no, 
-		    m_birth_dt, 
-		    m_calr_tp, 
-		    m_tel_no, 
-		    m_cell_no, 
-		    m_email, 
-		    m_addr, 
-		    m_entry_dt, 
-		    m_mbr_cd, 
-		    m_dly_cnt, 
-		    m_cmt, 
-		    m_reg_dt, 
-		    m_reg_id, 
-		    m_mdf_dt, 
-		    m_mdf_id 
+		    m_area, m_no, 
+		    m_name, m_status, 
+		    m_birth_dt, m_calr_tp, 
+		    m_tel_no, m_cell_no, 
+		    m_email, m_addr, 
+		    m_entry_dt, m_mbr_cd, 
+		    m_dly_cnt, m_cmt, 
+		    m_reg_dt, m_reg_id, 
+		    m_mdf_dt, m_mdf_id 
 		FROM 
 		    member_info 
-		WHERE 
-		    ROWNUM BETWEEN 1 AND 100;
+	</sql>
+	    
+    <select id="selectMemberInfo" resultClass="MemberInfoDTO">
+        <include refid="pagingQueryTop" />
+        <include refid="sqlMemberInfo"/>
+        <include refid="pagingQueryBottom"/>
     </select>
-		    
+    
+    <select id="selectMemberInfo-count" parameterClass="MemberInfoDTO" resultClass="MemberInfoDTO">
+        <include refid="countQueryTop" />
+        <include refid="sqlMemberInfo"/>
+        <include refid="countQueryBottom"/>
+    </select>
+	    
+ <!-- 회원 수정 -->
+    <update id="updateMemberInfo" parameterClass="MemberInfoDTO">
+        update member_info set
+        	m_name = #m_name#
+        	, m_status = #m_status#
+        	, m_birth_dt = #m_birth_dt#
+        	, m_calr_tp = #m_calr_tp#
+        	, m_tel_no = #m_tel_no#
+        	, m_cell_no = #m_cell_no#
+        	, m_email = #m_email#
+        	, m_addr = #m_addr#
+        	, m_cmt = #m_cmt#
+			, m_mdf_dt = #m_mdf_dt#
+			, m_mdf_id = #m_mdf_id#
+        where m_area = #m_area#
+			and m_no = #m_no#
+    </update>
+	
+    <!-- 회원 등록 -->
+    <insert id="insertMemberInfo" parameterClass="MemberInfoDTO">
+        insert into member_info (
+        	m_area, m_no, m_name, m_status, m_birth_dt, 
+        	m_calr_tp, m_tel_no, m_cell_no, m_email, m_addr, 
+        	m_entry_dt, m_mbr_cd, m_dly_cnt, m_cmt, m_reg_dt, 
+        	m_reg_id, m_mdf_dt, m_mdf_id)
+        values(
+        	#m_area#,     #m_no#,     #m_name#,    #m_status#, #m_birth_dt#, 
+        	#m_calr_tp#,  #m_tel_no#, #m_cell_no#, #m_email#,  #m_addr#, 
+        	#m_entry_dt#, #m_mbr_cd#, #m_dly_cnt#, #m_cmt#,    #m_reg_dt#, 
+        	#m_reg_id#,   #m_mdf_dt#, #m_mdf_id#)
+    </insert>	    
+	    
+	<select id="getNextMemberNo" resultClass="String">
+		select member_m_no_seq.next_value	
+    </select>	    
+
 </sqlMap>

@@ -38,7 +38,7 @@
 		<property name="driverClassName" value="cubrid.jdbc.driver.CUBRIDDriver" />
 		<property name="url" value="jdbc:cubrid:localhost:33000:bookloan:::?charset=utf-8" />
 		<property name="username" value="dba" />
-		<property name="password" value="yuri5005" />
+		<property name="password" value="loanadmin" />
 	</bean>
 
 	<bean id="connection" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">

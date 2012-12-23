@@ -164,6 +164,13 @@ public class Utils {
 		}
 	}
 
+	public static String addLeadingCharacter(String s, char c, int len) {
+        while (s != null && s.length() < len) {
+            s = c + s;
+        }
+        return s;
+    }
+	
 	/**
 	 * MimeType Map
 	 */
