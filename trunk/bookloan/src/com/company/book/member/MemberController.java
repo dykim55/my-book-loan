@@ -1,9 +1,14 @@
 package com.company.book.member;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
@@ -13,6 +18,7 @@ import com.company.book.dto.MemberInfoDTO;
 import com.company.framework.mvc.controller.SIVController;
 import com.company.framework.utils.DateUtil;
 import com.company.util.DataUtils;
+import com.company.util.Utils;
 
 /**
  * @author
@@ -33,47 +39,42 @@ public class MemberController extends SIVController {
 		dto.setSessionData(req);
 
 		List<MemberInfoDTO> list = null;
-		if (dto.getM_no() != null && dto.getM_no().length() > 0) {
-			list = memberService.searchMemberInfo(dto);
-		}
-		else if (dto.getM_name() != null && dto.getM_name().length() > 0) {
-			list = memberService.searchMemberInfoName(dto);
-			if (list.size() == 1) {
-				MemberInfoDTO rowData = list.get(0);
-				dto.setM_no(rowData.getM_no());
-				list = memberService.searchMemberInfo(dto);
-			}
-		}
+		
+		list = memberService.searchMemberInfo(dto);
 		
 		ModelMap map =  dto.createModelMap(list);
-		if (list.size() > 0) {
-			req.setAttribute("resultList", list);
-			req.setAttribute("count", list.size());	//조회 성공여부 확인
-		} else {
-	    	req.setAttribute("result", "error");
-	    	req.setAttribute("result_message", "조회된 정보가 없습니다.");
-	    	req.setAttribute("count", 0);	//조회 성공여부 확인
-		}
 		
 		return new ModelAndView(this.success, map);
 	}
 	
 	public ModelAndView registrationMember(HttpServletRequest req, HttpServletResponse res) throws Exception {
 
+		ModelMap map = new ModelMap();
+		
 		MemberInfoDTO dto = (MemberInfoDTO) DataUtils.dtoBuilder(req, MemberInfoDTO.class);
 		
 		UserSession session = (UserSession)req.getSession().getAttribute("session-user");
 		
-		dto.setM_reg_id(session.getUserId());
-		dto.setM_mdf_id(session.getUserId());
+		String strMno = "";
+		if (dto.getM_no() == null || dto.getM_no().isEmpty()) {
+			strMno = Utils.addLeadingCharacter(memberService.getNextMemberNo(), '0', 6);
+		}
+		
+		if (strMno.length() != 6) {
+			map.addAttribute("err_code", "0001");
+			map.addAttribute("err_message", "회원번호를 생성하지 못했습니다. 관리자에게 문의하세요.");
+			return new ModelAndView(this.success, map);
+		}
+		
 		dto.setM_reg_dt(DateUtil.getYYYYMMDDHH24MISS());
+		dto.setM_reg_id(session.getUserId());
 		dto.setM_mdf_dt(dto.getM_reg_dt());
+		dto.setM_mdf_id(dto.getM_reg_id());
 		
-		memberService.insertMemberInfo(dto);
+		//memberService.insertMemberInfo(dto);
 		
-		ModelMap map = new ModelMap();
-		map.addAttribute("idno", dto.getM_no());
-		
+		map.addAttribute("err_code", "0000");
+		map.addAttribute("err_message", "정상처리 되었습니다.");
 		return new ModelAndView(this.success, map);
 	}
 	

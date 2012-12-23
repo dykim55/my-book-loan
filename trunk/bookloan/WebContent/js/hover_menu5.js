@@ -10,29 +10,20 @@ way to fit your requirements.
 
 
 	var getEls = document.getElementById('menu').getElementsByTagName("LI");
-	var getListElts = document.getElementById('submenus').getElementsByTagName("UL");
 	var getAgn = getEls;
-	
 
 	for (var i=0; i<getEls.length; i++) {
 		getEls[i].onmouseover=function() {
-		this.className = this.className == 'clicked' ? '' : 'clicked';
+			this.className = this.className == 'clicked' ? '' : 'clicked';
 
-		for (var z=0; z<getAgn.length; z++) {
-		if (this.id != getAgn[z].id){
-				getAgn[z].className = '';
-			}
-		}
-
-
-		ulId = this.id.replace("li", "ul");
-		document.getElementById(ulId).className = document.getElementById(ulId).className == 'yes' ? 'none' : 'yes';
-
-			for (var i=0; i<getListElts.length; i++) {
-			if (ulId != getListElts[i].id && getListElts[i].className == "yes"){
-					getListElts[i].className = "none";
+			for (var z=0; z<getAgn.length; z++) {
+				if (this.id != getAgn[z].id){
+					getAgn[z].className = '';
 				}
 			}
+
+			ulId = this.id.replace("li", "ul");
+			document.getElementById(ulId).className = document.getElementById(ulId).className == 'yes' ? 'none' : 'yes';
 		}
 	}
 

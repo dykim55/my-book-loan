@@ -15,10 +15,11 @@ import com.ibatis.sqlmap.client.SqlMapClient;
 
 public class PagingBean {
 
-	private int rowNum;
+	private int rows;
+	private int records;
+	private int total;
 	private int totalCount;
 	private int page;
-	private int PAGING_RNUM;
 
 	private UserSession session;
 	
@@ -39,11 +40,11 @@ public class PagingBean {
 	public ModelMap createModelMap(List<?> list,ModelMap map){
 		if(map == null)map = new ModelMap();
 		
-		map.addAttribute("rowData", list);
-		//map.addAttribute("totalCount", totalCount);
-		//map.addAttribute("page", page);
-		//map.addAttribute("rowNum", rowNum);
-
+		map.addAttribute("rows", list);
+		map.addAttribute("page", page);
+		map.addAttribute("rowNum", rows);
+		map.addAttribute("total", total);
+		map.addAttribute("records", totalCount);
 		return map;
 	}
 	
@@ -56,6 +57,7 @@ public class PagingBean {
 	public void searchRowCount(SqlMapClient connection, String alias) throws SQLException {
 		PagingBean bean = (PagingBean) connection.queryForObject(alias, this);
 		totalCount = bean.totalCount;
+		total = (totalCount/rows) + 1;
 	}
 	
 	
@@ -81,22 +83,6 @@ public class PagingBean {
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
 	}
 	
-	public int getRowNum() {
-		return rowNum;
-	}
-	
-	public void setRowNum(int rowNum) {
-		this.rowNum = rowNum;
-	}
-	
-	public int getTotalCount() {
-		return totalCount;
-	}
-	
-	public void setTotalCount(int totalCount) {
-		this.totalCount = totalCount;
-	}
-	
 	public int getPage() {
 		return page;
 	}
@@ -104,12 +90,30 @@ public class PagingBean {
 	public void setPage(int page) {
 		this.page = page;
 	}
-	
-	public int getPAGING_RNUM() {
-		return PAGING_RNUM;
-	}
 
-	public void setPAGING_RNUM(int pAGING_RNUM) {
-		PAGING_RNUM = pAGING_RNUM;
+	public int getRecords() {
+		return records;
 	}
+	public void setRecords(int records) {
+		this.records = records;
+	}
+	public int getTotal() {
+		return total;
+	}
+	public void setTotal(int total) {
+		this.total = total;
+	}
+	public int getRows() {
+		return rows;
+	}
+	public void setRows(int rows) {
+		this.rows = rows;
+	}
+	public int getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(int totalCount) {
+		this.totalCount = totalCount;
+	}
+	
 }
