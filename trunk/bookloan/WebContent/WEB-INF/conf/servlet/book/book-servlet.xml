@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <!-- 도서관리뷰 -->
+    <bean name="/book/bookView.do" class="com.company.book.book.BookController">
+        <property name="success"><value>/WEB-INF/jsp/book/bookManagement.jsp</value></property>
+    </bean>
+
+    <!-- 도서 조회 -->
+    <bean name="/book/searchBookInfo.ajax" class="com.company.book.book.BookController">
+        <property name="bookService" ref="bookService" />
+        <property name="success"><value>jsonView</value></property>
+        <property name="failure"><value>common/error.jsp</value></property>
+    </bean>
+
+    <!-- 도서 등록/수정 -->
+    <bean name="/book/registrationBook.ajax" class="com.company.book.book.BookController">
+        <property name="bookService" ref="bookService" />
+        <property name="success"><value>jsonView</value></property>
+        <property name="failure"><value>common/error.jsp</value></property>
+    </bean>
+
+</beans>

@@ -1,4 +1,4 @@
-package com.company.book.member;
+package com.company.book.book;
 
 import java.util.List;
 
@@ -20,11 +20,11 @@ import com.company.util.Utils;
  * @author
  * 
  */
-public class MemberController extends SIVController {
+public class BookController extends SIVController {
 
-	private IMemberService memberService;
+	private IBookService bookService;
 	
-	public ModelAndView memberView(HttpServletRequest req, HttpServletResponse res) throws Exception {
+	public ModelAndView bookView(HttpServletRequest req, HttpServletResponse res) throws Exception {
 		return new ModelAndView(this.success);
 	}
 
@@ -51,7 +51,7 @@ public class MemberController extends SIVController {
 		
 		List<MemberInfoDTO> list = null;
 		
-		list = memberService.searchMemberInfo(dto);
+		list = bookService.searchMemberInfo(dto);
 		
 		ModelMap map =  dto.createModelMap(list);
 		
@@ -70,7 +70,7 @@ public class MemberController extends SIVController {
 		String strMno = "";
 		String strCurrentDate = DateUtil.getYYYYMMDDHH24MISS();
 		if (dto.getM_no() == null || dto.getM_no().isEmpty()) {
-			strMno = Utils.addLeadingCharacter(memberService.getNextMemberNo(), '0', 6);
+			strMno = Utils.addLeadingCharacter(bookService.getNextMemberNo(), '0', 6);
 			if (strMno.length() != 6) {
 				map.addAttribute("err_code", "0001");
 				map.addAttribute("err_message", "회원번호를 생성하지 못했습니다. 관리자에게 문의하세요.");
@@ -97,14 +97,14 @@ public class MemberController extends SIVController {
 		dto.setM_mdf_dt(strCurrentDate);
 		dto.setM_mdf_id(session.getUserId());
 		
-		memberService.insertMemberInfo(dto);
+		bookService.insertMemberInfo(dto);
 		
 		map.addAttribute("err_code", "0000");
 		map.addAttribute("err_message", "정상처리 되었습니다.");
 		return new ModelAndView(this.success, map);
 	}
 	
-	public void setMemberService(IMemberService memberService) {
-		this.memberService = memberService;
+	public void setBookService(IBookService bookService) {
+		this.bookService = bookService;
 	}
 }

@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     
-    <title>회원관리</title>
+    <title>도서관리</title>
     
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
@@ -27,20 +27,19 @@
         	grid = $("#list");
 
         	grid.jqGrid({
-            	url:  "${pageContext.request.contextPath}/member/searchMemberInfo.ajax",
+            	url:  "${pageContext.request.contextPath}/book/searchBookInfo.ajax",
             	datatype: "json",
             	mtype: 'POST',
-                colNames:['고객번호','고객명','생년월일','양/음','전화번호','휴대폰번호','주소','상태','비고'],
+                colNames:['도서번호','도서제목','저자','출판사','장르','구입일자','도서상태','대출여부'],
                 colModel:[
-                    {name:'m_no',		index:'m_no',		width:50, 	align:'center'}, 
-                    {name:'m_name',		index:'name', 		width:60, 	align:'center'},
-                    {name:'m_birth_dt',	index:'m_birth_dt',	width:60, 	align:'center', formatter:dateFormatter},
-                    {name:'m_calr_tp',	index:'m_calr_tp',	width:30, 	align:'center', formatter:'select',  edittype:'select', editoptions: {value: '1:양력;2:음력', defaultValue:'양력'}},
-                    {name:'m_tel_no',	index:'m_tel_no',	width:80, 	align:'center', formatter:phoneFormatter},
-                    {name:'m_cell_no',	index:'m_cell_no',	width:80,	align:'center', formatter:phoneFormatter},
-                    {name:'m_addr',		index:'m_addr',		width:200,	align:'left'},
-                    {name:'m_status',	index:'m_status',	width:40,	align:'center', formatter:'select',  edittype:'select', editoptions: {value: 'R:정상;D:탈퇴', defaultValue:'정상'}},
-                    {name:'m_cmt',		index:'m_cmt',		width:0,	align:'center', hidden:true}
+                    {name:'m_book_no',	index:'m_book_no',	width:50, 	align:'center'}, 
+                    {name:'m_title',	index:'m_title', 	width:200, 	align:'center'},
+                    {name:'m_author',	index:'m_author',	width:80, 	align:'center'},
+                    {name:'m_publisher',index:'m_publisher',width:100, 	align:'center'},
+                    {name:'m_genre',	index:'m_genre',	width:80, 	align:'center'},
+                    {name:'m_buy_dt',	index:'m_buy_dt',	width:80,	align:'center', formatter:dateFormatter},
+                    {name:'m_status',	index:'m_status',	width:40,	align:'center', formatter:'select',  edittype:'select', editoptions: {value: 'R:정상;L:분실', defaultValue:'정상'}},
+                    {name:'m_loan_st',	index:'m_loan_st',	width:40,	align:'center', formatter:'select',  edittype:'select', editoptions: {value: '0:미대출;1:대출중', defaultValue:'미대출'}}
                 ],
                 rowNum:10,
                 rowList:[10,20,50],
@@ -50,7 +49,7 @@
                 },
                 rownumbers:true,
                 viewrecords: true,
-                caption:'회원목록',
+                caption:'도서목록',
                 height: '100%',
                 width: '1200'
             });
@@ -279,8 +278,8 @@
 <div id="outer">
     <ul id="menu">
         <li class="sub" id="no1"><a href="#nogo">대여관리</a></li>
-        <li class="sub" id="no2"><a href="${pageContext.request.contextPath}/book/bookView.do">도서관리</a></li>
-        <li class="sub" id="no3"><a class="select" href="#nogo">회원관리</a></li>
+        <li class="sub" id="no2"><a class="select" href="#nogo">도서관리</a></li>
+        <li class="sub" id="no3"><a href="${pageContext.request.contextPath}/member/memberView.do">회원관리</a></li>
     </ul>
 </div>
 <p></p>
@@ -288,46 +287,50 @@
 
 <div align=center>
 
-    <div class="title">회원관리</div>
-        
-    <form action="" method="post" id='searchFrm' name='searchFrm'>
+    <div class="title">도서관리</div>
+    
+    <form>
     <div style="position: relative; height: 32px;" class="ui-widget">
         <div class="ui-dialog-content ui-widget-content" style="background: none; border: 0;">
 	        <table>
 	          	<colgroup>
-	            	<col style="width:8%;" />
+	            	<col style="width:6%;" />
+	            	<col style="width:16%;" />
+	            	<col style="width:6%;" />
+	            	<col style="width:6%;" />
+	            	<col style="width:6%;" />
 	            	<col style="width:12%;" />
-	            	<col style="width:8%;" />
-	            	<col style="width:12%;" />
-	            	<col style="width:8%;" />
-	            	<col style="width:12%;" />
+	            	<col style="width:6%;" />
 	            	<col style="width:10%;" />
-	            	<col style="width:12%;" />
-	            	<col style="width:8%;" />
+	            	<col style="width:6%;" />
 	            	<col style="width:10%;" />
+                    <col style="width:6%;" />
+                    <col style="width:8%;" />
 	          	</colgroup>
 	          	<tbody>
 	            	<tr>
-	              		<th class="ui-corner-all">고객번호</th>
+                        <th class="ui-corner-all">구입일자</th>
+                        <td><input class="text" type="text" style="width:40%" id="m_sdt" name="m_sdt" />~<input class="text" type="text" style="width:40%" id="m_edt" name="m_edt" /></td>
+	              		<th class="ui-corner-all">도서번호</th>
 	              		<td><input class="text" type="text" style="width:90%" id="m_no" name="m_no" /></td>
-	              		<th class="ui-corner-all">고객명</th>
+	              		<th class="ui-corner-all">도서제목</th>
 	              		<td><input class="text" type="text" style="width:90%" id="m_name" name="m_name" /></td>
-	              		<th class="ui-corner-all">생년월일</th>
+	              		<th class="ui-corner-all">출판사</th>
 	              		<td><input class="text" type="text" style="width:90%" id="m_birth_dt" name="m_birth_dt" /></td>
-	              		<th class="ui-corner-all">
-                            <select id="m_phone_tp">
-                                <option value='1'>휴대폰번호</option>
-                                <option value='2'>집전화번호</option>
-                            </select>
-	              		</th>
-	              		<td><input class="text" type="text" style="width:90%" id="m_phone_no" name="m_phone_no" /></td>
-	              		<th class="ui-corner-all">회원상태</th>
-	              		<td><select id="m_status">
+	              		<th class="ui-corner-all">장르</th>
+	              		<td><select id="m_genre">
 	              		        <option value=''>::전체::</option>
                       			<option value='R'>정상</option>
                       			<option value='D'>탈퇴</option>
                     		</select>
                     	</td>
+                        <th class="ui-corner-all">상태</th>
+                        <td><select id="m_genre">
+                                <option value=''>::전체::</option>
+                                <option value='R'>정상</option>
+                                <option value='D'>탈퇴</option>
+                            </select>
+                        </td>
 	            	</tr>
 				</tbody>
 			</table>

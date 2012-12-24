@@ -24,19 +24,20 @@
 ============
 도서정보
 ============
-지역구분
-도서번호
-도서장르
-도서제목
-저자
-출판사
-구입일자
-비고
-대여상태
-등록일시
-수정일시
-등록자
-수정자
+지역구분 m_area
+도서번호 m_book_no
+도서장르 m_genre
+도서제목 m_title
+저자     m_author
+출판사     m_publisher
+구입일자 m_buy_dt
+비고      m_cmt
+도서상태  m_status
+대여상태  m_loan_st
+등록일시 m_reg_dt
+수정일시 m_mdf_dt
+등록자 m_reg_no
+수정자 m_mdf_no
 
 
 ============
