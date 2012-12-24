@@ -51,9 +51,9 @@
             <tbody>        
 	            <tr>
 	                <th><label>아이디: </label></td>
-	                <td><input style="width:90%" name="login_id"></td>
+	                <td><input style="width:90%" name="login_id" value="dykim"></td>
 	                <th><label>비밀번호: </label></td>
-	                <td><input style="width:90%" name="login_password"></td>
+	                <td><input type="password" style="width:90%" name="login_password" value="1234"></td>
 	                <td><button>로그인</button></td>
 	            </tr>
             </tbody>

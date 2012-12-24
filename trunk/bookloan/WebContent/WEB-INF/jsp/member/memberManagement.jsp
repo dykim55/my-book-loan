@@ -9,13 +9,13 @@
     
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-    <link href="${pageContext.request.contextPath}/css/pepper-grinder/jquery-ui-1.9.1.custom.css" type="text/css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/hot-sneaks/jquery-ui-1.9.2.custom.css" type="text/css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/jqGrid-4.4.1/ui.jqgrid.css" type="text/css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/jqGrid-4.4.1/ui.multiselect.css" type="text/css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/pro_dropdown_5.css" type="text/css" rel="stylesheet">
 
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-1.8.2.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-ui-1.9.1.custom.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-1.8.3.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-ui-1.9.2.custom.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jqGrid-4.4.1/ui.multiselect.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jqGrid-4.4.1/i18n/grid.locale-en.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jqGrid-4.4.1/jquery.jqGrid.src.js"></script>
@@ -30,15 +30,16 @@
             	url:  "${pageContext.request.contextPath}/member/searchMemberInfo.ajax",
             	datatype: "json",
             	mtype: 'POST',
-                colNames:['고객번호','고객명','생년월일','양/음','전화번호','휴대폰번호','주소','상태','비고'],
+                colNames:['고객번호','고객명','생년월일','양/음','전화번호','휴대폰번호','주소','가입일','상태','비고'],
                 colModel:[
                     {name:'m_no',		index:'m_no',		width:50, 	align:'center'}, 
-                    {name:'m_name',		index:'name', 		width:60, 	align:'center'},
+                    {name:'m_name',		index:'m_name',		width:60, 	align:'center'},
                     {name:'m_birth_dt',	index:'m_birth_dt',	width:60, 	align:'center', formatter:dateFormatter},
                     {name:'m_calr_tp',	index:'m_calr_tp',	width:30, 	align:'center', formatter:'select',  edittype:'select', editoptions: {value: '1:양력;2:음력', defaultValue:'양력'}},
-                    {name:'m_tel_no',	index:'m_tel_no',	width:80, 	align:'center', formatter:phoneFormatter},
-                    {name:'m_cell_no',	index:'m_cell_no',	width:80,	align:'center', formatter:phoneFormatter},
-                    {name:'m_addr',		index:'m_addr',		width:200,	align:'left'},
+                    {name:'m_tel_no',	index:'m_tel_no',	width:70, 	align:'center', formatter:phoneFormatter},
+                    {name:'m_cell_no',	index:'m_cell_no',	width:70,	align:'center', formatter:phoneFormatter},
+                    {name:'m_addr',		index:'m_addr',		width:140,	align:'left'},
+                    {name:'m_entry_dt',	index:'m_entry_dt',	width:80, 	align:'center', formatter:dateFormatter},
                     {name:'m_status',	index:'m_status',	width:40,	align:'center', formatter:'select',  edittype:'select', editoptions: {value: 'R:정상;D:탈퇴', defaultValue:'정상'}},
                     {name:'m_cmt',		index:'m_cmt',		width:0,	align:'center', hidden:true}
                 ],
@@ -50,6 +51,7 @@
                 },
                 rownumbers:true,
                 viewrecords: true,
+                forceFit : true,
                 caption:'회원목록',
                 height: '100%',
                 width: '1200'
@@ -159,23 +161,25 @@
             	$("#pm_name").val(grid.getCell(selNo, 2));
             	$("#pm_birth_dt").val(grid.getCell(selNo, 3));
             	$("#pm_calr_tp").val(grid.getCell(selNo, 4));
-            	$("#pm_status").val(grid.getCell(selNo, 8));
+            	$("#pm_status").val(grid.getCell(selNo, 9));
             	$("#pm_tel_no").val(grid.getCell(selNo, 5));
             	$("#pm_cell_no").val(grid.getCell(selNo, 6));
             	$("#pm_addr").val(grid.getCell(selNo, 7));
-            	$("#pm_cmt").val(grid.getCell(selNo, 9));
+            	$("#pm_cmt").val(grid.getCell(selNo, 10));
             	
             	$("#pm_calr_tp").val(grid.getCell(selNo, 4)).attr("selected", "selected");
-            	$("#pm_status").val(grid.getCell(selNo, 8)).attr("selected", "selected");
+            	$("#pm_status").val(grid.getCell(selNo, 9)).attr("selected", "selected");
             	
             	$("#ui-id-1").html("회원정보 수정");
             	$("#dialog-form-registration").dialog("open");
             });
             
-            //
+            //회원조회
             $("#onBtnSch").click(function () {
             	grid.jqGrid('setGridParam',	{ 
             		postData:{
+            			m_sdt:$("#m_sdt").val(),
+            			m_edt:$("#m_edt").val(),
             			m_no:$("#m_no").val(), 
             			m_name:$("#m_name").val(),
             			m_birth_dt:$("#m_birth_dt").val(),
@@ -191,7 +195,7 @@
             	}
             });
             
-            $("#m_no,#m_name,#m_birth_dt,#m_phone_no").focus(function(event) {
+            $("#m_sdt, #m_edt, #m_no,#m_name,#m_birth_dt,#m_phone_no").focus(function(event) {
                 $('#'+event.target.id).select();
             });
             
@@ -200,7 +204,7 @@
         
         $(function() {
             $("button").button();
-            $("#m_birth_dt, #pm_birth_dt").datepicker({
+            $("#m_sdt, #m_edt, #m_birth_dt, #pm_birth_dt").datepicker({
     			changeMonth: true,
     			changeYear: true,
     			yearRange: 'c-80:c',
@@ -211,14 +215,23 @@
         });
         
         function dateFormatter(cellval, opts, rwdat, _act) {
-            var num, year, month, day;
+            var num, year, month, day, hh, mi, ss;
         	num=cellval;
         	if( num != 0 && num.length == 8 ) {
         	    year = num.substring( 0, 4 );
         	    month = num.substring( 4, 6 ); 
         	    day = num.substring(6);
         	    num = year+"-"+month + "-" + day;
-        	} else {
+        	} else if( num != 0 && num.length == 14 ) {
+        	    year = num.substring( 0, 4 );
+        	    month = num.substring( 4, 6 ); 
+        	    day = num.substring(6, 8);
+        	    hh = num.substring(8, 10);
+        	    mi = num.substring(10, 12);
+        	    ss = num.substring(12, 14);
+        	    num = year+"-"+month + "-" + day + " " + hh + ":" + mi + ":" + ss;
+        	}
+        	else {
         	    num = cellval;
         	} 
             return num;
@@ -247,28 +260,32 @@
     
     <style>
         body {
-            width:1280px; 
+
             margin:auto;
-            background:#ffffff;
+            background:lightgray;
         }
         
-		.grid_box {background:#ffffff; width:1200px; height:40px; border:0px solid #8eb4ff;}
-		.grid_box .g_areaL {float:left !important; padding:4px 5px 5px 10px; _padding:3px 5px 3px 10px; color:#495b88;}
+		.grid_box {background:lightgray; width:1200px; height:34px; border:0px solid #8eb4ff;}
+		.grid_box .g_areaL {float:left !important; padding:4px 5px 5px 5px; _padding:3px 5px 3px 10px; color:#495b88;}
 		.grid_box .g_areaR {float:right !important; padding:4px 5px 5px 0px; color:#495b88; text-align:right;}
         
 		.ui-dialog-content table {width:1200px; border-collapse:collapse; padding:0; table-layout:fixed; border:0px solid #dedede;}
-		.ui-dialog-content table tbody th {background:#fff url(../css/pepper-grinder/images/ui-bg_fine-grain_15_ffffff_60x60.png) repeat-x;padding:1px 10px; _padding:8px 10px 6px 10px; border-top:1px solid #dedede; border-left:1px solid #dedede; border-right:1px solid #dedede; border-bottom:1px solid #dedede; color:#0a0a0a; font-family: "맑은 고딕", MalgunGothic, Lucida Grande,Lucida Sans,Arial,sans-serif; font-size: 12px; font-weight:bold; text-align:center; }
-		.ui-dialog-content table tbody td {background:none; border-bottom:0px solid #dedede; color:#8e8e8e; text-align:left;}
+		.ui-dialog-content table tbody th {background:#fafafa; padding:1px 10px; _padding:8px 10px 6px 10px; border-top:1px solid #dedede; border-left:1px solid #dedede; border-right:1px solid #dedede; border-bottom:1px solid #dedede; color:#0a0a0a; font-family: "맑은 고딕", MalgunGothic, Lucida Grande,Lucida Sans,Arial,sans-serif; font-size: 12px; font-weight:bold; text-align:center; }
+		.ui-dialog-content table tbody td {background:none; padding:0px 10px 0px 5px; border-bottom:0px solid #dedede; color:#8e8e8e; text-align:left;}
 		.ui-dialog-content table tbody td input {height: 21px; font-family: "맑은 고딕", MalgunGothic, Lucida Grande,Lucida Sans,Arial,sans-serif; font-size: 12px; vertical-align:middle;}
 		.ui-dialog-content table tbody td select {height: 20px; font-size:12px; color:#0a0a0a;font-family:"맑은 고딕", MalgunGothic}
 
         .title {
-            margin-top: .5em;
+            margin-top: .1em;
+            margin-bottom: .5em;
             width:1200px; 
-            font-size:26px;
+            font-family: "맑은 고딕", MalgunGothic;
+            font-size:16px;
+            font-weight:bold;
             text-align:left;
         }
 
+		.info { float:right; font-family: "맑은 고딕", MalgunGothic, Lucida Grande,Lucida Sans,Arial,sans-serif; font-size: 12px; font-weight:bold; }
     </style>
     
     
@@ -276,38 +293,49 @@
 
 <body>
 
-<div id="outer">
-    <ul id="menu">
-        <li class="sub" id="no1"><a href="#nogo">대여관리</a></li>
-        <li class="sub" id="no2"><a href="${pageContext.request.contextPath}/book/bookView.do">도서관리</a></li>
-        <li class="sub" id="no3"><a class="select" href="#nogo">회원관리</a></li>
-    </ul>
+<div style="height:20px;">
+	<div class="info">
+		${userId}님 환영합니다. 
+		<a href="${contextPath}/common/changePasswordView.site">[비밀번호 변경]</a>
+		<a href="${contextPath}/login/logout.site">[로그아웃]</a>
+	</div>
 </div>
-<p></p>
+
+<div id="outer">
+   	<ul id="menu">
+       	<li class="sub" id="no1"><a href="#nogo">대여관리</a></li>
+       	<li class="sub" id="no2"><a href="${pageContext.request.contextPath}/book/bookView.do">도서관리</a></li>
+       	<li class="sub" id="no3"><a class="select" href="#nogo">회원관리</a></li>
+   	</ul>
+</div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/hover_menu5.js"></script> 
 
 <div align=center>
 
-    <div class="title">회원관리</div>
+    <div class="title">◆ 회원관리</div>
         
     <form action="" method="post" id='searchFrm' name='searchFrm'>
     <div style="position: relative; height: 32px;" class="ui-widget">
         <div class="ui-dialog-content ui-widget-content" style="background: none; border: 0;">
 	        <table>
 	          	<colgroup>
+	            	<col style="width:6%;" />
+	            	<col style="width:18%;" />
+	            	<col style="width:6%;" />
 	            	<col style="width:8%;" />
-	            	<col style="width:12%;" />
+	            	<col style="width:6%;" />
 	            	<col style="width:8%;" />
-	            	<col style="width:12%;" />
+	            	<col style="width:6%;" />
 	            	<col style="width:8%;" />
-	            	<col style="width:12%;" />
 	            	<col style="width:10%;" />
-	            	<col style="width:12%;" />
-	            	<col style="width:8%;" />
 	            	<col style="width:10%;" />
+	            	<col style="width:6%;" />
+	            	<col style="width:8%;" />
 	          	</colgroup>
 	          	<tbody>
 	            	<tr>
+                        <th class="ui-corner-all">가입일</th>
+                        <td><input class="text" type="text" style="width:42%" id="m_sdt" name="m_sdt" />&nbsp;~&nbsp;<input class="text" type="text" style="width:42%" id="m_edt" name="m_edt" /></td>
 	              		<th class="ui-corner-all">고객번호</th>
 	              		<td><input class="text" type="text" style="width:90%" id="m_no" name="m_no" /></td>
 	              		<th class="ui-corner-all">고객명</th>
@@ -334,12 +362,15 @@
         </div>
     </div>
     </form>
-    
+    <p></p>
     <div class="grid_box clfix">
-        <div class="g_areaR clfix">
-            <button id="onBtnSch">회원조회</button>
+        <div class="g_areaL clfix">
             <button id="onBtnReg">회원등록</button>
             <button id="onBtnMdf">회원수정</button>
+        </div>
+        <div class="g_areaR clfix">
+            <button id="onBtnSch">회원조회</button>
+            <button id="">엑셀저장</button>
         </div>
     </div>
        
@@ -358,7 +389,7 @@
 <div id="dialog-form-registration" title="회원등록">
 
     <form>
-    	<input type="text" id="pm_no" name="pm_no" />
+    	<input type="hidden" id="pm_no" name="pm_no" />
 		<div class="ui-dialog-content ui-widget-content" style="background: none; border: 0;">
 			<table style="width:500px">
 				<colgroup>
@@ -373,7 +404,7 @@
             	<tr>
               		<th class="ui-corner-all">생년월일</th>
               		<td>
-						<input class="text" style="width:50%" type="text" id="pm_birth_dt" name="pm_birth_dt"  />
+						<input class="text" style="background:#faffc8; width:50%" type="text" id="pm_birth_dt" name="pm_birth_dt"  />
               			<select id="pm_calr_tp">
                       		<option value='1'>양력</option>
                       		<option value='2'>음력</option>
@@ -390,11 +421,11 @@
             	</tr>
             	<tr>
               		<th class="ui-corner-all">전화번호</th>
-              		<td><input class="text" style="width:50%" type="text" id="pm_tel_no" name="pm_tel_no"  /></td>
+              		<td><input class="text" style="background:#faffc8; width:50%" type="text" id="pm_tel_no" name="pm_tel_no"  /></td>
             	</tr>
             	<tr>
               		<th class="ui-corner-all">휴대폰번호</th>
-              		<td><input class="text" style="width:50%" type="text" id="pm_cell_no" name="pm_cell_no"  /></td>
+              		<td><input class="text" style="background:#faffc8; width:50%" type="text" id="pm_cell_no" name="pm_cell_no"  /></td>
             	</tr>
             	<tr>
               		<th class="ui-corner-all">주소</th>

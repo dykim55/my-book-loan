@@ -27,7 +27,7 @@
     </sql>
 
     <sql id="countQueryTop">
-        SELECT COUNT(*) as totalCount FROM (
+        SELECT COUNT(*) as records FROM (
     </sql>
 
     <sql id="countQueryBottom">
@@ -48,6 +48,11 @@
 		FROM 
 		    member_info
 		where m_area = #m_area# 
+		<isNotEmpty prepend="" property="m_sdt">
+			<isNotEmpty prepend="and" property="m_edt">
+				m_entry_dt between replace(#m_sdt#,'-','')||'000000' and replace(#m_edt#,'-','')||'235959'
+			</isNotEmpty>
+		</isNotEmpty>
         <isNotEmpty prepend="and" property="m_no">
             m_no = #m_no#
         </isNotEmpty>
