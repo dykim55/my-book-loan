@@ -21,7 +21,9 @@ public class MemberInfoDTO extends PagingBean {
     private String m_reg_id; 
     private String m_mdf_dt; 
     private String m_mdf_id;
-    
+  
+    private String m_sdt;
+    private String m_edt;
     private String m_phone_tp;
     private String m_phone_no;
     
@@ -144,6 +146,18 @@ public class MemberInfoDTO extends PagingBean {
 	}
 	public void setM_phone_no(String m_phone_no) {
 		this.m_phone_no = m_phone_no;
+	}
+	public String getM_sdt() {
+		return m_sdt;
+	}
+	public void setM_sdt(String m_sdt) {
+		this.m_sdt = m_sdt;
+	}
+	public String getM_edt() {
+		return m_edt;
+	}
+	public void setM_edt(String m_edt) {
+		this.m_edt = m_edt;
 	} 	
 
     
