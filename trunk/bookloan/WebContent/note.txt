@@ -69,3 +69,21 @@ m_mdf_no
 
 
 
+
+CREATE TABLE "book_info"(
+"m_area" character varying(3) NOT NULL,
+"m_book_no" character varying(6) NOT NULL,
+"m_genre" character varying(3) NOT NULL,
+"m_title" character varying(512) NOT NULL,
+"m_author" character varying(128),
+"m_publisher" character varying(128),
+"m_buy_dt" character varying(14),
+"m_cmt" character varying(256),
+"m_status" character(1),
+"m_loan_st" character(1),
+"m_reg_dt" character varying(14) NOT NULL,
+"m_reg_id" character varying(16) NOT NULL,
+"m_mdf_dt" character varying(14) NOT NULL,
+"m_mdf_id" character varying(16) NOT NULL,
+CONSTRAINT pk_book_info_m_area_m_book_no PRIMARY KEY("m_area","m_book_no")
+);
