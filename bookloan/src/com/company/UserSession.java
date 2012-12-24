@@ -9,6 +9,7 @@ package com.company;
 public class UserSession  {
 
 	private String strUserId;
+	private String strArea;
 	
 	public String getUserId() {
 		return strUserId;
@@ -18,4 +19,12 @@ public class UserSession  {
 		this.strUserId = id;
 	}
 
+	public String getArea() {
+		return strArea;
+	}
+	
+	public void setArea(String strArea) {
+		this.strArea = strArea;
+	}
+	
 }

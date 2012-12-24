@@ -6116,7 +6116,7 @@ $.widget( "ui.button", {
 		this.element
 			.bind( "focus" + this.eventNamespace, function() {
 				// no need to check disabled, focus won't be triggered anyway
-				that.buttonElement.addClass( focusClass );
+				//that.buttonElement.addClass( focusClass );
 			})
 			.bind( "blur" + this.eventNamespace, function() {
 				that.buttonElement.removeClass( focusClass );

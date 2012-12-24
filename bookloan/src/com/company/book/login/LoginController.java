@@ -62,6 +62,7 @@ public class LoginController extends SIVController {
 	    // 인증성공
 	    if (result == true) {
 	    	userSession.setUserId(strId);
+	    	userSession.setArea("001");
 	    	UserSessionManager.createUserSession(req, userSession);
 	    } else {
 	    	req.setAttribute("id", strId);

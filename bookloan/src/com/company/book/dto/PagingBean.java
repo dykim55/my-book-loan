@@ -15,11 +15,10 @@ import com.ibatis.sqlmap.client.SqlMapClient;
 
 public class PagingBean {
 
-	private int rows;
-	private int records;
-	private int total;
-	private int totalCount;
-	private int page;
+	private int rows;		//페이지당 Row 수
+	private int records;	//전체 레코드 수
+	private int total;		//전체 페이지 수
+	private int page;		//현재 페이지
 
 	private UserSession session;
 	
@@ -44,7 +43,7 @@ public class PagingBean {
 		map.addAttribute("page", page);
 		map.addAttribute("rowNum", rows);
 		map.addAttribute("total", total);
-		map.addAttribute("records", totalCount);
+		map.addAttribute("records", records);
 		return map;
 	}
 	
@@ -56,8 +55,8 @@ public class PagingBean {
 	 */
 	public void searchRowCount(SqlMapClient connection, String alias) throws SQLException {
 		PagingBean bean = (PagingBean) connection.queryForObject(alias, this);
-		totalCount = bean.totalCount;
-		total = (totalCount/rows) + 1;
+		records = bean.records;
+		total = (records/rows) + 1;
 	}
 	
 	
@@ -109,11 +108,4 @@ public class PagingBean {
 	public void setRows(int rows) {
 		this.rows = rows;
 	}
-	public int getTotalCount() {
-		return totalCount;
-	}
-	public void setTotalCount(int totalCount) {
-		this.totalCount = totalCount;
-	}
-	
 }

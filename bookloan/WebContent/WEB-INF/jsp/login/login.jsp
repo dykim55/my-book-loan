@@ -27,34 +27,10 @@
 	        width:1024px; 
 	        margin:auto;
 	    }
-    #dialog-link {
-        padding: .4em 1em .4em 20px;
-        text-decoration: none;
-        position: relative;
-    }
-    #dialog-link span.ui-icon {
-        margin: 0 5px 0 0;
-        position: absolute;
-        left: .2em;
-        top: 50%;
-        margin-top: -8px;
-    }
-    #icons {
-        margin: 0;
-        padding: 0;
-    }
-    #icons li {
-        margin: 2px;
-        position: relative;
-        padding: 4px 0;
-        cursor: pointer;
-        float: left;
-        list-style: none;
-    }
-    #icons span.ui-icon {
-        float: left;
-        margin: 0 4px;
-    }
+	    
+        #adminLogin table {width:512px; border-collapse:collapse; padding:0; table-layout:fixed; border:0px solid #dedede;}
+        #adminLogin table tbody th {background:url(../css/pepper-grinder/images/ui-bg_fine-grain_15_ffffff_60x60.png) repeat-x; height:22px; border-top:1px solid #dedede; border-left:1px solid #dedede; border-right:1px solid #dedede; border-bottom:1px solid #dedede; color:#0a0a0a; font-family: "맑은 고딕", MalgunGothic, Lucida Grande,Lucida Sans,Arial,sans-serif; font-size: 12px; font-weight:bold; text-align:center; }
+        #adminLogin table tbody td {background:none; border-bottom:0px solid #dedede; color:#8e8e8e; text-align:left;}
 	    
     </style>
     
@@ -62,21 +38,25 @@
 
 <body>
 
-    <button>회원등록</button>
-    <button>회원조회</button>
-
-    <p><a href="#" id="dialog-link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>Open Dialog</a></p>
-
     <div id="adminLogin">
     <form name="frm" method="post" action="${pageContext.request.contextPath}/login/login.do">
-        <table style="position:relative; width:512px; left:50%; margin-left:-256px;">
-            <tr>
-                <td><label>아이디: </label></td>
-                <td><input name="login_id"></td>
-                <td><label>비밀번호: </label></td>
-                <td><input name="login_password"></td>
-                <td><button>로그인</button></td>
-            </tr>
+        <table style="position:relative; left:50%; margin-left:-256px;">
+            <colgroup>
+                <col style="width:20%;" />
+                <col style="width:20%;" />
+                <col style="width:20%;" />
+                <col style="width:20%;" />
+                <col style="width:20%;" />
+            </colgroup>
+            <tbody>        
+	            <tr>
+	                <th><label>아이디: </label></td>
+	                <td><input style="width:90%" name="login_id"></td>
+	                <th><label>비밀번호: </label></td>
+	                <td><input style="width:90%" name="login_password"></td>
+	                <td><button>로그인</button></td>
+	            </tr>
+            </tbody>
         </table>
     </form>
     </div>
