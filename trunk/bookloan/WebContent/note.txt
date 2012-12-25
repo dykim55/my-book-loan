@@ -87,3 +87,12 @@ CREATE TABLE "book_info"(
 "m_mdf_id" character varying(16) NOT NULL,
 CONSTRAINT pk_book_info_m_area_m_book_no PRIMARY KEY("m_area","m_book_no")
 );
+
+
+
+
+
+문자 세트 환경이 UTF-8로 설정되어 있나 보네요.
+ 
+$CUBRID/conf/cubrid.conf 파일에 single_byte_compare=yes 설정(추가) 후 DB 재구동하면 정상적인 검색 결과를 얻을 수 있을 것입니다.
+

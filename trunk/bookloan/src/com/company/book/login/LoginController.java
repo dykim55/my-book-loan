@@ -82,8 +82,6 @@ public class LoginController extends SIVController {
 			UserSessionManager.removeSession(req);
 		}
 		
-		//this.loginService.logout(req.getSession());
-		
 		return new ModelAndView(this.success);
 	}
 

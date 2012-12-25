@@ -3,7 +3,7 @@
 
 <sqlMap namespace="book">
 
-    <typeAlias alias="MemberInfoDTO" type="com.company.book.dto.MemberInfoDTO"/>
+    <typeAlias alias="BookInfoDTO" type="com.company.book.dto.BookInfoDTO"/>
     
     <sql id="pagingQueryTop">
     <![CDATA[
@@ -27,95 +27,103 @@
     </sql>
 
     <sql id="countQueryTop">
-        SELECT COUNT(*) as totalCount FROM (
+        SELECT COUNT(*) as records FROM (
     </sql>
 
     <sql id="countQueryBottom">
         ) T
     </sql>
     
-    <sql id="sqlMemberInfo">
-		SELECT 
-		    m_area, m_no, 
-		    m_name, m_status, 
-		    m_birth_dt, m_calr_tp, 
-		    m_tel_no, m_cell_no, 
-		    m_email, m_addr, 
-		    m_entry_dt, m_mbr_cd, 
-		    m_dly_cnt, m_cmt, 
+    <sql id="sqlBookInfo">
+		select 
+		    m_area, m_book_no, 
+		    m_genre, m_title, 
+		    m_author, m_publisher, 
+		    m_buy_dt, m_cmt, 
+		    m_status, m_loan_st, 
 		    m_reg_dt, m_reg_id, 
 		    m_mdf_dt, m_mdf_id 
-		FROM 
-		    member_info
-		where m_area = #m_area# 
-        <isNotEmpty prepend="and" property="m_no">
-            m_no = #m_no#
+		from 
+		    book_info 
+		where
+			m_area = #m_area#
+		<isNotEmpty prepend="" property="m_sdt">
+			<isNotEmpty prepend="and" property="m_edt">
+				m_buy_dt between replace(#m_sdt#,'-','') and replace(#m_edt#,'-','')
+			</isNotEmpty>
+		</isNotEmpty>
+        <isNotEmpty prepend="and" property="m_book_no">
+            m_book_no = #m_book_no#
         </isNotEmpty>
-        <isNotEmpty prepend="and" property="m_name">
-            m_name = #m_name#
+        <isNotEmpty prepend="and" property="m_title">
+            m_title like '%'||#m_title#||'%'
         </isNotEmpty>
-        <isNotEmpty prepend="and" property="m_status">
-            m_status = #m_status#
+        <isNotEmpty prepend="and" property="m_author">
+            m_author = #m_author#
         </isNotEmpty>
-        <isNotEmpty prepend="and" property="m_birth_dt">
-            m_birth_dt = #m_birth_dt#
+        <isNotEmpty prepend="and" property="m_publisher">
+            m_publisher like '%'||#m_publisher#||'%'
         </isNotEmpty>
-        <isNotEmpty prepend="and" property="m_cell_no">
-            m_cell_no like '%'||#m_cell_no#
+        <isNotEmpty prepend="and" property="m_genre">
+            m_genre = #m_genre#
         </isNotEmpty>
-        <isNotEmpty prepend="and" property="m_tel_no">
-            m_tel_no like '%'||#m_tel_no#
+        <isNotEmpty prepend="and" property="m_loan_st">
+            m_loan_st = #m_loan_st#
         </isNotEmpty>
 		    
 	</sql>
 	    
-    <select id="selectMemberInfo" resultClass="MemberInfoDTO">
+    <select id="selectBookInfo" resultClass="BookInfoDTO">
         <include refid="pagingQueryTop" />
-        <include refid="sqlMemberInfo"/>
+        <include refid="sqlBookInfo"/>
         <include refid="pagingQueryBottom"/>
     </select>
     
-    <select id="selectMemberInfo-count" parameterClass="MemberInfoDTO" resultClass="MemberInfoDTO">
+    <select id="selectBookInfo-count" parameterClass="BookInfoDTO" resultClass="BookInfoDTO">
         <include refid="countQueryTop" />
-        <include refid="sqlMemberInfo"/>
+        <include refid="sqlBookInfo"/>
         <include refid="countQueryBottom"/>
     </select>
 	    
- <!-- 회원 수정 -->
-    <update id="updateMemberInfo" parameterClass="MemberInfoDTO">
-        update member_info set
-        	m_name = #m_name#
-        	, m_status = #m_status#
-        	, m_birth_dt = #m_birth_dt#
-        	, m_calr_tp = #m_calr_tp#
-        	, m_tel_no = #m_tel_no#
-        	, m_cell_no = #m_cell_no#
-        	, m_email = #m_email#
-        	, m_addr = #m_addr#
-        	, m_cmt = #m_cmt#
-			, m_mdf_dt = #m_mdf_dt#
-			, m_mdf_id = #m_mdf_id#
+ 	<!-- 도서 수정 -->
+    <update id="updateBookInfo" parameterClass="BookInfoDTO">
+        update book_info set
+		    m_genre = #m_genre#
+		    , m_title = #m_title# 
+		    , m_author = #m_author#
+		    , m_publisher = #m_publisher# 
+		    , m_buy_dt = #m_buy_dt#
+		    , m_cmt = #m_cmt# 
+		    , m_status = #m_status#
+		    , m_mdf_dt = #m_mdf_dt#
+		    , m_mdf_id = #m_mdf_id# 
         where m_area = #m_area#
-            and m_no = #m_no#
+            and m_book_no = #m_book_no#
 			
     </update>
 	
-    <!-- 회원 등록 -->
-    <insert id="insertMemberInfo" parameterClass="MemberInfoDTO">
-        insert into member_info (
-        	m_area, m_no, m_name, m_status, m_birth_dt, 
-        	m_calr_tp, m_tel_no, m_cell_no, m_email, m_addr, 
-        	m_entry_dt, m_mbr_cd, m_cmt, m_reg_dt, 
-        	m_reg_id, m_mdf_dt, m_mdf_id)
+    <!-- 도서 등록 -->
+    <insert id="insertBookInfo" parameterClass="BookInfoDTO">
+        insert into book_info (
+		    m_area, m_book_no, 
+		    m_genre, m_title, 
+		    m_author, m_publisher, 
+		    m_buy_dt, m_cmt, 
+		    m_status, m_loan_st, 
+		    m_reg_dt, m_reg_id, 
+		    m_mdf_dt, m_mdf_id) 
         values(
-        	#m_area#,     #m_no#,     #m_name#,    #m_status#, #m_birth_dt#, 
-        	#m_calr_tp#,  #m_tel_no#, #m_cell_no#, #m_email#,  #m_addr#, 
-        	#m_entry_dt#, #m_mbr_cd#, #m_cmt#,    #m_reg_dt#, 
-        	#m_reg_id#,   #m_mdf_dt#, #m_mdf_id#)
+		    #m_area#, #m_book_no#, 
+		    #m_genre#, #m_title#, 
+		    #m_author#, #m_publisher#, 
+		    #m_buy_dt#, #m_cmt#, 
+		    '1', '1', 
+		    #m_reg_dt#, #m_reg_id#, 
+		    #m_mdf_dt#, #m_mdf_id#) 
     </insert>	    
 	    
-	<select id="getNextMemberNo" resultClass="String">
-		select member_m_no_seq.next_value	
+	<select id="getNextBookNo" resultClass="String">
+		select member_m_book_no_seq.next_value	
     </select>	    
 
 </sqlMap>

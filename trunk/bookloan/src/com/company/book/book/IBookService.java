@@ -2,7 +2,7 @@ package com.company.book.book;
 
 import java.util.List;
 
-import com.company.book.dto.MemberInfoDTO;
+import com.company.book.dto.BookInfoDTO;
 
 
 /**
@@ -11,11 +11,11 @@ import com.company.book.dto.MemberInfoDTO;
  */
 public interface IBookService {
 	
-	public void insertMemberInfo(MemberInfoDTO dto) throws Exception;
+	public void insertBookInfo(BookInfoDTO dto) throws Exception;
 
-	public List<MemberInfoDTO> searchMemberInfo(MemberInfoDTO dto) throws Exception;
+	public List<BookInfoDTO> searchBookInfo(BookInfoDTO dto) throws Exception;
 	
-	public List<MemberInfoDTO> searchMemberInfoName(MemberInfoDTO dto) throws Exception;
+	public List<BookInfoDTO> searchBookInfoName(BookInfoDTO dto) throws Exception;
 	
-	public String getNextMemberNo() throws Exception;
+	public String getNextBookNo() throws Exception;
 }
