@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.company.UserSession;
 import com.company.UserSessionManager;
-import com.company.book.dto.MemberInfoDTO;
+import com.company.book.dto.BookInfoDTO;
 import com.company.framework.mvc.controller.SIVController;
 import com.company.framework.utils.DateUtil;
 import com.company.util.DataUtils;
@@ -28,76 +28,43 @@ public class BookController extends SIVController {
 		return new ModelAndView(this.success);
 	}
 
-	public ModelAndView searchMemberInfo( HttpServletRequest req, HttpServletResponse res) throws Exception {
+	public ModelAndView searchBookInfo( HttpServletRequest req, HttpServletResponse res) throws Exception {
 		
-		//학생정보 조회		
-		MemberInfoDTO dto = (MemberInfoDTO) DataUtils.dtoBuilder(req, MemberInfoDTO.class);
+		BookInfoDTO dto = (BookInfoDTO) DataUtils.dtoBuilder(req, BookInfoDTO.class);
 		dto.setSessionData(req);
 		
 		UserSession session = UserSessionManager.getUserSession(req);
 		dto.setM_area(session.getArea());
-
-		if (dto.getM_phone_no() != null && !dto.getM_phone_no().isEmpty()) {
-			if (dto.getM_phone_tp().equals("1")) {
-				dto.setM_cell_no(dto.getM_phone_no());
-			} else {
-				dto.setM_tel_no(dto.getM_phone_no());
-			}
-		}
 		
-		if (dto.getM_birth_dt() != null) {
-			dto.setM_birth_dt(dto.getM_birth_dt().replace("-", ""));
-		}
+		List<BookInfoDTO> list = null;
 		
-		List<MemberInfoDTO> list = null;
-		
-		list = bookService.searchMemberInfo(dto);
+		list = bookService.searchBookInfo(dto);
 		
 		ModelMap map =  dto.createModelMap(list);
 		
 		return new ModelAndView(this.success, map);
 	}
 	
-	public ModelAndView registrationMember(HttpServletRequest req, HttpServletResponse res) throws Exception {
+	public ModelAndView registrationBook(HttpServletRequest req, HttpServletResponse res) throws Exception {
 
 		ModelMap map = new ModelMap();
 		
-		MemberInfoDTO dto = (MemberInfoDTO) DataUtils.dtoBuilder(req, MemberInfoDTO.class);
+		BookInfoDTO dto = (BookInfoDTO) DataUtils.dtoBuilder(req, BookInfoDTO.class);
+		dto.setSessionData(req);
 		
-		UserSession session = UserSessionManager.getUserSession(req);
-		dto.setM_area(session.getArea());
-		
-		String strMno = "";
-		String strCurrentDate = DateUtil.getYYYYMMDDHH24MISS();
-		if (dto.getM_no() == null || dto.getM_no().isEmpty()) {
-			strMno = Utils.addLeadingCharacter(bookService.getNextMemberNo(), '0', 6);
-			if (strMno.length() != 6) {
-				map.addAttribute("err_code", "0001");
-				map.addAttribute("err_message", "회원번호를 생성하지 못했습니다. 관리자에게 문의하세요.");
-				return new ModelAndView(this.success, map);
-			}
-			dto.setM_no(strMno);
-			
-			dto.setM_entry_dt(strCurrentDate);
-			dto.setM_reg_dt(strCurrentDate);
-			dto.setM_reg_id(session.getUserId());
+		if (dto.getM_book_no() == null || dto.getM_book_no().isEmpty()) {
+			map.addAttribute("save_type", "I");
+		} else {
+			map.addAttribute("save_type", "U");
 		}
 		
-		if (dto.getM_birth_dt() != null) {
-			dto.setM_birth_dt(dto.getM_birth_dt().replace("-", ""));
+		try { 
+			bookService.insertBookInfo(dto);
+		} catch (Exception e) {
+			map.addAttribute("err_code", "0002");
+			map.addAttribute("err_message", "도서정보 등록 중 오류가 발생했습니다.");
+			return new ModelAndView(this.success, map);
 		}
-		if (dto.getM_tel_no() != null) {
-			dto.setM_tel_no(dto.getM_tel_no().replace("-", ""));
-		}
-		if (dto.getM_cell_no() != null) {
-			dto.setM_cell_no(dto.getM_cell_no().replace("-", ""));
-		}
-
-		dto.setM_mbr_cd("1");
-		dto.setM_mdf_dt(strCurrentDate);
-		dto.setM_mdf_id(session.getUserId());
-		
-		bookService.insertMemberInfo(dto);
 		
 		map.addAttribute("err_code", "0000");
 		map.addAttribute("err_message", "정상처리 되었습니다.");

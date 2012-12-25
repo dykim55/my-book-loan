@@ -56,7 +56,7 @@ public class PagingBean {
 	public void searchRowCount(SqlMapClient connection, String alias) throws SQLException {
 		PagingBean bean = (PagingBean) connection.queryForObject(alias, this);
 		records = bean.records;
-		total = (records/rows) + 1;
+		total += (records/rows) + ((records%rows > 0) ? 1 : 0);
 	}
 	
 	

@@ -40,7 +40,7 @@
                     {name:'m_cell_no',	index:'m_cell_no',	width:70,	align:'center', formatter:phoneFormatter},
                     {name:'m_addr',		index:'m_addr',		width:140,	align:'left'},
                     {name:'m_entry_dt',	index:'m_entry_dt',	width:80, 	align:'center', formatter:dateFormatter},
-                    {name:'m_status',	index:'m_status',	width:40,	align:'center', formatter:'select',  edittype:'select', editoptions: {value: 'R:정상;D:탈퇴', defaultValue:'정상'}},
+                    {name:'m_status',	index:'m_status',	width:40,	align:'center', formatter:'select',  edittype:'select', editoptions: {value: '1:정상;2:탈퇴', defaultValue:'정상'}},
                     {name:'m_cmt',		index:'m_cmt',		width:0,	align:'center', hidden:true}
                 ],
                 rowNum:10,
@@ -135,14 +135,14 @@
             	$("#pm_name").val("");
             	$("#pm_birth_dt").val("");
             	$("#pm_calr_tp").val("1");
-            	$("#pm_status").val("R");
+            	$("#pm_status").val("1");
             	$("#pm_tel_no").val("");
             	$("#pm_cell_no").val("");
             	$("#pm_addr").val("");
             	$("#pm_email").val("");
             	$("#pm_cmt").val("");
             	$("#pm_calr_tp").val("1").attr("selected", "selected");
-            	$("#pm_status").val("R").attr("selected", "selected");
+            	$("#pm_status").val("1").attr("selected", "selected");
             	
             	$("#ui-id-1").html("회원정보 등록");
                 $("#dialog-form-registration").dialog("open");
@@ -188,11 +188,6 @@
             			m_status:$("#m_status").val()
             		}
             	}).trigger("reloadGrid");
-            });
-            
-            $("#m_birth_dt").keydown(function (e) {
-            	if (e.keyCode==13) {
-            	}
             });
             
             $("#m_sdt, #m_edt, #m_no,#m_name,#m_birth_dt,#m_phone_no").focus(function(event) {
@@ -260,7 +255,6 @@
     
     <style>
         body {
-
             margin:auto;
             background:lightgray;
         }
@@ -296,8 +290,7 @@
 <div style="height:20px;">
 	<div class="info">
 		${userId}님 환영합니다. 
-		<a href="${contextPath}/common/changePasswordView.site">[비밀번호 변경]</a>
-		<a href="${contextPath}/login/logout.site">[로그아웃]</a>
+		<a href="${pageContext.request.contextPath}/login/logout.do">[로그아웃]</a>
 	</div>
 </div>
 
@@ -352,8 +345,8 @@
 	              		<th class="ui-corner-all">회원상태</th>
 	              		<td><select id="m_status">
 	              		        <option value=''>::전체::</option>
-                      			<option value='R'>정상</option>
-                      			<option value='D'>탈퇴</option>
+                      			<option value='1'>정상</option>
+                      			<option value='2'>탈퇴</option>
                     		</select>
                     	</td>
 	            	</tr>
@@ -385,7 +378,6 @@
 	
 </div>
 
-
 <div id="dialog-form-registration" title="회원등록">
 
     <form>
@@ -414,8 +406,8 @@
             	<tr>
               		<th class="ui-corner-all" style="height:26px">등록상태</th>
               		<td><select id="pm_status">
-                    		<option value='R'>정상</option>
-                    		<option value='D'>탈퇴</option>
+                    		<option value='1'>정상</option>
+                    		<option value='2'>탈퇴</option>
                     	</select>
                     </td>
             	</tr>
