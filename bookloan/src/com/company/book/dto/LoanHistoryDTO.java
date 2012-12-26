@@ -3,6 +3,7 @@ package com.company.book.dto;
 public class LoanHistoryDTO extends PagingBean {
 
 	//테이블 컬럼명
+	private String m_area;
     private String m_loan_dt; 
     private String m_book_no; 
     private String m_no; 
@@ -15,6 +16,16 @@ public class LoanHistoryDTO extends PagingBean {
     private String m_mdf_dt; 
     private String m_mdf_id;
     
+    private String m_title;
+    private String m_author;
+    private String m_publisher; 
+    
+	public String getM_area() {
+		return m_area;
+	}
+	public void setM_area(String m_area) {
+		this.m_area = m_area;
+	}
 	public String getM_loan_dt() {
 		return m_loan_dt;
 	}
@@ -80,6 +91,24 @@ public class LoanHistoryDTO extends PagingBean {
 	}
 	public void setM_mdf_id(String m_mdf_id) {
 		this.m_mdf_id = m_mdf_id;
+	}
+	public String getM_title() {
+		return m_title;
+	}
+	public void setM_title(String m_title) {
+		this.m_title = m_title;
+	}
+	public String getM_author() {
+		return m_author;
+	}
+	public void setM_author(String m_author) {
+		this.m_author = m_author;
+	}
+	public String getM_publisher() {
+		return m_publisher;
+	}
+	public void setM_publisher(String m_publisher) {
+		this.m_publisher = m_publisher;
 	} 
 	
 

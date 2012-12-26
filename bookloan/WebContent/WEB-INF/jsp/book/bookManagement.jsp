@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import= "com.company.util.CodeSelect;" %>
 <%@ taglib prefix="c" uri="/WEB-INF/tld/c-rt.tld"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-Transitional.dtd">
@@ -38,8 +39,8 @@
                     {name:'m_publisher',index:'m_publisher',width:100, 	align:'center'},
                     {name:'m_genre',	index:'m_genre',	width:80, 	align:'center'},
                     {name:'m_buy_dt',	index:'m_buy_dt',	width:80,	align:'center', formatter:dateFormatter},
-                    {name:'m_status',	index:'m_status',	width:40,	align:'center', formatter:'select',  edittype:'select', editoptions: {value: '1:정상;2:분실', defaultValue:'정상'}},
-                    {name:'m_loan_st',	index:'m_loan_st',	width:40,	align:'center', formatter:'select',  edittype:'select', editoptions: {value: '1:회수;2:대출', defaultValue:'회수'}},
+                    {name:'m_status',	index:'m_status',	width:40,	align:'center', formatter:'select',  edittype:'select', editoptions: {value: '<%=CodeSelect.makeEditOption("002") %>'}},
+                    {name:'m_loan_st',	index:'m_loan_st',	width:40,	align:'center', formatter:'select',  edittype:'select', editoptions: {value: '<%=CodeSelect.makeEditOption("003") %>'}},
                     {name:'m_cmt',		index:'m_cmt',		width:0,	align:'center', hidden:true}
                 ],
                 rowNum:10,
@@ -265,7 +266,7 @@
 
 <div id="outer">
     <ul id="menu">
-        <li class="sub" id="no1"><a href="#nogo">대여관리</a></li>
+        <li class="sub" id="no1"><a href="${pageContext.request.contextPath}/loan/loanView.do">대출관리</a></li>
         <li class="sub" id="no2"><a class="select" href="#nogo">도서관리</a></li>
         <li class="sub" id="no3"><a href="${pageContext.request.contextPath}/member/memberView.do">회원관리</a></li>
     </ul>
@@ -307,12 +308,7 @@
 	              		<th class="ui-corner-all">출판사</th>
 	              		<td><input class="text" type="text" style="width:90%" id="m_publisher" name="m_publisher" /></td>
 	              		<th class="ui-corner-all">도서장르</th>
-	              		<td><select id="m_genre">
-	              		        <option value=''>::전체::</option>
-                      			<option value='1'>간행물</option>
-                      			<option value='2'>월간지</option>
-                    		</select>
-                    	</td>
+	              		<td><%=CodeSelect.makeCodeSelect("m_genre", "::전체::", "004", "")%></td>
 	            	</tr>
 				</tbody>
 			</table>
@@ -369,11 +365,7 @@
             	</tr>
             	<tr>
               		<th class="ui-corner-all" style="height:26px">도서장르</th>
-              		<td><select id="pm_genre">
-                    		<option value='1'>간행물</option>
-                    		<option value='2'>월간지</option>
-                    	</select>
-                    </td>
+              		<td><%=CodeSelect.makeCodeSelect("pm_genre", "", "004", "")%></td>
             	</tr>
             	<tr>
               		<th class="ui-corner-all">구입일자</th>
@@ -381,11 +373,7 @@
             	</tr>
             	<tr>
               		<th class="ui-corner-all" style="height:26px">도서상태</th>
-              		<td><select id="pm_status">
-                    		<option value='1'>정상</option>
-                    		<option value='2'>분실</option>
-                    	</select>
-                    </td>
+              		<td><%=CodeSelect.makeCodeSelect("pm_status", "", "002", "")%></td>
             	</tr>
             	<tr>
               		<th class="ui-corner-all">구입수량</th>

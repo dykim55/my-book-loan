@@ -8,6 +8,30 @@
         <property name="success"><value>/WEB-INF/jsp/loan/loanManagement.jsp</value></property>
     </bean>
 
+    <!-- 멤버 조회 -->
+    <bean name="/loan/searchMemberInfo.ajax" class="com.company.book.loan.LoanController">
+        <property name="loanService" ref="loanService" />
+        <property name="success"><value>jsonView</value></property>
+        <property name="failure"><value>common/error.jsp</value></property>
+    </bean>
 
+    <bean name="/loan/searchLoanHistory.ajax" class="com.company.book.loan.LoanController">
+        <property name="loanService" ref="loanService" />
+        <property name="success"><value>jsonView</value></property>
+        <property name="failure"><value>common/error.jsp</value></property>
+    </bean>
+
+    <bean name="/loan/searchBookInfo.ajax" class="com.company.book.loan.LoanController">
+        <property name="loanService" ref="loanService" />
+        <property name="success"><value>jsonView</value></property>
+        <property name="failure"><value>common/error.jsp</value></property>
+    </bean>
+
+    <!-- 대출등록 -->
+    <bean name="/loan/registrationLoan.ajax" class="com.company.book.loan.LoanController">
+        <property name="loanService" ref="loanService" />
+        <property name="success"><value>jsonView</value></property>
+        <property name="failure"><value>common/error.jsp</value></property>
+    </bean>
 
 </beans>

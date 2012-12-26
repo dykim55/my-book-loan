@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import= "com.company.util.CodeSelect;" %>
 <%@ taglib prefix="c" uri="/WEB-INF/tld/c-rt.tld"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-Transitional.dtd">
@@ -35,12 +36,12 @@
                     {name:'m_no',		index:'m_no',		width:50, 	align:'center'}, 
                     {name:'m_name',		index:'m_name',		width:60, 	align:'center'},
                     {name:'m_birth_dt',	index:'m_birth_dt',	width:60, 	align:'center', formatter:dateFormatter},
-                    {name:'m_calr_tp',	index:'m_calr_tp',	width:30, 	align:'center', formatter:'select',  edittype:'select', editoptions: {value: '1:양력;2:음력', defaultValue:'양력'}},
+                    {name:'m_calr_tp',	index:'m_calr_tp',	width:30, 	align:'center', formatter:'select',  edittype:'select', editoptions: {value: '1:양력;2:음력'}},
                     {name:'m_tel_no',	index:'m_tel_no',	width:70, 	align:'center', formatter:phoneFormatter},
                     {name:'m_cell_no',	index:'m_cell_no',	width:70,	align:'center', formatter:phoneFormatter},
                     {name:'m_addr',		index:'m_addr',		width:140,	align:'left'},
                     {name:'m_entry_dt',	index:'m_entry_dt',	width:80, 	align:'center', formatter:dateFormatter},
-                    {name:'m_status',	index:'m_status',	width:40,	align:'center', formatter:'select',  edittype:'select', editoptions: {value: '1:정상;2:탈퇴', defaultValue:'정상'}},
+                    {name:'m_status',	index:'m_status',	width:40,	align:'center', formatter:'select',  edittype:'select', editoptions: {value: '<%=CodeSelect.makeEditOption("001") %>'}},
                     {name:'m_cmt',		index:'m_cmt',		width:0,	align:'center', hidden:true}
                 ],
                 rowNum:10,
@@ -296,7 +297,7 @@
 
 <div id="outer">
    	<ul id="menu">
-       	<li class="sub" id="no1"><a href="#nogo">대여관리</a></li>
+       	<li class="sub" id="no1"><a href="${pageContext.request.contextPath}/loan/loanView.do">대출관리</a></li>
        	<li class="sub" id="no2"><a href="${pageContext.request.contextPath}/book/bookView.do">도서관리</a></li>
        	<li class="sub" id="no3"><a class="select" href="#nogo">회원관리</a></li>
    	</ul>
@@ -343,12 +344,7 @@
 	              		</th>
 	              		<td><input class="text" type="text" style="width:90%" id="m_phone_no" name="m_phone_no" /></td>
 	              		<th class="ui-corner-all">회원상태</th>
-	              		<td><select id="m_status">
-	              		        <option value=''>::전체::</option>
-                      			<option value='1'>정상</option>
-                      			<option value='2'>탈퇴</option>
-                    		</select>
-                    	</td>
+	              		<td><%=CodeSelect.makeCodeSelect("m_status", "::전체::", "001", "") %></td>
 	            	</tr>
 				</tbody>
 			</table>
@@ -405,11 +401,7 @@
             	</tr>
             	<tr>
               		<th class="ui-corner-all" style="height:26px">등록상태</th>
-              		<td><select id="pm_status">
-                    		<option value='1'>정상</option>
-                    		<option value='2'>탈퇴</option>
-                    	</select>
-                    </td>
+              		<td><%=CodeSelect.makeCodeSelect("pm_status", "", "001", "")%></td>
             	</tr>
             	<tr>
               		<th class="ui-corner-all">전화번호</th>

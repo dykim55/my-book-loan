@@ -3,7 +3,9 @@
 
 <sqlMap namespace="loan">
 
+    <typeAlias alias="MemberInfoDTO" type="com.company.book.dto.MemberInfoDTO"/>
     <typeAlias alias="BookInfoDTO" type="com.company.book.dto.BookInfoDTO"/>
+    <typeAlias alias="LoanHistoryDTO" type="com.company.book.dto.LoanHistoryDTO"/>
     
     <sql id="pagingQueryTop">
     <![CDATA[
@@ -34,26 +36,48 @@
         ) T
     </sql>
     
-    <sql id="sqlBookInfo">
-		select 
-		    m_area, m_book_no, 
-		    m_genre, m_title, 
-		    m_author, m_publisher, 
-		    m_buy_dt, m_cmt, 
-		    m_status, m_loan_st, 
-		    m_reg_dt, m_reg_id, 
-		    m_mdf_dt, m_mdf_id 
-		from 
-		    book_info 
-		where
-			m_area = #m_area#
-		<isNotEmpty prepend="" property="m_sdt">
-			<isNotEmpty prepend="and" property="m_edt">
-				m_buy_dt between replace(#m_sdt#,'-','') and replace(#m_edt#,'-','')
-			</isNotEmpty>
-		</isNotEmpty>
+    <select id="selectMemberInfo" resultClass="MemberInfoDTO">
+        SELECT 
+            mi.m_area, mi.m_no, 
+            mi.m_name, mi.m_status, 
+            mi.m_birth_dt, mi.m_calr_tp, 
+            mi.m_tel_no, mi.m_cell_no, 
+            mi.m_email, mi.m_addr, 
+            mi.m_entry_dt, mi.m_mbr_cd, 
+            mi.m_dly_cnt, mi.m_cmt, 
+            mi.m_reg_dt, mi.m_reg_id, 
+            mi.m_mdf_dt, mi.m_mdf_id,
+            (select count(m_loan_dt) from loan_history where m_area = mi.m_area and m_no = mi.m_no and m_status = '2') as m_loan_cnt
+        FROM 
+            member_info mi
+        where mi.m_area = #m_area# 
+        <isNotEmpty prepend="and" property="m_no">
+            mi.m_no = #m_no#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="m_name">
+            mi.m_name = #m_name#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="m_phone_no">
+            (mi.m_cell_no like '%'||#m_phone_no# or mi.m_tel_no like '%'||#m_phone_no#)
+        </isNotEmpty>
+            
+    </select>
+	    
+    <select id="selectBookInfo" resultClass="BookInfoDTO">
+        select 
+            m_area, m_book_no, 
+            m_genre, m_title, 
+            m_author, m_publisher, 
+            m_buy_dt, m_cmt, 
+            m_status, m_loan_st, m_rcv_plan_dt,
+            m_reg_dt, m_reg_id, 
+            m_mdf_dt, m_mdf_id 
+        from 
+            book_info 
+        where
+            m_area = #m_area#
         <isNotEmpty prepend="and" property="m_book_no">
-            m_book_no = #m_book_no#
+            m_book_no like '%'||#m_book_no#
         </isNotEmpty>
         <isNotEmpty prepend="and" property="m_title">
             m_title like '%'||#m_title#||'%'
@@ -61,65 +85,86 @@
         <isNotEmpty prepend="and" property="m_author">
             m_author = #m_author#
         </isNotEmpty>
-        <isNotEmpty prepend="and" property="m_publisher">
-            m_publisher like '%'||#m_publisher#||'%'
-        </isNotEmpty>
-        <isNotEmpty prepend="and" property="m_genre">
-            m_genre = #m_genre#
-        </isNotEmpty>
-        <isNotEmpty prepend="and" property="m_loan_st">
-            m_loan_st = #m_loan_st#
-        </isNotEmpty>
-		    
-	</sql>
-	    
-    <select id="selectBookInfo" resultClass="BookInfoDTO">
+            
+    </select>
+
+
+    <sql id="sqlLoanHistory">
+		select 
+		    lh.m_loan_dt, 
+		    lh.m_book_no, 
+		    lh.m_no, 
+		    lh.m_rcv_plan_dt, 
+		    lh.m_real_rcv_dt, 
+		    lh.m_status, 
+		    lh.m_rcv_tp, 
+		    lh.m_reg_dt, 
+		    lh.m_reg_id, 
+		    lh.m_mdf_dt, 
+		    lh.m_mdf_id,
+		    bi.m_title,
+		    bi.m_author,
+		    bi.m_publisher 
+		from 
+		    loan_history lh, book_info bi
+        where lh.m_area = bi.m_area 
+            and lh.m_book_no = bi.m_book_no 
+            and lh.m_area = #m_area# 
+            and lh.m_no = #m_no#
+        order by lh.m_loan_dt desc
+    </sql>
+
+    <select id="selectLoanHistory" resultClass="LoanHistoryDTO">
         <include refid="pagingQueryTop" />
-        <include refid="sqlBookInfo"/>
+        <include refid="sqlLoanHistory"/>
         <include refid="pagingQueryBottom"/>
     </select>
     
-    <select id="selectBookInfo-count" parameterClass="BookInfoDTO" resultClass="BookInfoDTO">
+    <select id="selectLoanHistory-count" parameterClass="LoanHistoryDTO" resultClass="LoanHistoryDTO">
         <include refid="countQueryTop" />
-        <include refid="sqlBookInfo"/>
+        <include refid="sqlLoanHistory"/>
         <include refid="countQueryBottom"/>
     </select>
 	    
- 	<!-- 도서 수정 -->
-    <update id="updateBookInfo" parameterClass="BookInfoDTO">
+	    
+ 	<!-- 도서정보 업데이트 -->
+    <update id="updateBookInfo" parameterClass="LoanHistoryDTO">
         update book_info set
-		    m_genre = #m_genre#
-		    , m_title = #m_title# 
-		    , m_author = #m_author#
-		    , m_publisher = #m_publisher# 
-		    , m_buy_dt = #m_buy_dt#
-		    , m_cmt = #m_cmt# 
-		    , m_status = #m_status#
-		    , m_mdf_dt = #m_mdf_dt#
-		    , m_mdf_id = #m_mdf_id# 
+            m_loan_st = '2',
+            m_rcv_plan_dt = TO_CHAR(ADDDATE(SYSDATE,7),'YYYYMMDD')
         where m_area = #m_area#
             and m_book_no = #m_book_no#
 			
     </update>
 	
-    <!-- 도서 등록 -->
-    <insert id="insertBookInfo" parameterClass="BookInfoDTO">
-        insert into book_info (
-		    m_area, m_book_no, 
-		    m_genre, m_title, 
-		    m_author, m_publisher, 
-		    m_buy_dt, m_cmt, 
-		    m_status, m_loan_st, 
-		    m_reg_dt, m_reg_id, 
-		    m_mdf_dt, m_mdf_id) 
-        values(
-		    #m_area#, #m_book_no#, 
-		    #m_genre#, #m_title#, 
-		    #m_author#, #m_publisher#, 
-		    #m_buy_dt#, #m_cmt#, 
-		    '1', '1', 
-		    #m_reg_dt#, #m_reg_id#, 
-		    #m_mdf_dt#, #m_mdf_id#) 
+    <!-- 대출이력등록 -->
+    <insert id="insertLoanHistory" parameterClass="LoanHistoryDTO">
+        insert into loan_history 
+        (
+           m_area, 
+           m_loan_dt, 
+           m_book_no, 
+           m_no, 
+           m_rcv_plan_dt, 
+           m_status, 
+           m_reg_dt, 
+           m_reg_id, 
+           m_mdf_dt, 
+           m_mdf_id 
+        ) 
+        VALUES 
+        (
+           #m_area#, 
+           #m_loan_dt#, 
+           #m_book_no#, 
+           #m_no#, 
+           TO_CHAR(ADDDATE(SYSDATE,7),'YYYYMMDD'), 
+           '2', 
+           #m_reg_dt#, 
+           #m_reg_id#, 
+           #m_mdf_dt#, 
+           #m_mdf_id# 
+        );
     </insert>	    
 	    
 	<select id="getNextBookNo" resultClass="String">

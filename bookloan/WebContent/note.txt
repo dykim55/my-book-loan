@@ -96,3 +96,65 @@ CONSTRAINT pk_book_info_m_area_m_book_no PRIMARY KEY("m_area","m_book_no")
  
 $CUBRID/conf/cubrid.conf 파일에 single_byte_compare=yes 설정(추가) 후 DB 재구동하면 정상적인 검색 결과를 얻을 수 있을 것입니다.
 
+
+
+
+
+
+
+
+CREATE TABLE "common_code" 
+(
+   "code_group_cd" CHARACTER(3) NOT NULL, 
+   "code_group_name" CHARACTER VARYING(32), 
+   "code_cd" CHARACTER(1) NOT NULL, 
+   "code_name" CHARACTER VARYING(32) NOT NULL, 
+   "code_desc" CHARACTER VARYING(128), 
+   CONSTRAINT pk_common_code_code_group_cd_code_cd PRIMARY KEY("code_group_cd", "code_cd") 
+);
+
+INSERT INTO common_code ("code_group_cd", "code_group_name", "code_cd", "code_name", "code_desc") VALUES ('001', '회원상태코드', '2', '탈퇴', '');
+INSERT INTO common_code ("code_group_cd", "code_group_name", "code_cd", "code_name", "code_desc") VALUES ('003', '대출상태코드', '2', '대출중', '');
+INSERT INTO common_code ("code_group_cd", "code_group_name", "code_cd", "code_name", "code_desc") VALUES ('004', '도서장르코드', '1', '간행물', '');
+INSERT INTO common_code ("code_group_cd", "code_group_name", "code_cd", "code_name", "code_desc") VALUES ('002', '도서상태코드', '1', '정상', '');
+INSERT INTO common_code ("code_group_cd", "code_group_name", "code_cd", "code_name", "code_desc") VALUES ('003', '대출상태코드', '1', '회수완료', '');
+INSERT INTO common_code ("code_group_cd", "code_group_name", "code_cd", "code_name", "code_desc") VALUES ('004', '도서장르코드', '4', '유아/아동', '');
+INSERT INTO common_code ("code_group_cd", "code_group_name", "code_cd", "code_name", "code_desc") VALUES ('001', '회원상태코드', '1', '정상', '');
+INSERT INTO common_code ("code_group_cd", "code_group_name", "code_cd", "code_name", "code_desc") VALUES ('002', '도서상태코드', '2', '분실', '');
+INSERT INTO common_code ("code_group_cd", "code_group_name", "code_cd", "code_name", "code_desc") VALUES ('004', '도서장르코드', '2', '소설', '');
+INSERT INTO common_code ("code_group_cd", "code_group_name", "code_cd", "code_name", "code_desc") VALUES ('004', '도서장르코드', '3', '컴퓨터/IT', '');
+
+
+
+
+CREATE TABLE "loan_history" 
+(
+   "m_area" CHARACTER(3) NOT NULL, 
+   "m_loan_dt" CHARACTER VARYING(14) NOT NULL, 
+   "m_book_no" CHARACTER VARYING(6) NOT NULL, 
+   "m_no" CHARACTER VARYING(6) NOT NULL, 
+   "m_rcv_plan_dt" CHARACTER VARYING(8) NOT NULL, 
+   "m_real_rcv_dt" CHARACTER VARYING(14), 
+   "m_status" CHARACTER(1) DEFAULT '1' NOT NULL, 
+   "m_rcv_tp" CHARACTER(1), 
+   "m_reg_dt" CHARACTER VARYING(14) NOT NULL, 
+   "m_reg_id" CHARACTER VARYING(16) NOT NULL, 
+   "m_mdf_dt" CHARACTER VARYING(14) NOT NULL, 
+   "m_mdf_id" CHARACTER VARYING(16) NOT NULL, 
+   CONSTRAINT pk_loan_history_m_area_m_loan_dt_m_book_no PRIMARY KEY("m_area", "m_loan_dt", "m_book_no") 
+);
+
+INSERT INTO loan_history ("m_area", "m_loan_dt", "m_book_no", "m_no", "m_rcv_plan_dt", "m_real_rcv_dt", "m_status", "m_rcv_tp", "m_reg_dt", "m_reg_id", "m_mdf_dt", "m_mdf_id") VALUES ('001', '20121220135035', '000001', '000001', '20121227', '', '1', ' ', '20121220135035', 'dykim', '20121220135035', 'dykim');
+INSERT INTO loan_history ("m_area", "m_loan_dt", "m_book_no", "m_no", "m_rcv_plan_dt", "m_real_rcv_dt", "m_status", "m_rcv_tp", "m_reg_dt", "m_reg_id", "m_mdf_dt", "m_mdf_id") VALUES ('001', '20121201135035', '000001', '000001', '20121208', '20121207173030', '2', '1', '20121201135035', 'dykim', '20121201135035', 'dykim');
+INSERT INTO loan_history ("m_area", "m_loan_dt", "m_book_no", "m_no", "m_rcv_plan_dt", "m_real_rcv_dt", "m_status", "m_rcv_tp", "m_reg_dt", "m_reg_id", "m_mdf_dt", "m_mdf_id") VALUES ('001', '20121209155035', '000001', '000001', '20121216', '20121217173030', '2', '2', '20121209155035', 'dykim', '20121217173030', 'dykim');
+
+
+
+
+book_info에 m_rcv_plan_dt varchar(8) 추가
+
+
+
+
+
+
