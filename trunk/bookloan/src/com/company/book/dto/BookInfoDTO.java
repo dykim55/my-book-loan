@@ -12,7 +12,8 @@ public class BookInfoDTO extends PagingBean {
     private String m_buy_dt; 
     private String m_cmt; 
     private String m_status; 
-    private String m_loan_st; 
+    private String m_loan_st;
+    private String m_rcv_plan_dt;
     private String m_reg_dt; 
     private String m_reg_id; 
     private String m_mdf_dt; 
@@ -123,6 +124,12 @@ public class BookInfoDTO extends PagingBean {
 	}
 	public void setM_buy_cnt(String m_buy_cnt) {
 		this.m_buy_cnt = m_buy_cnt;
+	}
+	public String getM_rcv_plan_dt() {
+		return m_rcv_plan_dt;
+	}
+	public void setM_rcv_plan_dt(String m_rcv_plan_dt) {
+		this.m_rcv_plan_dt = m_rcv_plan_dt;
 	}
 
     

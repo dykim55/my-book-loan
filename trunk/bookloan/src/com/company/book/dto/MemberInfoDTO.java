@@ -21,7 +21,8 @@ public class MemberInfoDTO extends PagingBean {
     private String m_reg_id; 
     private String m_mdf_dt; 
     private String m_mdf_id;
-  
+    private String m_loan_cnt;
+    
     private String m_sdt;
     private String m_edt;
     private String m_phone_tp;
@@ -158,6 +159,12 @@ public class MemberInfoDTO extends PagingBean {
 	}
 	public void setM_edt(String m_edt) {
 		this.m_edt = m_edt;
+	}
+	public String getM_loan_cnt() {
+		return m_loan_cnt;
+	}
+	public void setM_loan_cnt(String m_loan_cnt) {
+		this.m_loan_cnt = m_loan_cnt;
 	} 	
 
     
