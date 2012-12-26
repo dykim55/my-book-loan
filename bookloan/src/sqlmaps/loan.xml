@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="loan">
+
+    <typeAlias alias="BookInfoDTO" type="com.company.book.dto.BookInfoDTO"/>
+    
+    <sql id="pagingQueryTop">
+    <![CDATA[
+        SELECT * FROM (
+            SELECT
+                ROWNUM AS PAGING_RNUM,
+                PAGING_A.*
+            FROM
+                (
+    ]]>
+    </sql>
+    
+    <sql id="pagingQueryBottom">
+    <![CDATA[
+        ) PAGING_A
+        WHERE
+            ROWNUM <= #rows# * #page#
+        ) PAGING_B
+        WHERE PAGING_RNUM > (#rows# * (#page# - 1))
+    ]]>
+    </sql>
+
+    <sql id="countQueryTop">
+        SELECT COUNT(*) as records FROM (
+    </sql>
+
+    <sql id="countQueryBottom">
+        ) T
+    </sql>
+    
+    <sql id="sqlBookInfo">
+		select 
+		    m_area, m_book_no, 
+		    m_genre, m_title, 
+		    m_author, m_publisher, 
+		    m_buy_dt, m_cmt, 
+		    m_status, m_loan_st, 
+		    m_reg_dt, m_reg_id, 
+		    m_mdf_dt, m_mdf_id 
+		from 
+		    book_info 
+		where
+			m_area = #m_area#
+		<isNotEmpty prepend="" property="m_sdt">
+			<isNotEmpty prepend="and" property="m_edt">
+				m_buy_dt between replace(#m_sdt#,'-','') and replace(#m_edt#,'-','')
+			</isNotEmpty>
+		</isNotEmpty>
+        <isNotEmpty prepend="and" property="m_book_no">
+            m_book_no = #m_book_no#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="m_title">
+            m_title like '%'||#m_title#||'%'
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="m_author">
+            m_author = #m_author#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="m_publisher">
+            m_publisher like '%'||#m_publisher#||'%'
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="m_genre">
+            m_genre = #m_genre#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="m_loan_st">
+            m_loan_st = #m_loan_st#
+        </isNotEmpty>
+		    
+	</sql>
+	    
+    <select id="selectBookInfo" resultClass="BookInfoDTO">
+        <include refid="pagingQueryTop" />
+        <include refid="sqlBookInfo"/>
+        <include refid="pagingQueryBottom"/>
+    </select>
+    
+    <select id="selectBookInfo-count" parameterClass="BookInfoDTO" resultClass="BookInfoDTO">
+        <include refid="countQueryTop" />
+        <include refid="sqlBookInfo"/>
+        <include refid="countQueryBottom"/>
+    </select>
+	    
+ 	<!-- 도서 수정 -->
+    <update id="updateBookInfo" parameterClass="BookInfoDTO">
+        update book_info set
+		    m_genre = #m_genre#
+		    , m_title = #m_title# 
+		    , m_author = #m_author#
+		    , m_publisher = #m_publisher# 
+		    , m_buy_dt = #m_buy_dt#
+		    , m_cmt = #m_cmt# 
+		    , m_status = #m_status#
+		    , m_mdf_dt = #m_mdf_dt#
+		    , m_mdf_id = #m_mdf_id# 
+        where m_area = #m_area#
+            and m_book_no = #m_book_no#
+			
+    </update>
+	
+    <!-- 도서 등록 -->
+    <insert id="insertBookInfo" parameterClass="BookInfoDTO">
+        insert into book_info (
+		    m_area, m_book_no, 
+		    m_genre, m_title, 
+		    m_author, m_publisher, 
+		    m_buy_dt, m_cmt, 
+		    m_status, m_loan_st, 
+		    m_reg_dt, m_reg_id, 
+		    m_mdf_dt, m_mdf_id) 
+        values(
+		    #m_area#, #m_book_no#, 
+		    #m_genre#, #m_title#, 
+		    #m_author#, #m_publisher#, 
+		    #m_buy_dt#, #m_cmt#, 
+		    '1', '1', 
+		    #m_reg_dt#, #m_reg_id#, 
+		    #m_mdf_dt#, #m_mdf_id#) 
+    </insert>	    
+	    
+	<select id="getNextBookNo" resultClass="String">
+		select member_m_book_no_seq.next_value	
+    </select>	    
+
+</sqlMap>
