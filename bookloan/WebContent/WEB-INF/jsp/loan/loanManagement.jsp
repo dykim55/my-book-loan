@@ -80,8 +80,8 @@
                     {name:'m_loan_st',   index:'m_loan_st',   width:40,   align:'center', formatter:'select',  edittype:'select', editoptions: {value: '<%=CodeSelect.makeEditOption("003") %>'}},      
                     {name:'m_book_no',   index:'m_book_no',   width:60,   align:'center'}, 
                     {name:'m_title',     index:'m_title',     width:120,   align:'left'},
-                    {name:'m_author',    index:'m_author',    width:50,   align:'center'},
-                    {name:'m_rcv_plan_dt', index:'m_rcv_plan_dt', width:80,   align:'center', formatter:dateFormatter},
+                    {name:'m_author',    index:'m_author',    width:80,   align:'center'},
+                    {name:'m_rcv_plan_dt', index:'m_rcv_plan_dt', width:50,   align:'center', formatter:dateFormatter},
                     {name:'action',                           width:30, align:'center', sortable: false,
                         formatter:function(cellval, opts, rwdat, _act) {
                         	if (rwdat.m_loan_st == "1") {
@@ -128,11 +128,9 @@
 	                                dataType: "json",
 	                                success: function(msg){
 	                                    if (msg.err_code=="0000") {
-	                                        if (msg.save_type == "U") {
-	                                            $("#dialog-form-registration").dialog("close");
-	                                        }
 	                                        alert(msg.err_message);
 	                                        gridM.trigger("reloadGrid");
+	                                        gridB.trigger("reloadGrid");
 	                                    } else {
 	                                        alert("[" + msg.err_code + "] " + msg.err_message);
 	                                    }
@@ -204,6 +202,10 @@
         	
             $('#m_book_no, #m_title, #m_author').keydown(function(e) {
                 if (e.keyCode==13) {
+                	if ($("#m_title").val().length > 0 && $("#m_title").val().length < 2) {
+            			alert("제목은 최소 두글자 이상으로 검색해 주세요.");
+            			return;
+            		}
                     gridB.jqGrid('setGridParam',    {
                     	url:"${pageContext.request.contextPath}/loan/searchBookInfo.ajax"
                         ,postData:{
@@ -394,7 +396,7 @@
 		.grid_box .g_areaL {float:left !important; padding:4px 5px 5px 5px; _padding:3px 5px 3px 10px; color:#495b88;}
 		.grid_box .g_areaR {float:right !important; padding:4px 5px 5px 0px; color:#495b88; text-align:right;}
         
-		.loan_content table {width:50%px; border-collapse:collapse; padding:0; table-layout:fixed; border:0px solid #dedede;}
+		.loan_content table {width:50%px; border-collapse:collapse; table-layout:fixed; border:0px solid #dedede;}
 		.loan_content table tbody th {background:#fafafa; padding:1px 10px; _padding:8px 10px 6px 10px; border-top:1px solid #dedede; border-left:1px solid #dedede; border-right:1px solid #dedede; border-bottom:1px solid #dedede; color:#0a0a0a; font-family: "맑은 고딕", MalgunGothic, Lucida Grande,Lucida Sans,Arial,sans-serif; font-size: 12px; font-weight:bold; text-align:center; }
 		.loan_content table tbody td {background:none; padding:0px 10px 0px 5px; border-bottom:0px solid #dedede; color:#8e8e8e; text-align:left;}
 		.loan_content table tbody td input {height: 21px; font-family: "맑은 고딕", MalgunGothic, Lucida Grande,Lucida Sans,Arial,sans-serif; font-size: 12px; vertical-align:middle;}
@@ -440,15 +442,15 @@
     
     <div style="width:1200px;">
 	    <div style="float:left; background:none; width:50%; border: 0;">
-            <div class="ui-dialog-content ui-widget-content loan_content" style="margin: 5px; background: none; border: 1;">
+            <div class="ui-dialog-content ui-widget-content loan_content" style="margin: 15px; background: none; border: 0;">
 	            <table>
 	                <colgroup>
-	                    <col style="width:15%;" />
-	                    <col style="width:15%;" />
-	                    <col style="width:15%;" />
-	                    <col style="width:15%;" />
-	                    <col style="width:15%;" />
-	                    <col style="width:25%;" />
+	                    <col style="width:14%;" />
+	                    <col style="width:16%;" />
+	                    <col style="width:14%;" />
+	                    <col style="width:16%;" />
+	                    <col style="width:14%;" />
+	                    <col style="width:26%;" />
 	                </colgroup>
 	                <tbody>
 	                    <tr>
@@ -481,15 +483,15 @@
 	       
 	    </div>
 	    <div style="float:right; background:none; width:50%; border: 0;">
-            <div class="ui-dialog-content ui-widget-content loan_content" style="margin: 5px; background: none; border: 1;">
+            <div class="ui-dialog-content ui-widget-content loan_content" style="margin: 15px; background: none; border: 0;">
                 <table>
                     <colgroup>
-                        <col style="width:15%;" />
-                        <col style="width:15%;" />
-                        <col style="width:15%;" />
-                        <col style="width:25%;" />
-                        <col style="width:15%;" />
-                        <col style="width:15%;" />
+                        <col style="width:14%;" />
+                        <col style="width:16%;" />
+                        <col style="width:14%;" />
+                        <col style="width:26%;" />
+                        <col style="width:14%;" />
+                        <col style="width:16%;" />
                     </colgroup>
                     <tbody>
                         <tr>

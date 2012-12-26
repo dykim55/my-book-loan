@@ -37,7 +37,7 @@
                     {name:'m_title',	index:'m_title', 	width:200, 	align:'center'},
                     {name:'m_author',	index:'m_author',	width:80, 	align:'center'},
                     {name:'m_publisher',index:'m_publisher',width:100, 	align:'center'},
-                    {name:'m_genre',	index:'m_genre',	width:80, 	align:'center'},
+                    {name:'m_genre',	index:'m_genre',	width:80, 	align:'center', formatter:'select',  edittype:'select', editoptions: {value: '<%=CodeSelect.makeEditOption("004") %>'}},
                     {name:'m_buy_dt',	index:'m_buy_dt',	width:80,	align:'center', formatter:dateFormatter},
                     {name:'m_status',	index:'m_status',	width:40,	align:'center', formatter:'select',  edittype:'select', editoptions: {value: '<%=CodeSelect.makeEditOption("002") %>'}},
                     {name:'m_loan_st',	index:'m_loan_st',	width:40,	align:'center', formatter:'select',  edittype:'select', editoptions: {value: '<%=CodeSelect.makeEditOption("003") %>'}},
