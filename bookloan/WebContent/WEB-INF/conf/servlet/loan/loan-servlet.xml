@@ -34,4 +34,11 @@
         <property name="failure"><value>common/error.jsp</value></property>
     </bean>
 
+    <!-- 대출회수 -->
+    <bean name="/loan/updateReceiveLoan.ajax" class="com.company.book.loan.LoanController">
+        <property name="loanService" ref="loanService" />
+        <property name="success"><value>jsonView</value></property>
+        <property name="failure"><value>common/error.jsp</value></property>
+    </bean>
+
 </beans>

@@ -34,6 +34,7 @@ public class LoanService implements ILoanService {
 		String strCurrentDate = DateUtil.getYYYYMMDDHH24MISS();
 		
 		try {
+			dto.setM_status("2");
 			dto.setM_area(dto.getSessionData().getArea());
 			dto.setM_loan_dt(strCurrentDate);
 			dto.setM_reg_dt(strCurrentDate);
@@ -42,7 +43,37 @@ public class LoanService implements ILoanService {
 			dto.setM_mdf_id(dto.getSessionData().getUserId());
 			connection.insert("loan.insertLoanHistory", dto);
 
-			int applyCnt = connection.update("loan.updateBookInfo", dto);
+			BookInfoDTO bookDto = new BookInfoDTO();
+			bookDto.setM_area(dto.getM_area());
+			bookDto.setM_book_no(dto.getM_book_no());
+			bookDto.setM_loan_st(dto.getM_status());
+			int applyCnt = connection.update("loan.updateBookInfo", bookDto);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+		}
+	}
+
+	public void updateReceiveLoan(LoanHistoryDTO dto) throws Exception {
+		
+		String strCurrentDate = DateUtil.getYYYYMMDDHH24MISS();
+		
+		try {
+			dto.setM_loan_dt(dto.getM_loan_dt().replace(" ", "").replace("-", "").replace(":", ""));
+			dto.setM_real_rcv_dt(strCurrentDate);
+			dto.setM_status("1");
+			dto.setM_area(dto.getSessionData().getArea());
+			dto.setM_mdf_dt(strCurrentDate);
+			dto.setM_mdf_id(dto.getSessionData().getUserId());
+			connection.insert("loan.updateLoanHistory", dto);
+
+			BookInfoDTO bookDto = new BookInfoDTO();
+			bookDto.setM_area(dto.getM_area());
+			bookDto.setM_book_no(dto.getM_book_no());
+			bookDto.setM_loan_st(dto.getM_status());
+			int applyCnt = connection.update("loan.updateBookInfo", bookDto);
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

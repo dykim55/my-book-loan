@@ -1,0 +1,36 @@
+body {
+    margin:auto;
+    background:lightgray;
+}
+
+.grid_box {background:lightgray; width:1200px; height:34px; border:0px solid #8eb4ff;}
+.grid_box .g_areaL {float:left !important; padding:4px 5px 5px 5px; _padding:3px 5px 3px 10px; color:#495b88;}
+.grid_box .g_areaR {float:right !important; padding:4px 5px 5px 0px; color:#495b88; text-align:right;}
+
+.search_box table {width:100%; border-collapse:collapse; table-layout:fixed; border:1px solid #35414f;}
+.search_box table tbody th {background: #35414f url(./hot-sneaks/images/ui-bg_dots-small_35_35414f_2x2.png) 50% 50% repeat; color: #e1e463; font-weight: bold; padding:1px 10px; _padding:8px 10px 6px 10px; border-top:1px solid #35414f; border-left:1px solid #35414f; border-right:1px solid #35414f; border-bottom:1px solid #35414f; font-family: "¸¼Àº °íµñ", MalgunGothic, Lucida Grande,Lucida Sans,Arial,sans-serif; font-size: 12px; text-align:center; }
+.search_box table tbody td {background: #ffffff; padding:0px 10px 0px 5px; border-bottom:0px solid #dedede; color:#8e8e8e; text-align:left;}
+.search_box table tbody td input {height: 20px; font-family: "¸¼Àº °íµñ", MalgunGothic, Lucida Grande,Lucida Sans,Arial,sans-serif; font-size: 12px; vertical-align:middle;}
+.search_box table tbody td select {height: 20px; font-size:12px; color:#0a0a0a;font-family:"¸¼Àº °íµñ", MalgunGothic}
+
+.popup_box table {width:100%;}
+.popup_box table tbody th {height: 24px; text-align:center; }
+.popup_box table tbody td {background: #ffffff; padding:0px 10px 0px 5px; border-bottom:0px solid #dedede; color:#8e8e8e; text-align:left;}
+.popup_box table tbody td input {height: 20px; font-family: "¸¼Àº °íµñ", MalgunGothic, Lucida Grande,Lucida Sans,Arial,sans-serif; font-size: 12px; vertical-align:middle;}
+.popup_box table tbody td select {height: 20px; font-size:12px; color:#0a0a0a;font-family:"¸¼Àº °íµñ", MalgunGothic}
+.popup_box table tbody th div {background: #778899; color: #F8F8FF; padding:6px 12px 6px 12px; font-size:12px; font-family:"¸¼Àº °íµñ", MalgunGothic}
+
+.title {
+    margin-top: .1em;
+    margin-bottom: .5em;
+    width:1200px; 
+    font-family: "¸¼Àº °íµñ", MalgunGothic;
+    font-size:16px;
+    font-weight:bold;
+    text-align:left;
+}
+
+.info { float:right; font-family: "¸¼Àº °íµñ", MalgunGothic, Lucida Grande,Lucida Sans,Arial,sans-serif; font-size: 12px; font-weight:bold; }
+
+.mStatus1 { background-color: #eeeeee !important; border: 1px solid #aaaaaa;}
+.mStatus3 { background-color: #ffbbaa !important; border: 1px solid #aaaaaa;}
