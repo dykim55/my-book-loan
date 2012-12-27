@@ -103,6 +103,29 @@ public class LoanController extends SIVController {
 		map.addAttribute("err_message", "정상처리 되었습니다.");
 		return new ModelAndView(this.success, map);
 	}
+
+	public ModelAndView updateReceiveLoan(HttpServletRequest req, HttpServletResponse res) throws Exception {
+
+		ModelMap map = new ModelMap();
+		
+		LoanHistoryDTO dto = (LoanHistoryDTO) DataUtils.dtoBuilder(req, LoanHistoryDTO.class);
+		dto.setSessionData(req);
+		
+		try { 
+			loanService.updateReceiveLoan(dto);
+			if (dto.getM_rcv_tp().equals("2")) {//대출연장
+				loanService.insertLoanHistory(dto);
+			}
+		} catch (Exception e) {
+			map.addAttribute("err_code", "0003");
+			map.addAttribute("err_message", "대출회수 처리 중 오류가 발생했습니다.");
+			return new ModelAndView(this.success, map);
+		}
+		
+		map.addAttribute("err_code", "0000");
+		map.addAttribute("err_message", "정상처리 되었습니다.");
+		return new ModelAndView(this.success, map);
+	}
 	
 	public void setLoanService(ILoanService loanService) {
 		this.loanService = loanService;

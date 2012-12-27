@@ -96,7 +96,7 @@
 		    lh.m_no, 
 		    lh.m_rcv_plan_dt, 
 		    lh.m_real_rcv_dt, 
-		    lh.m_status, 
+		    case WHEN lh.m_status = '2' AND sysdate > to_datetime(lh.m_rcv_plan_dt||'235959','yyyymmddhh24miss') then '3' else lh.m_status END AS m_status,
 		    lh.m_rcv_tp, 
 		    lh.m_reg_dt, 
 		    lh.m_reg_id, 
@@ -104,7 +104,8 @@
 		    lh.m_mdf_id,
 		    bi.m_title,
 		    bi.m_author,
-		    bi.m_publisher 
+		    bi.m_publisher,
+		    bi.m_genre 
 		from 
 		    loan_history lh, book_info bi
         where lh.m_area = bi.m_area 
@@ -126,12 +127,16 @@
         <include refid="countQueryBottom"/>
     </select>
 	    
-	    
  	<!-- 도서정보 업데이트 -->
-    <update id="updateBookInfo" parameterClass="LoanHistoryDTO">
+    <update id="updateBookInfo" parameterClass="BookInfoDTO">
         update book_info set
-            m_loan_st = '2',
-            m_rcv_plan_dt = TO_CHAR(ADDDATE(SYSDATE,7),'YYYYMMDD')
+            m_loan_st = #m_loan_st#
+        <isEqual property="m_loan_st" compareValue="2">
+            ,m_rcv_plan_dt = TO_CHAR(ADDDATE(SYSDATE,7),'YYYYMMDD')
+        </isEqual>
+        <isEqual property="m_loan_st" compareValue="1">
+            ,m_rcv_plan_dt = ''
+        </isEqual>
         where m_area = #m_area#
             and m_book_no = #m_book_no#
 			
@@ -139,8 +144,7 @@
 	
     <!-- 대출이력등록 -->
     <insert id="insertLoanHistory" parameterClass="LoanHistoryDTO">
-        insert into loan_history 
-        (
+        insert into loan_history (
            m_area, 
            m_loan_dt, 
            m_book_no, 
@@ -152,20 +156,32 @@
            m_mdf_dt, 
            m_mdf_id 
         ) 
-        VALUES 
-        (
+        VALUES (
            #m_area#, 
            #m_loan_dt#, 
            #m_book_no#, 
            #m_no#, 
            TO_CHAR(ADDDATE(SYSDATE,7),'YYYYMMDD'), 
-           '2', 
+           #m_status#, 
            #m_reg_dt#, 
            #m_reg_id#, 
            #m_mdf_dt#, 
            #m_mdf_id# 
         );
     </insert>	    
+
+    <!-- 대출이력 업데이트 -->
+    <update id="updateLoanHistory" parameterClass="LoanHistoryDTO">
+        update loan_history set
+            m_real_rcv_dt = #m_real_rcv_dt#, 
+            m_status = #m_status#, 
+            m_rcv_tp = case when to_datetime(#m_real_rcv_dt#,'yyyymmddhh24miss') > to_datetime(m_rcv_plan_dt||'235959','yyyymmddhh24miss') then '3' else #m_rcv_tp# end,
+            m_mdf_dt = #m_mdf_dt#, 
+            m_mdf_id = #m_mdf_id#
+        where m_area = #m_area#
+            and m_loan_dt = #m_loan_dt#
+            and m_book_no = #m_book_no#
+    </update>
 	    
 	<select id="getNextBookNo" resultClass="String">
 		select member_m_book_no_seq.next_value	

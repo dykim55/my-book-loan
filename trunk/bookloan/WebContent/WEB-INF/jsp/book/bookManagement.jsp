@@ -14,7 +14,8 @@
     <link href="${pageContext.request.contextPath}/css/jqGrid-4.4.1/ui.jqgrid.css" type="text/css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/jqGrid-4.4.1/ui.multiselect.css" type="text/css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/pro_dropdown_5.css" type="text/css" rel="stylesheet">
-
+    <link href="${pageContext.request.contextPath}/css/common.css" type="text/css" rel="stylesheet">
+    
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-1.8.3.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-ui-1.9.2.custom.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jqGrid-4.4.1/ui.multiselect.js"></script>
@@ -56,23 +57,7 @@
                 height: '100%',
                 width: '1200'
             });
-        	/*
-            grid.jqGrid ('navGrid', '#pager',
-                         {edit:false, add:false, del:false, refresh:true, view:false},
-                         {},{},{},{multipleSearch:true,overlay:false});
-            */ 
-            
-            /*
-            //#pager에 button을 추가한다.
-            grid.jqGrid ('navButtonAdd', '#pager', {
-                caption: "", buttonicon: "ui-icon-calculator", title: "choose columns",
-                onClickButton: function() {
-                    //Select columns창을 띄운다.
-                    grid.jqGrid('columnChooser');
-                }
-            });
-			*/
-			
+
             $( "#dialog-form-registration" ).dialog({
                 autoOpen: false,
                 width: 600,
@@ -125,7 +110,7 @@
                 }
             });
 
-			//회원등록팝업
+			//도서등록팝업
             $("#onBtnReg").click(function () {
             	$("#pm_book_no").val("");
             	$("#pm_title").val("");
@@ -145,7 +130,7 @@
                 $("#dialog-form-registration").dialog("open");
             });
             
-            //회원수정팝업
+            //도서수정팝업
             $("#onBtnMdf").click(function () {
             	var selNo = grid.jqGrid('getGridParam','selrow');
             	
@@ -172,7 +157,7 @@
             	$("#dialog-form-registration").dialog("open");
             });
             
-            //
+            //조회
             $("#onBtnSch").click(function () {
             	grid.jqGrid('setGridParam',	{ 
             		postData:{
@@ -223,41 +208,11 @@
         
     </script>
     
-    <style>
-        body {
-            margin:auto;
-            background:lightgray;
-        }
-        
-		.grid_box {background:lightgray; width:1200px; height:34px; border:0px solid #8eb4ff;}
-		.grid_box .g_areaL {float:left !important; padding:4px 5px 5px 5px; _padding:3px 5px 3px 10px; color:#495b88;}
-		.grid_box .g_areaR {float:right !important; padding:4px 5px 5px 0px; color:#495b88; text-align:right;}
-        
-		.ui-dialog-content table {width:1200px; border-collapse:collapse; padding:0; table-layout:fixed; border:0px solid #dedede;}
-		.ui-dialog-content table tbody th {background:#fafafa; padding:1px 10px; _padding:8px 10px 6px 10px; border-top:1px solid #dedede; border-left:1px solid #dedede; border-right:1px solid #dedede; border-bottom:1px solid #dedede; color:#0a0a0a; font-family: "맑은 고딕", MalgunGothic, Lucida Grande,Lucida Sans,Arial,sans-serif; font-size: 12px; font-weight:bold; text-align:center; }
-		.ui-dialog-content table tbody td {background:none; padding:0px 10px 0px 5px; border-bottom:0px solid #dedede; color:#8e8e8e; text-align:left;}
-		.ui-dialog-content table tbody td input {height: 21px; font-family: "맑은 고딕", MalgunGothic, Lucida Grande,Lucida Sans,Arial,sans-serif; font-size: 12px; vertical-align:middle;}
-		.ui-dialog-content table tbody td select {height: 20px; font-size:12px; color:#0a0a0a;font-family:"맑은 고딕", MalgunGothic}
-
-        .title {
-            margin-top: .1em;
-            margin-bottom: .5em;
-            width:1200px; 
-            font-family: "맑은 고딕", MalgunGothic;
-            font-size:16px;
-            font-weight:bold;
-            text-align:left;
-        }
-
-		.info { float:right; font-family: "맑은 고딕", MalgunGothic, Lucida Grande,Lucida Sans,Arial,sans-serif; font-size: 12px; font-weight:bold; }
-    </style>
-    
-    
 </head>
 
 <body>
 
-<div style="height:20px;">
+<div style="margin-top:10px; height:20px;">
 	<div class="info">
 		${userId}님 환영합니다. 
 		<a href="${pageContext.request.contextPath}/login/logout.do">[로그아웃]</a>
@@ -266,9 +221,10 @@
 
 <div id="outer">
     <ul id="menu">
-        <li class="sub" id="no1"><a href="${pageContext.request.contextPath}/loan/loanView.do">대출관리</a></li>
-        <li class="sub" id="no2"><a class="select" href="#nogo">도서관리</a></li>
-        <li class="sub" id="no3"><a href="${pageContext.request.contextPath}/member/memberView.do">회원관리</a></li>
+        <li class="sub" id="no1"><a href="">대출현황</a></li>
+        <li class="sub" id="no2"><a href="${pageContext.request.contextPath}/loan/loanView.do">대출관리</a></li>
+        <li class="sub" id="no3"><a class="select" href="">도서관리</a></li>
+        <li class="sub" id="no4"><a href="${pageContext.request.contextPath}/member/memberView.do">회원관리</a></li>
     </ul>
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/hover_menu5.js"></script> 
@@ -277,45 +233,44 @@
 
     <div class="title">◆도서관리</div>
     
-    <form>
+    <div style="width:1200px;">
     <div style="position: relative; height: 32px;" class="ui-widget">
-        <div class="ui-dialog-content ui-widget-content" style="background: none; border: 0;">
+        <div class="ui-dialog-content ui-widget-content search_box" style="background: none; border: 0;">
 	        <table>
 	          	<colgroup>
 	            	<col style="width:6%;" />
 	            	<col style="width:16%;" />
-	            	<col style="width:6%;" />
-	            	<col style="width:6%;" />
-	            	<col style="width:6%;" />
-	            	<col style="width:16%;" />
-	            	<col style="width:6%;" />
+	            	<col style="width:7%;" />
+	            	<col style="width:8%;" />
+	            	<col style="width:5%;" />
+	            	<col style="width:15%;" />
+	            	<col style="width:5%;" />
 	            	<col style="width:8%;" />
 	            	<col style="width:6%;" />
-	            	<col style="width:10%;" />
-	            	<col style="width:6%;" />
+	            	<col style="width:9%;" />
+	            	<col style="width:7%;" />
 	            	<col style="width:8%;" />
 	          	</colgroup>
 	          	<tbody>
 	            	<tr>
-                        <th class="ui-corner-all">구입일</th>
-                        <td><input class="text" type="text" style="width:42%" id="m_sdt" name="m_sdt" />&nbsp;~&nbsp;<input class="text" type="text" style="width:42%" id="m_edt" name="m_edt" /></td>
-	              		<th class="ui-corner-all">도서번호</th>
-	              		<td><input class="text" type="text" style="width:90%" id="m_book_no" name="m_book_no" /></td>
-	              		<th class="ui-corner-all">도서제목</th>
-	              		<td><input class="text" type="text" style="width:95%" id="m_title" name="m_title" /></td>
-	              		<th class="ui-corner-all">도서저자</th>
-	              		<td><input class="text" type="text" style="width:90%" id="m_author" name="m_author" /></td>
-	              		<th class="ui-corner-all">출판사</th>
-	              		<td><input class="text" type="text" style="width:90%" id="m_publisher" name="m_publisher" /></td>
-	              		<th class="ui-corner-all">도서장르</th>
+                        <th>구입일</th>
+                        <td><input class="text" type="text" style="width:43%" id="m_sdt" name="m_sdt" />~<input class="text" type="text" style="width:43%" id="m_edt" name="m_edt" /></td>
+	              		<th>도서번호</th>
+	              		<td><input class="text" type="text" style="width:100%" id="m_book_no" name="m_book_no" /></td>
+	              		<th>제   목</th>
+	              		<td><input class="text" type="text" style="width:100%" id="m_title" name="m_title" /></td>
+	              		<th>저   자</th>
+	              		<td><input class="text" type="text" style="width:100%" id="m_author" name="m_author" /></td>
+	              		<th>출판사</th>
+	              		<td><input class="text" type="text" style="width:100%" id="m_publisher" name="m_publisher" /></td>
+	              		<th>도서장르</th>
 	              		<td><%=CodeSelect.makeCodeSelect("m_genre", "::전체::", "004", "")%></td>
 	            	</tr>
 				</tbody>
 			</table>
         </div>
     </div>
-    </form>
-    <p></p>
+    </div>
     <div class="grid_box clfix">
         <div class="g_areaL clfix">
             <button id="onBtnReg">도서등록</button>
@@ -338,55 +293,53 @@
 	
 </div>
 
-<div id="dialog-form-registration" title="회원등록">
+<div id="dialog-form-registration" title="도서정보 등록">
 
-    <form>
-    	<input type="hidden" id="pm_book_no" name="pm_book_no" />
-		<div class="ui-dialog-content ui-widget-content" style="background: none; border: 0;">
-			<table style="width:500px">
-				<colgroup>
-	        		<col style="width:20%;" />
-	        		<col style="width:80%;" />
-	      		</colgroup>
-	      		<tbody>
-	        	<tr>
-	          		<th class="ui-corner-all">도서제목</th>
-	          		<td><input class="text" style="background:#faffc8; width:100%" type="text" id="pm_title" name="pm_title" /></td>
-	        	</tr>
-            	<tr>
-              		<th class="ui-corner-all">도서저자</th>
-              		<td>
-						<input class="text" style="width:50%" type="text" id="pm_author" name="pm_author"  />
-                    </td>
-            	</tr>
-            	<tr>
-              		<th class="ui-corner-all">출판사</th>
-              		<td><input class="text" style="width:50%" type="text" id="pm_publisher" name="pm_publisher"  /></td>
-            	</tr>
-            	<tr>
-              		<th class="ui-corner-all" style="height:26px">도서장르</th>
-              		<td><%=CodeSelect.makeCodeSelect("pm_genre", "", "004", "")%></td>
-            	</tr>
-            	<tr>
-              		<th class="ui-corner-all">구입일자</th>
-              		<td><input class="text" style="width:50%" type="text" id="pm_buy_dt" name="pm_buy_dt"  /></td>
-            	</tr>
-            	<tr>
-              		<th class="ui-corner-all" style="height:26px">도서상태</th>
-              		<td><%=CodeSelect.makeCodeSelect("pm_status", "", "002", "")%></td>
-            	</tr>
-            	<tr>
-              		<th class="ui-corner-all">구입수량</th>
-              		<td><input class="text" style="width:10%" type="text" id="pm_buy_cnt" name="pm_buy_cnt"  /></td>
-            	</tr>
-            	<tr>
-              		<th class="ui-corner-all">비고</th>
-              		<td><input class="text" style="width:100%" type="text" id="pm_cmt" name="pm_cmt"  /></td>
-            	</tr>
-				</tbody>
-			</table>
-		</div>
-    </form>
+   	<input type="hidden" id="pm_book_no" name="pm_book_no" />
+	<div class="popup_box" style="background: ligthgray; border: 0;">
+		<table>
+			<colgroup>
+        		<col style="width:20%;" />
+        		<col style="width:80%;" />
+      		</colgroup>
+      		<tbody>
+        	<tr>
+          		<th><div>제   목</div></th>
+          		<td><input class="text" style="background:#faffc8; width:100%" type="text" id="pm_title" name="pm_title" /></td>
+        	</tr>
+           	<tr>
+             		<th><div>저   자</div></th>
+             		<td>
+					<input class="text" style="width:50%" type="text" id="pm_author" name="pm_author"  />
+                   </td>
+           	</tr>
+           	<tr>
+             		<th><div>출판사</div></th>
+             		<td><input class="text" style="width:50%" type="text" id="pm_publisher" name="pm_publisher"  /></td>
+           	</tr>
+           	<tr>
+             		<th><div>장   르</div></th>
+             		<td><%=CodeSelect.makeCodeSelect("pm_genre", "", "004", "")%></td>
+           	</tr>
+           	<tr>
+             		<th><div>구입일자</div></th>
+             		<td><input class="text" style="width:50%" type="text" id="pm_buy_dt" name="pm_buy_dt"  /></td>
+           	</tr>
+           	<tr>
+             		<th><div>상   태</div></th>
+             		<td><%=CodeSelect.makeCodeSelect("pm_status", "", "002", "")%></td>
+           	</tr>
+           	<tr>
+             		<th><div>구입수량</div></th>
+             		<td><input class="text" style="width:10%" type="text" id="pm_buy_cnt" name="pm_buy_cnt"  /></td>
+           	</tr>
+           	<tr>
+             		<th><div>비   고</div></th>
+             		<td><input class="text" style="width:100%" type="text" id="pm_cmt" name="pm_cmt"  /></td>
+           	</tr>
+			</tbody>
+		</table>
+	</div>
 
 </div>
 

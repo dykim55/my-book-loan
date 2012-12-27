@@ -21,5 +21,7 @@ public interface ILoanService {
 	public List<LoanHistoryDTO> searchLoanHistory(LoanHistoryDTO dto) throws Exception;
 	
 	public void insertLoanHistory(LoanHistoryDTO dto) throws Exception;
+	
+	public void updateReceiveLoan(LoanHistoryDTO dto) throws Exception;
 
 }
