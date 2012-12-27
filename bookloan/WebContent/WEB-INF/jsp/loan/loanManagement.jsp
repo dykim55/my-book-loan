@@ -352,7 +352,7 @@
 <div id="outer">
     <ul id="menu">
         <li class="sub" id="no1"><a href="">대출현황</a></li>
-        <li class="sub" id="no2"><a class="select" href="">대출관리</a></li>
+        <li class="sub" id="no2"><a class="select" href="#">대출관리</a></li>
         <li class="sub" id="no3"><a href="${pageContext.request.contextPath}/book/bookView.do">도서관리</a></li>
         <li class="sub" id="no4"><a href="${pageContext.request.contextPath}/member/memberView.do">회원관리</a></li>
     </ul>
