@@ -9,38 +9,111 @@
     
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-    <link href="${pageContext.request.contextPath}/css/redmond/jquery-ui-1.9.1.custom.css" rel="stylesheet">
-    
-    <script src="${pageContext.request.contextPath}/js/jquery/jquery-1.8.2.js"></script>
-    <script src="${pageContext.request.contextPath}/js/jquery/jquery-ui-1.9.1.custom.js"></script>
+    <link href="${pageContext.request.contextPath}/css/hot-sneaks/jquery-ui-1.9.2.custom.css" type="text/css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/jqGrid-4.4.1/ui.jqgrid.css" type="text/css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/jqGrid-4.4.1/ui.multiselect.css" type="text/css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/pro_dropdown_5.css" type="text/css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/common.css" type="text/css" rel="stylesheet">    
+
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-1.8.3.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-ui-1.9.2.custom.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jqGrid-4.4.1/ui.multiselect.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jqGrid-4.4.1/i18n/grid.locale-en.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jqGrid-4.4.1/jquery.jqGrid.src.js"></script>
 
     <script type="text/javascript">
+    
+    $(document).ready(function () {
+	    $('#login_id, #login_password').keydown(function(e) {
+	    	if (e.keyCode==13) {
+	    		if ($('#login_id').val().length==0) {
+	    			alert('아이디를 입력하세요.');
+	    			return;
+	    		}
+                if ($('#login_password').val().length==0) {
+                    alert('비밀번호를 입력하세요.');
+                    return;
+                }
+                
+                createCookie("IDsave","true",365);
+                createCookie("IDsave_id",frm.login_id.value,365);
+                
+	    	    frm.submit();
+	    	}
+	    });
+	    
+        $("#login_id, #login_password").focus(function(event) {
+            $('#'+event.target.id).select();
+        });
+	    
+    });
     
     $(function() {
         $("button").button();
     });
     
-    </script>
+    /**
+     * 쿠키 저장 
+     */
+    function createCookie(name,value,day,domain) {
+        var cookie = name+"="+value + ";";
+        if (day) {
+            var date = new Date();
+            if(!day)day = 0;
+            date.setTime(date.getTime()+(day*24*60*60*1000));
+            cookie += " path=/; expires="+date.toGMTString() + " ;";
+        }
+        document.cookie = cookie;
+    }
+
+    /**
+     * 쿠키 읽기
+     */
+    function readCookie(name) {
+       var nameEQ = name + "=";
+       var ca = document.cookie.split(';');
+       for(var i=0;i < ca.length;i++) {
+           var c = ca[i];
+           while (c.charAt(0)==' ') c = c.substring(1,c.length);
+           if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        
+        }
+        return null;
+    }
+
+    function load() {
+        <c:if test="${login_failed == 'ID'}">
+        alert("아이디와 비밀번호를 다시한번 확인해 주십시오.");
+        </c:if> 
+        <c:if test="${login_failed == 'PASS'}">
+        alert("아이디와 비밀번호를 다시한번 확인해 주십시오.");
+        </c:if> 
+        
+        $('#login_id').focus();
+        
+        var IDsave = readCookie("IDsave");
+        
+        if (IDsave == "true") {
+            var id = readCookie("IDsave_id");
+            if (id != undefined) {
+                document.frm.login_id.value = id;
+                $('#login_password').focus();
+            }
+        }
+    }
     
-    <style>
-	    #adminLogin {
-	        width:1024px; 
-	        margin:auto;
-	    }
-	    
-        #adminLogin table {width:512px; border-collapse:collapse; padding:0; table-layout:fixed; border:0px solid #dedede;}
-        #adminLogin table tbody th {background:url(../css/pepper-grinder/images/ui-bg_fine-grain_15_ffffff_60x60.png) repeat-x; height:22px; border-top:1px solid #dedede; border-left:1px solid #dedede; border-right:1px solid #dedede; border-bottom:1px solid #dedede; color:#0a0a0a; font-family: "맑은 고딕", MalgunGothic, Lucida Grande,Lucida Sans,Arial,sans-serif; font-size: 12px; font-weight:bold; text-align:center; }
-        #adminLogin table tbody td {background:none; border-bottom:0px solid #dedede; color:#8e8e8e; text-align:left;}
-	    
-    </style>
+    </script>
     
 </head>
 
-<body>
+<body onload="load()">
 
-    <div id="adminLogin">
     <form name="frm" method="post" action="${pageContext.request.contextPath}/login/login.do">
-        <table style="position:relative; left:50%; margin-left:-256px;">
+    <div align=center>
+    <div style="background:none; width:1200px;">
+    <div style="background:none; margin:250px auto 0; width:50%; border: 0;">
+    <div class="ui-dialog-content ui-widget-content search_box" style="margin: 15px; background: none; border: 0;">
+        <table>
             <colgroup>
                 <col style="width:20%;" />
                 <col style="width:20%;" />
@@ -51,15 +124,16 @@
             <tbody>        
 	            <tr>
 	                <th><label>아이디: </label></td>
-	                <td><input style="width:90%" name="login_id" value="dykim"></td>
+	                <td><input style="width:100%" id="login_id" name="login_id"></td>
 	                <th><label>비밀번호: </label></td>
-	                <td><input type="password" style="width:90%" name="login_password" value="1234"></td>
-	                <td><button>로그인</button></td>
+	                <td><input type="password" style="width:100%" id="login_password" name="login_password"></td>
 	            </tr>
             </tbody>
         </table>
-    </form>
     </div>
-
+    </div>
+    </div>
+    </div>
+    </form>
 </body>
 </html>

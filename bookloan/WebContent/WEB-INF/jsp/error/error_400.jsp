@@ -9,22 +9,15 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/common.css" />
 </head>
 <body>
-<div id="adminWrap">
+<div id="errorWrap">
 
-	<!-- content -->
-	<div id="adminContainer">
-	<div id="adminContent">
-		<div class="error">
-			<div class="msg">잘못된 요청입니다.</div>
-			<div class="btnArea">
-				<a href="javascript:history.back();" class="btn"><span>뒤로</span></a>
-				<a href="${pageContext.request.contextPath}/" class="btn"><span>메인으로</span></a>
-			</div>
-		</div>
-
-	</div>
-	</div>
-	<!-- //content -->
+    <div class="error">
+        <div class="msg">잘못된 요청입니다.</div>
+        <div class="btnArea">
+            <a href="javascript:history.back();" class="btn"><span>뒤로</span></a>
+            <a href="${pageContext.request.contextPath}/" class="btn"><span>메인으로</span></a>
+        </div>
+    </div>
 
 </div>
 </body>
