@@ -9,36 +9,24 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/common.css" />
 </head>
 <body>
+<div id="errorWrap">
 
-<div id="adminWrap">
+    <div class="error">
+        <div class="exceptionMsg">
+          <%=exception.getClass().getName()%><br/>
+          <%=exception.getMessage()%><br/>
+          <%=exception.getStackTrace()[0]%><br/>
+        </div>
+        <div class="msg">       
+            오류가 발생했습니다.<br />
+            문제가 계속되면 관리자에게 문의하시기 바랍니다.
+        </div>
+        <div class="btnArea">
+            <a href="javascript:history.back();" class="btn"><span>뒤로</span></a>
+            <a href="${pageContext.request.contextPath}/" class="btn"><span>메인으로</span></a>
+        </div>
+    </div>
 
-	<!-- content -->
-	<div id="adminContainer">
-		<div id="adminContent">
-	
-			<div class="error">
-				<div class="msg">
-				    <!--
-                    <%=exception.getClass().getName()%><br/>
-                    <%=exception.getMessage()%><br/>
-                    -->
-					오류가 발생했습니다.<br />
-					문제가 계속되면 관리자에게 문의하시기 바랍니다.
-				</div>
-				<div class="btnArea">
-					<a href="javascript:history.back();" class="btn"><span>뒤로</span></a>
-					<a href="${pageContext.request.contextPath}/" class="btn"><span>메인으로</span></a>
-				</div>
-			</div>
-	
-		</div>
-	</div>
-	<!-- //content -->
-
-	<!-- footer -->
-	<div id="adminFooter">
-	</div>
-	<!-- //footer -->
 </div>
 </body>
 </html>

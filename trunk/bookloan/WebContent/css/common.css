@@ -32,5 +32,18 @@ body {
 
 .info { float:right; font-family: "¸¼Àº °íµñ", MalgunGothic, Lucida Grande,Lucida Sans,Arial,sans-serif; font-size: 12px; font-weight:bold; }
 
+.btnArea { padding:15px 0; text-align:center; }
+
+a.btn { display:inline-block; height:27px; padding-left:15px; color:#495b88 !important; font-weight:bold; background:url(../images/ui-bg_gloss-wave.png) no-repeat left top; }
+a.btn span { display:inline-block; height:21px; padding:6px 15px 0 0; }
+
 .mStatus1 { background-color: #eeeeee !important; border: 1px solid #aaaaaa;}
 .mStatus3 { background-color: #ffbbaa !important; border: 1px solid #aaaaaa;}
+
+#errorWrap { margin:auto;}
+.error { width:500px; padding:20px; margin:250px auto 0; background:#ffffff; border:2px solid #a0a0a0; font-family: "¸¼Àº °íµñ", MalgunGothic, Lucida Grande,Lucida Sans,Arial,sans-serif; }
+.error .msg { margin-bottom:20px; font-size: 12px; font-weight:bold; color:red; text-align:center; }
+.error .exceptionMsg { margin-bottom:20px; font-size:12px; font-weight:bold; color:red; text-align:left; }
+
+
+
