@@ -3,6 +3,8 @@ body {
     background:lightgray;
 }
 
+input[type=checkbox] { width:12px; height:12px; margin-right:3px; overflow:hidden; }
+
 .grid_box {background:lightgray; width:1200px; height:34px; border:0px solid #8eb4ff;}
 .grid_box .g_areaL {float:left !important; padding:4px 5px 5px 5px; _padding:3px 5px 3px 10px; color:#495b88;}
 .grid_box .g_areaR {float:right !important; padding:4px 5px 5px 0px; color:#495b88; text-align:right;}

@@ -37,11 +37,12 @@
     <sql id="sqlMemberInfo">
 		SELECT 
 		    m_area, m_no, 
-		    m_name, m_status, 
+		    m_name, m_status, m_gender,
 		    m_birth_dt, m_calr_tp, 
 		    m_tel_no, m_cell_no, 
 		    m_email, m_addr, 
-		    m_entry_dt, m_mbr_cd, 
+		    m_entry_dt, m_mbr_cd,
+		    m_handi, m_aged, m_merit, 
 		    m_dly_cnt, m_cmt, 
 		    m_reg_dt, m_reg_id, 
 		    m_mdf_dt, m_mdf_id 
