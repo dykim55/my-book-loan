@@ -157,4 +157,10 @@ book_info에 m_rcv_plan_dt varchar(8) 추가
 
 
 
+member_info 
 
+   "m_handi" CHARACTER(1) DEFAULT 'N', 
+   "m_aged" CHARACTER(1) DEFAULT 'N', 
+   "m_merit" CHARACTER(1) DEFAULT 'N', 
+   "m_gender" CHARACTER(1) DEFAULT '1', 
+   
