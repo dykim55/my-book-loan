@@ -32,24 +32,21 @@
             	url:  "${pageContext.request.contextPath}/member/searchMemberInfo.ajax",
             	datatype: "json",
             	mtype: 'POST',
-                colNames:['회원번호','회원명','성별','생년월일','양/음','전화번호','휴대폰번호','주소','장애','경로','유공','가입일','상태','비고'],
+                colNames:['회원번호','회원명','성   별','생년월일','전화번호','휴대폰번호','주   소','가입일','상   태','대   출','비고'],
                 colModel:[
                     {name:'m_no',		index:'m_no',		width:8, 	align:'center'}, 
                     {name:'m_name',		index:'m_name',		width:8, 	align:'center'},
-                    {name:'m_gender',   index:'m_gender',   width:5,   align:'center'},
+                    {name:'m_gender',   index:'m_gender',   width:5,   align:'center', formatter:'select',  edittype:'select', editoptions: {value: '<%=CodeSelect.makeEditOption("005   ") %>'}},
                     {name:'m_birth_dt',	index:'m_birth_dt',	width:10, 	align:'center', formatter:dateFormatter},
-                    {name:'m_calr_tp',	index:'m_calr_tp',	width:0, 	align:'center', hidden:true, formatter:'select',  edittype:'select', editoptions: {value: '1:양력;2:음력'}},
                     {name:'m_tel_no',	index:'m_tel_no',	width:9, 	align:'center', formatter:phoneFormatter},
                     {name:'m_cell_no',	index:'m_cell_no',	width:9,	align:'center', formatter:phoneFormatter},
                     {name:'m_addr',		index:'m_addr',		width:20,	align:'left'},
-                    {name:'m_handi',    index:'m_handi',    width:3,   align:'center'},
-                    {name:'m_aged',     index:'m_aged',     width:3,   align:'center'},
-                    {name:'m_merit',     index:'m_merit',   width:3,   align:'center'},
                     {name:'m_entry_dt',	index:'m_entry_dt',	width:12, 	align:'center', formatter:dateFormatter},
-                    {name:'m_status',	index:'m_status',	width:10,	align:'center', formatter:'select',  edittype:'select', editoptions: {value: '<%=CodeSelect.makeEditOption("001") %>'}},
+                    {name:'m_status',	index:'m_status',	width:5,	align:'center', formatter:'select',  edittype:'select', editoptions: {value: '<%=CodeSelect.makeEditOption("001") %>'}},
+                    {name:'m_loan_cnt',	index:'m_loan_cnt',	width:5,	align:'center'},
                     {name:'m_cmt',		index:'m_cmt',		width:0,	align:'center', hidden:true}
                 ],
-                rowNum:10,
+                rowNum:20,
                 rowList:[10,20,50],
                 pager: '#pager',
                 jsonReader : {
@@ -60,7 +57,19 @@
                 forceFit : true,
                 caption:'회원목록',
                 height: '100%',
-                width: '1200'
+                width: '1200',
+                loadComplete: function() {
+                    var rowIDs = $(this).getDataIDs(); 
+                    for (var i=0;i<rowIDs.length;i=i+1) { 
+                        rowData=$(this).getRowData(rowIDs[i]);
+                        var trElement = jQuery("#"+ rowIDs[i],$(this));
+                        if (eval(rowData.m_loan_cnt) > 0) {
+                            trElement.removeClass('ui-widget-content');
+                            trElement.addClass('mStatus2');
+                        }
+                    }
+                }                
+                
             });
 			
             $( "#dialog-form-registration" ).dialog({
@@ -87,12 +96,11 @@
         	                data: { 
         	                	m_no: $("#pm_no").val(),
         	                	m_name: $("#pm_name").val(),
+        	                	m_gender: $("#pm_gender").val(),
         	                	m_birth_dt: $("#pm_birth_dt").val(),
-        	                	m_calr_tp: $("#pm_calr_tp").val(),
         	                	m_status: $("#pm_status").val(),
         	                	m_tel_no: $("#pm_tel_no").val(),
         	                	m_cell_no: $("#pm_cell_no").val(),
-        	                	m_email: $("#pm_email").val(),
         	                	m_addr: $("#pm_addr").val(),
         	                	m_cmt: $("#pm_cmt").val()
         	                }, 
@@ -123,15 +131,13 @@
             $("#onBtnReg").click(function () {
             	$("#pm_no").val("");
             	$("#pm_name").val("");
+            	$("#pm_gender").val("1");
             	$("#pm_birth_dt").val("");
-            	$("#pm_calr_tp").val("1");
             	$("#pm_status").val("1");
             	$("#pm_tel_no").val("");
             	$("#pm_cell_no").val("");
             	$("#pm_addr").val("");
-            	$("#pm_email").val("");
             	$("#pm_cmt").val("");
-            	$("#pm_calr_tp").val("1").attr("selected", "selected");
             	$("#pm_status").val("1").attr("selected", "selected");
             	
             	$("#ui-id-1").html("회원정보 등록");
@@ -149,15 +155,14 @@
 
             	$("#pm_no").val(grid.getCell(selNo, 1));
             	$("#pm_name").val(grid.getCell(selNo, 2));
-            	$("#pm_birth_dt").val(grid.getCell(selNo, 3));
-            	$("#pm_calr_tp").val(grid.getCell(selNo, 4));
+            	$("#pm_gender").val(grid.getCell(selNo, 3));
+            	$("#pm_birth_dt").val(grid.getCell(selNo, 4));
             	$("#pm_status").val(grid.getCell(selNo, 9));
             	$("#pm_tel_no").val(grid.getCell(selNo, 5));
             	$("#pm_cell_no").val(grid.getCell(selNo, 6));
             	$("#pm_addr").val(grid.getCell(selNo, 7));
-            	$("#pm_cmt").val(grid.getCell(selNo, 10));
+            	$("#pm_cmt").val(grid.getCell(selNo, 11));
             	
-            	$("#pm_calr_tp").val(grid.getCell(selNo, 4)).attr("selected", "selected");
             	$("#pm_status").val(grid.getCell(selNo, 9)).attr("selected", "selected");
             	
             	$("#ui-id-1").html("회원정보 수정");
@@ -167,7 +172,8 @@
             //회원조회
             $("#onBtnSch").click(function () {
             	grid.jqGrid('setGridParam',	{ 
-            		postData:{
+            		page:1
+            		,postData:{
             			m_sdt:$("#m_sdt").val(),
             			m_edt:$("#m_edt").val(),
             			m_no:$("#m_no").val(), 
@@ -178,6 +184,25 @@
             			m_status:$("#m_status").val()
             		}
             	}).trigger("reloadGrid");
+            });
+            
+            $('#m_sdt, #m_edt, #m_no, #m_name, #m_birth_dt, #m_phone_no').keydown(function(e) {
+                if (e.keyCode==13) {
+                    grid.jqGrid('setGridParam',    {
+                    	page:1
+                		,postData:{
+                			m_sdt:$("#m_sdt").val(),
+                			m_edt:$("#m_edt").val(),
+                			m_no:$("#m_no").val(), 
+                			m_name:$("#m_name").val(),
+                			m_birth_dt:$("#m_birth_dt").val(),
+                			m_phone_tp:$("#m_phone_tp").val(),
+                			m_phone_no:$("#m_phone_no").val(),
+                			m_status:$("#m_status").val()
+                		}
+                    }).trigger("reloadGrid");
+                    return false;
+                }
             });
             
             $("#m_sdt, #m_edt, #m_no,#m_name,#m_birth_dt,#m_phone_no").focus(function(event) {
@@ -274,7 +299,7 @@
         <div class="ui-dialog-content ui-widget-content search_box" style="background: none; border: 0;">
 	        <table>
 	          	<colgroup>
-	            	<col style="width:6%;" />
+	            	<col style="width:7%;" />
 	            	<col style="width:16%;" />
 	            	<col style="width:7%;" />
 	            	<col style="width:8%;" />
@@ -282,7 +307,7 @@
 	            	<col style="width:8%;" />
 	            	<col style="width:7%;" />
 	            	<col style="width:8%;" />
-	            	<col style="width:9%;" />
+	            	<col style="width:8%;" />
 	            	<col style="width:10%;" />
 	            	<col style="width:7%;" />
 	            	<col style="width:7%;" />
@@ -297,12 +322,7 @@
 	              		<td><input class="text" type="text" style="width:100%" id="m_name" name="m_name" /></td>
 	              		<th>생년월일</th>
 	              		<td><input class="text" type="text" style="width:100%" id="m_birth_dt" name="m_birth_dt" /></td>
-	              		<th>
-                            <select id="m_phone_tp">
-                                <option value='1'>휴대폰번호</option>
-                                <option value='2'>집전화번호</option>
-                            </select>
-	              		</th>
+	              		<th>전화번호</th>
 	              		<td><input class="text" type="text" style="width:100%" id="m_phone_no" name="m_phone_no" /></td>
 	              		<th>회원상태</th>
 	              		<td><%=CodeSelect.makeCodeSelect("m_status", "::전체::", "001", "") %></td>
@@ -346,21 +366,23 @@
       		<tbody>
         	<tr>
           		<th><div>회원명</div></th>
-          		<td><input class="text" style="background:#faffc8; width:50%" type="text" id="pm_name" name="pm_name" /></td>
+          		<td>
+          			<input class="text" style="background:#faffc8; width:50%" type="text" id="pm_name" name="pm_name" />
+          		</td>
         	</tr>
+           	<tr>
+           		<th><div>성   별</div></th>
+           		<td><%=CodeSelect.makeCodeSelect("pm_gender", "", "005", "")%></td>
+           	</tr>
            	<tr>
         		<th><div>생년월일</div></th>
            		<td>
 		         	<input class="text" style="background:#faffc8; width:50%" type="text" id="pm_birth_dt" name="pm_birth_dt"  />
-           		    <select id="pm_calr_tp">
-                   		<option value='1'>양력</option>
-                   		<option value='2'>음력</option>
-                    </select>
                 </td>
             </tr>
            	<tr>
            		<th><div>상   태</div></th>
-           		<td><%=CodeSelect.makeCodeSelect("pm_status", "", "001", "")%>&nbsp;<input type="checkbox" id="" name="" />장애&nbsp;<input type="checkbox" id="" name="" />경로&nbsp;<input type="checkbox" id="" name="" />유공</td>
+           		<td><%=CodeSelect.makeCodeSelect("pm_status", "", "001", "")%></td>
            	</tr>
            	<tr>
            		<th><div>전화번호</div></th>
@@ -373,10 +395,6 @@
            	<tr>
            		<th><div>주   소</div></th>
            		<td><input class="text" style="width:100%" type="text" id="pm_addr" name="pm_addr"  /></td>
-           	</tr>
-           	<tr>
-           		<th><div>이메일</div></th>
-           		<td><input class="text" style="width:50%" type="text" id="pm_email" name="pm_email"  /></td>
            	</tr>
            	<tr>
            		<th><div>비   고</div></th>

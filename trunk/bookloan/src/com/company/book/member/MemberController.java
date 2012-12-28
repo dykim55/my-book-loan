@@ -37,14 +37,6 @@ public class MemberController extends SIVController {
 		UserSession session = UserSessionManager.getUserSession(req);
 		dto.setM_area(session.getArea());
 
-		if (dto.getM_phone_no() != null && !dto.getM_phone_no().isEmpty()) {
-			if (dto.getM_phone_tp().equals("1")) {
-				dto.setM_cell_no(dto.getM_phone_no());
-			} else {
-				dto.setM_tel_no(dto.getM_phone_no());
-			}
-		}
-		
 		if (dto.getM_birth_dt() != null) {
 			dto.setM_birth_dt(dto.getM_birth_dt().replace("-", ""));
 		}

@@ -23,9 +23,6 @@ public class MemberInfoDTO extends PagingBean {
     private String m_mdf_id;
     private String m_loan_cnt;
     private String m_gender;
-    private String m_handi;
-    private String m_aged;
-    private String m_merit;
     
     private String m_sdt;
     private String m_edt;
@@ -176,25 +173,5 @@ public class MemberInfoDTO extends PagingBean {
 	public void setM_gender(String m_gender) {
 		this.m_gender = m_gender;
 	}
-	public String getM_handi() {
-		return m_handi;
-	}
-	public void setM_handi(String m_handi) {
-		this.m_handi = m_handi;
-	}
-	public String getM_aged() {
-		return m_aged;
-	}
-	public void setM_aged(String m_aged) {
-		this.m_aged = m_aged;
-	}
-	public String getM_merit() {
-		return m_merit;
-	}
-	public void setM_merit(String m_merit) {
-		this.m_merit = m_merit;
-	} 	
-
-    
 	
 }

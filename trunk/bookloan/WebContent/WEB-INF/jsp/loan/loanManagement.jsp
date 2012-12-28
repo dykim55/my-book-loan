@@ -101,6 +101,17 @@
                 caption:'도서정보',
                 height: '100',
                 width: '580',
+                loadComplete: function() {
+                    var rowIDs = $(this).getDataIDs(); 
+                    for (var i=0;i<rowIDs.length;i=i+1) { 
+                        rowData=$(this).getRowData(rowIDs[i]);
+                        var trElement = jQuery("#"+ rowIDs[i],$(this));
+                        if (rowData.m_loan_st != '1') {
+                            trElement.removeClass('ui-widget-content');
+                            trElement.addClass('mStatus4');
+                        }
+                    }
+                },                
                 beforeSelectRow: function (rowid, e) {
                     var iCol = $.jgrid.getCellIndex(e.target);
                     if (iCol == 6) {
@@ -249,9 +260,9 @@
                         if (rowData.m_status == '3') {
                             trElement.removeClass('ui-widget-content');
                             trElement.addClass('mStatus3');
-                        } else if (rowData.m_status == '1') {
+                        } else if (rowData.m_status == '2') {
                             trElement.removeClass('ui-widget-content');
-                            trElement.addClass('mStatus1');
+                            trElement.addClass('mStatus2');
                         }
                     }
                 }                
