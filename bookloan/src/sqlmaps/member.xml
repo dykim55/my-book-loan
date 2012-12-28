@@ -35,44 +35,56 @@
     </sql>
     
     <sql id="sqlMemberInfo">
-		SELECT 
-		    m_area, m_no, 
-		    m_name, m_status, m_gender,
-		    m_birth_dt, m_calr_tp, 
-		    m_tel_no, m_cell_no, 
-		    m_email, m_addr, 
-		    m_entry_dt, m_mbr_cd,
-		    m_handi, m_aged, m_merit, 
-		    m_dly_cnt, m_cmt, 
-		    m_reg_dt, m_reg_id, 
-		    m_mdf_dt, m_mdf_id 
-		FROM 
-		    member_info
-		where m_area = #m_area# 
-		<isNotEmpty prepend="" property="m_sdt">
-			<isNotEmpty prepend="and" property="m_edt">
-				m_entry_dt between replace(#m_sdt#,'-','')||'000000' and replace(#m_edt#,'-','')||'235959'
+    
+    	select 	mi.m_area, mi.m_no, 
+			    mi.m_name, mi.m_status, mi.m_gender,
+			    mi.m_birth_dt, 
+			    mi.m_tel_no, mi.m_cell_no, 
+			    mi.m_addr, mi.m_entry_dt,
+			    mi.m_dly_cnt, mi.m_cmt, 
+			    mi.m_reg_dt, mi.m_reg_id, 
+			    mi.m_mdf_dt, mi.m_mdf_id, lh.m_loan_cnt
+ 		from (
+			select 
+			    m_area, m_no, 
+			    m_name, m_status, m_gender,
+			    m_birth_dt, 
+			    m_tel_no, m_cell_no, 
+			    m_email, m_addr, 
+			    m_entry_dt, m_mbr_cd,
+			    m_dly_cnt, m_cmt, 
+			    m_reg_dt, m_reg_id, 
+			    m_mdf_dt, m_mdf_id
+			from 
+			    member_info 
+			where m_area = #m_area# 
+			<isNotEmpty prepend="" property="m_sdt">
+				<isNotEmpty prepend="and" property="m_edt">
+					m_entry_dt between replace(#m_sdt#,'-','')||'000000' and replace(#m_edt#,'-','')||'235959'
+				</isNotEmpty>
 			</isNotEmpty>
-		</isNotEmpty>
-        <isNotEmpty prepend="and" property="m_no">
-            m_no = #m_no#
-        </isNotEmpty>
-        <isNotEmpty prepend="and" property="m_name">
-            m_name = #m_name#
-        </isNotEmpty>
-        <isNotEmpty prepend="and" property="m_status">
-            m_status = #m_status#
-        </isNotEmpty>
-        <isNotEmpty prepend="and" property="m_birth_dt">
-            m_birth_dt = #m_birth_dt#
-        </isNotEmpty>
-        <isNotEmpty prepend="and" property="m_cell_no">
-            m_cell_no like '%'||#m_cell_no#
-        </isNotEmpty>
-        <isNotEmpty prepend="and" property="m_tel_no">
-            m_tel_no like '%'||#m_tel_no#
-        </isNotEmpty>
-		    
+	        <isNotEmpty prepend="and" property="m_no">
+	            m_no like '%'||#m_no#
+	        </isNotEmpty>
+	        <isNotEmpty prepend="and" property="m_name">
+	            m_name like '%'||#m_name#
+	        </isNotEmpty>
+	        <isNotEmpty prepend="and" property="m_status">
+	            m_status = #m_status#
+	        </isNotEmpty>
+	        <isNotEmpty prepend="and" property="m_birth_dt">
+	            m_birth_dt = #m_birth_dt#
+	        </isNotEmpty>
+	        <isNotEmpty prepend="and" property="m_phone_no">
+    	        (m_cell_no like '%'||#m_phone_no# or m_tel_no like '%'||#m_phone_no#)
+        	</isNotEmpty>
+	        
+        ) mi, (
+			select m_no, count(m_book_no) as m_loan_cnt 
+			from loan_history where m_area = #m_area# and m_status='2' 
+			group by m_no        
+        ) lh
+		where mi.m_no = lh.m_no(+)    
 	</sql>
 	    
     <select id="selectMemberInfo" resultClass="MemberInfoDTO">
@@ -91,6 +103,7 @@
     <update id="updateMemberInfo" parameterClass="MemberInfoDTO">
         update member_info set
         	m_name = #m_name#
+        	, m_gender = #m_gender#
         	, m_status = #m_status#
         	, m_birth_dt = #m_birth_dt#
         	, m_calr_tp = #m_calr_tp#
@@ -109,12 +122,12 @@
     <!-- 회원 등록 -->
     <insert id="insertMemberInfo" parameterClass="MemberInfoDTO">
         insert into member_info (
-        	m_area, m_no, m_name, m_status, m_birth_dt, 
+        	m_area, m_no, m_name, m_status, m_birth_dt, m_gender, 
         	m_calr_tp, m_tel_no, m_cell_no, m_email, m_addr, 
         	m_entry_dt, m_mbr_cd, m_cmt, m_reg_dt, 
         	m_reg_id, m_mdf_dt, m_mdf_id)
         values(
-        	#m_area#,     #m_no#,     #m_name#,    #m_status#, #m_birth_dt#, 
+        	#m_area#,     #m_no#,     #m_name#,    #m_status#, #m_birth_dt#, #m_gender#,
         	#m_calr_tp#,  #m_tel_no#, #m_cell_no#, #m_email#,  #m_addr#, 
         	#m_entry_dt#, #m_mbr_cd#, #m_cmt#,    #m_reg_dt#, 
         	#m_reg_id#,   #m_mdf_dt#, #m_mdf_id#)

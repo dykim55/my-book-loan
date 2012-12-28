@@ -44,7 +44,7 @@
                     {name:'m_loan_st',	index:'m_loan_st',	width:40,	align:'center', formatter:'select',  edittype:'select', editoptions: {value: '<%=CodeSelect.makeEditOption("003") %>'}},
                     {name:'m_cmt',		index:'m_cmt',		width:0,	align:'center', hidden:true}
                 ],
-                rowNum:10,
+                rowNum:20,
                 rowList:[10,20,50],
                 pager: '#pager',
                 jsonReader : {
