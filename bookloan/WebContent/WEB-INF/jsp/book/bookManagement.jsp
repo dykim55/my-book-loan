@@ -32,7 +32,7 @@
             	url:  "${pageContext.request.contextPath}/book/searchBookInfo.ajax",
             	datatype: "json",
             	mtype: 'POST',
-                colNames:['도서번호','도서제목','저자','출판사','장르','구입일자','도서상태','대출여부','비고'],
+                colNames:['도서번호','도서제목','저자','출판사','장르','구입일자','도서상태','대출여부','비고','대출회원'],
                 colModel:[
                     {name:'m_book_no',	index:'m_book_no',	width:50, 	align:'center'}, 
                     {name:'m_title',	index:'m_title', 	width:200, 	align:'center'},
@@ -42,7 +42,8 @@
                     {name:'m_buy_dt',	index:'m_buy_dt',	width:80,	align:'center', formatter:dateFormatter},
                     {name:'m_status',	index:'m_status',	width:40,	align:'center', formatter:'select',  edittype:'select', editoptions: {value: '<%=CodeSelect.makeEditOption("002") %>'}},
                     {name:'m_loan_st',	index:'m_loan_st',	width:40,	align:'center', formatter:'select',  edittype:'select', editoptions: {value: '<%=CodeSelect.makeEditOption("003") %>'}},
-                    {name:'m_cmt',		index:'m_cmt',		width:0,	align:'center', hidden:true}
+                    {name:'m_cmt',		index:'m_cmt',		width:0,	align:'center', hidden:true},
+                    {name:'m_no',		index:'m_no',		width:0,	align:'center', hidden:true}
                 ],
                 rowNum:20,
                 rowList:[10,20,50],
@@ -55,7 +56,25 @@
                 forceFit : true,
                 caption:'도서목록',
                 height: '100%',
-                width: '1200'
+                width: '1200',
+                loadComplete: function() {
+                    var rowIDs = $(this).getDataIDs(); 
+                    for (var i=0;i<rowIDs.length;i=i+1) { 
+                        rowData=$(this).getRowData(rowIDs[i]);
+                        var trElement = jQuery("#"+ rowIDs[i],$(this));
+                        if (eval(rowData.m_loan_st) == '2') {
+                            trElement.removeClass('ui-widget-content');
+                            trElement.addClass('mStatus2');
+                        }
+                    }
+                },
+                ondblClickRow: function (rowid, iRow, iCol, e) {
+                	if (grid.getCell(rowid, 10).length >= 6) {
+                		$("#m_no").val(grid.getCell(rowid, 10));
+                        frm.submit();
+                	}
+                }                
+                
             });
 
             $( "#dialog-form-registration" ).dialog({
@@ -177,6 +196,25 @@
                 $('#'+event.target.id).select();
             });
             
+            $('#m_sdt, #m_edt, #m_book_no, #m_title, #m_author, #m_publisher').keydown(function(e) {
+                if (e.keyCode==13) {
+                    grid.jqGrid('setGridParam',    {
+                    	page:1
+                		,postData:{
+                			m_sdt:$("#m_sdt").val(),
+                			m_edt:$("#m_edt").val(),
+                			m_book_no:$("#m_book_no").val(), 
+                			m_title:$("#m_title").val(),
+                			m_author:$("#m_author").val(),
+                			m_publisher:$("#m_publisher").val(),
+                			m_genre:$("#m_genre").val(),
+                			m_status:$("#m_status").val()
+                		}
+                    }).trigger("reloadGrid");
+                    return false;
+                }
+            });
+            
         });
         //]]>
         
@@ -291,7 +329,6 @@
            </tbody>
        </table>
 	<div id="pager"></div>
-	
 </div>
 
 <div id="dialog-form-registration" title="도서정보 등록">
@@ -341,7 +378,9 @@
 			</tbody>
 		</table>
 	</div>
-
+	<form name="frm" method="post" action="${pageContext.request.contextPath}/loan/loanView.do">
+		<input type="hidden" id="m_no" name="m_no"  />
+	</form>
 </div>
 
 </body>

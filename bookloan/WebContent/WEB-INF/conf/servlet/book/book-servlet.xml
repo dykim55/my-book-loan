@@ -22,4 +22,10 @@
         <property name="failure"><value>common/error.jsp</value></property>
     </bean>
 
+	<bean name="/book/moveLoanHistory.ajax" class="com.company.book.book.BookController">
+	    <property name="bookService" ref="bookService" />
+	    <property name="success"><value>redirect:/loan/loanView.do</value></property>
+		<property name="failure"><value>common/error.jsp</value></property>
+	</bean>
+
 </beans>

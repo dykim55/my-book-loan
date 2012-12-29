@@ -68,6 +68,10 @@
                             trElement.addClass('mStatus2');
                         }
                     }
+                },
+                ondblClickRow: function (rowid, iRow, iCol, e) {
+               		$("#m_no").val(grid.getCell(rowid, 1));
+                    frm.submit();
                 }                
                 
             });
@@ -293,7 +297,8 @@
 <div align=center>
 
     <div class="title">◆ 회원관리</div>
-        
+
+<form name="frm" method="post" action="${pageContext.request.contextPath}/loan/loanView.do">
     <div style="width:1200px;">
     <div style="position: relative; height: 32px;" class="ui-widget">
         <div class="ui-dialog-content ui-widget-content search_box" style="background: none; border: 0;">
@@ -332,6 +337,8 @@
         </div>
     </div>
     </div>
+</form>
+
     <div class="grid_box clfix">
         <div class="g_areaL clfix">
             <button id="onBtnReg">회원등록</button>

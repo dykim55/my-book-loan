@@ -33,40 +33,49 @@
         	gridM.jqGrid({
             	datatype: "json",
             	mtype: 'POST',
-            	colNames:['회원번호','회원명','생년월일','양/음','전화번호','휴대폰번호',''],
+            	colNames:['회원번호','회원명','성별','생년월일','전화번호','휴대폰번호','주   소',''],
                 colModel:[
-                    {name:'m_no',       index:'m_no',       width:50,   align:'center'}, 
-                    {name:'m_name',     index:'m_name',     width:60,   align:'center'},
-                    {name:'m_birth_dt', index:'m_birth_dt', width:60,   align:'center', formatter:dateFormatter},
-                    {name:'m_calr_tp',  index:'m_calr_tp',  width:30,   align:'center', formatter:'select',  edittype:'select', editoptions: {value: '1:양력;2:음력', defaultValue:'양력'}},
-                    {name:'m_tel_no',   index:'m_tel_no',   width:70,   align:'center', formatter:phoneFormatter},
-                    {name:'m_cell_no',  index:'m_cell_no',  width:70,   align:'center', formatter:phoneFormatter},
+                    {name:'m_no',       index:'m_no',       width:10,   align:'center'}, 
+                    {name:'m_name',     index:'m_name',     width:10,   align:'center'},
+                    {name:'m_gender',   index:'m_gender',   width:5,   align:'center', formatter:'select',  edittype:'select', editoptions: {value: '1:남;2:여', defaultValue:'남'}},
+                    {name:'m_birth_dt', index:'m_birth_dt', width:12,   align:'center', formatter:dateFormatter},
+                    {name:'m_tel_no',   index:'m_tel_no',   width:13,   align:'center', formatter:phoneFormatter},
+                    {name:'m_cell_no',  index:'m_cell_no',  width:13,   align:'center', formatter:phoneFormatter},
+                    {name:'m_addr',     index:'m_addr',     width:37,   align:'left'},
                     {name:'m_loan_cnt', index:'m_loan_cnt', width:0,    align:'center', hidden:true}
                 ],
                 jsonReader : {
                 	repeatitems:false
                 },
+                rowNum:10,
+                rowList:[10,20,50],
+                pager: '#mpager',
+                viewrecords: true,
                 rownumbers:true,
                 forceFit : true,
                 caption:'회원정보',
-                height: '100',
-                width: '580',
+                height: '100%',
+                width: '780',
                 loadComplete: function () {
                     var count = gridM.jqGrid('getGridParam','reccount');
                     if (count == 1) {
                         gridH.jqGrid('setGridParam',    {
                         	url:"${pageContext.request.contextPath}/loan/searchLoanHistory.ajax"
+                        	,page:1
                             ,postData:{
                                 m_no:gridM.getCell(1, 1)
                             }
                         }).trigger("reloadGrid");
+                        $("#mpager").hide();
                     } else {
                     	gridH.jqGrid('clearGridData');
+                    	$("#mpager").show();
                     }
                 },
                 ondblClickRow: function (rowid, iRow, iCol, e) {
-                    gridM.jqGrid('setGridParam',    { 
-                        postData:{
+                    gridM.jqGrid('setGridParam', {
+                    	page:1
+                        ,postData:{
                             m_no:gridM.getCell(iRow, 1)
                         }
                     }).trigger("reloadGrid");
@@ -76,7 +85,7 @@
             gridB.jqGrid({
                 datatype: "json",
                 mtype: 'POST',
-                colNames:['상태','도서번호','제  목','저  자','회수예정일',''],
+                colNames:['상태','도서번호','제  목','저  자','회수예정일','','회원'],
                 colModel:[
                     {name:'m_loan_st',     index:'m_loan_st',     width:40,  align:'center', formatter:'select',  edittype:'select', editoptions: {value: '<%=CodeSelect.makeEditOption("003") %>'}},      
                     {name:'m_book_no',     index:'m_book_no',     width:60,  align:'center'}, 
@@ -91,16 +100,21 @@
                         		return "";
                         	}
                         }
-                    }
+                    },
+                    {name:'m_no',       index:'m_no',       width:0, align:'left', hidden:true},
                 ],
                 jsonReader : {
                     repeatitems:false
                 },
+                rowNum:20,
+                rowList:[10,20,50],
+                pager: '#bpager',
+                viewrecords: true,
                 rownumbers:true,
                 forceFit : true,
                 caption:'도서정보',
-                height: '100',
-                width: '580',
+                height: '100%',
+                width: '780',
                 loadComplete: function() {
                     var rowIDs = $(this).getDataIDs(); 
                     for (var i=0;i<rowIDs.length;i=i+1) { 
@@ -122,7 +136,7 @@
                     			return true;
                     		}
                     		
-                    		count = gridM.getCell(1, 7);
+                    		count = gridM.getCell(1, 8);
                     		if (count >= 3) {
                                 alert("대출건수가 이미 3건이상입니다.");
                                 return true;
@@ -158,23 +172,30 @@
                     return (iCol == 6) ? false : true;
                 },
                 ondblClickRow: function (rowid, iRow, iCol, e) {
+                    gridM.jqGrid('setGridParam', {
+                    	page:1
+                        ,postData:{
+                            m_no:gridB.getCell(iRow, 7)
+                        }
+                    }).trigger("reloadGrid");
                 }                
             });
         	
             gridH.jqGrid({
                 datatype: "json",
                 mtype: 'POST',
-                colNames:['대출일시','상태','도서번호','제   목','저   자','출판사','장   르','회수예정일','회수','연장'],
+                colNames:['대출일시','상태','도서번호','제   목','저   자','출판사','회수완료일','회수예정일','회수','연장'],
                 colModel:[
-                    {name:'m_loan_dt',     index:'m_loan_dt',     width:12,  align:'center', formatter:dateFormatter}, 
-                    {name:'m_status',      index:'m_status',      width: 8,  align:'center', formatter:'select',  edittype:'select', editoptions: {value: '<%=CodeSelect.makeEditOption("003") %>'}},
-                    {name:'m_book_no',     index:'m_book_no',     width:10,  align:'center'},
-                    {name:'m_title',       index:'m_title',       width:22,  align:'left'},
-                    {name:'m_author',      index:'m_author',      width:10,  align:'center'},
-                    {name:'m_publisher',   index:'m_publisher',   width:10,  align:'center'},
-                    {name:'m_genre',       index:'m_genre',       width: 8,  align:'center', formatter:'select',  edittype:'select', editoptions: {value: '<%=CodeSelect.makeEditOption("004") %>'}},
+                    {name:'m_loan_dt',     index:'m_loan_dt',     width:16,  align:'center', formatter:dateFormatter}, 
+                    {name:'m_status',      index:'m_status',      width:8,  align:'center', formatter:'select',  edittype:'select', editoptions: {value: '<%=CodeSelect.makeEditOption("003") %>'}},
+                    {name:'m_book_no',     index:'m_book_no',     width:8,  align:'center'},
+                    {name:'m_title',       index:'m_title',       width:26,  align:'left', cellattr: function (rowId, val, rawObject, cm, rdata) { return 'title="저   자: ' + rawObject.m_author + '\n출판사: ' + rawObject.m_publisher + '"'; }},
+                    {name:'m_author',      index:'m_author',      width:0,  align:'center', hidden:true},
+                    {name:'m_publisher',   index:'m_publisher',   width:0,  align:'center', hidden:true},
+                 /* {name:'m_genre',       index:'m_genre',       width:0,  align:'center', hidden:true, formatter:'select',  edittype:'select', editoptions: {value: '<%=CodeSelect.makeEditOption("004") %>'}}, */
+                    {name:'m_real_rcv_dt', index:'m_real_rcv_dt', width:16,  align:'center', formatter:dateFormatter},
                     {name:'m_rcv_plan_dt', index:'m_rcv_plan_dt', width:10,  align:'center', formatter:dateFormatter},
-                    {name:'action',                               width: 5,  align:'center', sortable: false,
+                    {name:'action',                               width:8,  align:'center', sortable: false,
                         formatter:function(cellval, opts, rwdat, _act) {
                             if (rwdat.m_status >= "2") {
                                 return "<span style=\"cursor:pointer;\"><u>회수처리</u></span>"
@@ -183,7 +204,7 @@
                             }
                         }
                     },
-                    {name:'action',                               width: 5,  align:'center', sortable: false,
+                    {name:'action',                               width:8,  align:'center', sortable: false,
                         formatter:function(cellval, opts, rwdat, _act) {
                             if (rwdat.m_status >= "2") {
                                 return "<span style=\"cursor:pointer;\"><u>연장처리</u></span>"
@@ -196,7 +217,7 @@
                 jsonReader : {
                     repeatitems:false
                 },
-                rowNum:10,
+                rowNum:20,
                 rowList:[10,20,50],
                 pager: '#hpager',
                 rownumbers:true,
@@ -204,7 +225,7 @@
                 forceFit : true,
                 caption:'대출이력정보',
                 height: '100%',
-                width: '1160',
+                width: '780',
                 beforeSelectRow: function (rowid, e) {
                     var iCol = $.jgrid.getCellIndex(e.target);
                     var confirmMsg = "";
@@ -272,6 +293,7 @@
                 if (e.keyCode==13) {
                     gridM.jqGrid('setGridParam',    {
                     	url:"${pageContext.request.contextPath}/loan/searchMemberInfo.ajax"
+                    	,page:1
                         ,postData:{
                             m_no:$("#m_no").val(), 
                             m_name:$("#m_name").val(),
@@ -289,6 +311,7 @@
             		}
                     gridB.jqGrid('setGridParam',    {
                     	url:"${pageContext.request.contextPath}/loan/searchBookInfo.ajax"
+                    	,page:1
                         ,postData:{
                         	m_book_no:$("#m_book_no").val(), 
                         	m_title:$("#m_title").val(),
@@ -301,6 +324,13 @@
             $("#m_no, #m_name, #m_phone_no,#m_title,#m_author,#m_book_no").focus(function(event) {
                 $('#'+event.target.id).select();
             });
+            
+            gridM.jqGrid('setGridParam', {
+            	url:"${pageContext.request.contextPath}/loan/searchMemberInfo.ajax"
+                ,postData:{
+                    m_no:'${m_no}' 
+                }
+            }).trigger("reloadGrid");
             
         });
         //]]>
@@ -375,9 +405,9 @@
 
     <div class="title"></div>
     
-    <div style="width:1200px;">
+    <div style="width:1600px;">
 	    <div style="float:left; background:none; width:50%; border: 0;">
-            <div class="ui-dialog-content ui-widget-content search_box" style="margin: 15px; background: none; border: 0;">
+            <div class="ui-dialog-content ui-widget-content search_box" style="margin: 15px; background:none; border: 0;">
 	            <table>
 	                <colgroup>
 	                    <col style="width:14%;" />
@@ -390,7 +420,7 @@
 	                <tbody>
 	                    <tr>
 	                        <th>회원번호</th>
-	                        <td><input class="text" type="text" style="width:100%" id="m_no" name="m_no" /></td>
+	                        <td><input class="text" type="text" style="width:100%" id="m_no" name="m_no" value="${m_no}"/></td>
 	                        <th>회원명</th>
 	                        <td><input class="text" type="text" style="width:100%" id="m_name" name="m_name" /></td>
 	                        <th>전화번호</th>
@@ -406,7 +436,20 @@
                     </tr>
                 </tbody>
             </table>
+            <div id="mpager"></div>
+
+		    <div style="padding:25px 0px 5px 0px; background:none; width:800px; border: 0;">
+	            <table id="listHistory">
+	                <tbody>
+	                    <tr>
+	                        <td></td>
+	                    </tr>
+	                </tbody>
+	            </table>
+	            <div id="hpager"></div>
+	        </div>
 	    </div>
+
 	    <div style="float:right; background:none; width:50%; border: 0;">
             <div class="ui-dialog-content ui-widget-content search_box" style="margin: 15px; background: none; border: 0;">
                 <table>
@@ -439,17 +482,6 @@
             </table>
             <div id="bpager"></div>
 	    </div>
-	    
-	    <div style="padding:25px 5px 5px 5px; clear:left; background:none; width:1160px; border: 0;">
-            <table id="listHistory">
-                <tbody>
-                    <tr>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
-            <div id="hpager"></div>
-        </div>
 	    
 	</div>
 </div>
