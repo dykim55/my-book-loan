@@ -36,11 +36,11 @@
         ) T
     </sql>
     
-    <select id="selectMemberInfo" resultClass="MemberInfoDTO">
+    <sql id="sqlMemberInfo">
         SELECT 
             mi.m_area, mi.m_no, 
             mi.m_name, mi.m_status, 
-            mi.m_birth_dt, mi.m_calr_tp, 
+            mi.m_birth_dt, mi.m_calr_tp, m_gender, 
             mi.m_tel_no, mi.m_cell_no, 
             mi.m_email, mi.m_addr, 
             mi.m_entry_dt, mi.m_mbr_cd, 
@@ -61,13 +61,26 @@
             (mi.m_cell_no like '%'||#m_phone_no# or mi.m_tel_no like '%'||#m_phone_no#)
         </isNotEmpty>
             
+    </sql>
+	    
+    <select id="selectMemberInfo" resultClass="MemberInfoDTO">
+        <include refid="pagingQueryTop" />
+        <include refid="sqlMemberInfo"/>
+        <include refid="pagingQueryBottom"/>
+    </select>
+    
+    <select id="selectMemberInfo-count" parameterClass="MemberInfoDTO" resultClass="MemberInfoDTO">
+        <include refid="countQueryTop" />
+        <include refid="sqlMemberInfo"/>
+        <include refid="countQueryBottom"/>
     </select>
 	    
-    <select id="selectBookInfo" resultClass="BookInfoDTO">
+	    
+    <sql id="sqlBookInfo">
         select 
             m_area, m_book_no, 
             m_genre, m_title, 
-            m_author, m_publisher, 
+            m_author, m_publisher, m_no,
             m_buy_dt, m_cmt, 
             m_status, m_loan_st, m_rcv_plan_dt,
             m_reg_dt, m_reg_id, 
@@ -86,6 +99,18 @@
             m_author like '%'||#m_author#
         </isNotEmpty>
             
+    </sql>
+
+    <select id="selectBookInfo" resultClass="BookInfoDTO">
+        <include refid="pagingQueryTop" />
+        <include refid="sqlBookInfo"/>
+        <include refid="pagingQueryBottom"/>
+    </select>
+    
+    <select id="selectBookInfo-count" parameterClass="BookInfoDTO" resultClass="BookInfoDTO">
+        <include refid="countQueryTop" />
+        <include refid="sqlBookInfo"/>
+        <include refid="countQueryBottom"/>
     </select>
 
 
@@ -133,9 +158,11 @@
             m_loan_st = #m_loan_st#
         <isEqual property="m_loan_st" compareValue="2">
             ,m_rcv_plan_dt = TO_CHAR(ADDDATE(SYSDATE,7),'YYYYMMDD')
+            ,m_no = #m_no#
         </isEqual>
         <isEqual property="m_loan_st" compareValue="1">
             ,m_rcv_plan_dt = ''
+            ,m_no = ''
         </isEqual>
         where m_area = #m_area#
             and m_book_no = #m_book_no#

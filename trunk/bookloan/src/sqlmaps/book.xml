@@ -40,7 +40,7 @@
 		    m_genre, m_title, 
 		    m_author, m_publisher, 
 		    m_buy_dt, m_cmt, 
-		    m_status, m_loan_st, 
+		    m_status, m_loan_st, m_no,
 		    m_reg_dt, m_reg_id, 
 		    m_mdf_dt, m_mdf_id 
 		from 

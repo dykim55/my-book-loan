@@ -13,6 +13,7 @@ public class BookInfoDTO extends PagingBean {
     private String m_cmt; 
     private String m_status; 
     private String m_loan_st;
+    private String m_no;
     private String m_rcv_plan_dt;
     private String m_reg_dt; 
     private String m_reg_id; 
@@ -130,6 +131,12 @@ public class BookInfoDTO extends PagingBean {
 	}
 	public void setM_rcv_plan_dt(String m_rcv_plan_dt) {
 		this.m_rcv_plan_dt = m_rcv_plan_dt;
+	}
+	public String getM_no() {
+		return m_no;
+	}
+	public void setM_no(String m_no) {
+		this.m_no = m_no;
 	}
 
     

@@ -25,7 +25,10 @@ public class LoanController extends SIVController {
 	private ILoanService loanService;
 	
 	public ModelAndView loanView(HttpServletRequest req, HttpServletResponse res) throws Exception {
-		return new ModelAndView(this.success);
+		LoanHistoryDTO dto = (LoanHistoryDTO) DataUtils.dtoBuilder(req, LoanHistoryDTO.class);
+		ModelMap map =  new ModelMap();
+		map.put("m_no", dto.getM_no());
+		return new ModelAndView(this.success, map);
 	}
 	
 	public ModelAndView searchMemberInfo( HttpServletRequest req, HttpServletResponse res) throws Exception {

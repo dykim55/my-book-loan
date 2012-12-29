@@ -15,11 +15,13 @@ public class LoanService implements ILoanService {
 
 	@SuppressWarnings("unchecked")
 	public List<MemberInfoDTO> searchMemberInfo(MemberInfoDTO dto) throws Exception {
+		dto.searchRowCount(connection, "loan.selectMemberInfo-count");
 		return connection.queryForList("loan.selectMemberInfo", dto);
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<BookInfoDTO> searchBookInfo(BookInfoDTO dto) throws Exception {
+		dto.searchRowCount(connection, "loan.selectBookInfo-count");
 		return connection.queryForList("loan.selectBookInfo", dto);
 	}
 	
@@ -47,6 +49,7 @@ public class LoanService implements ILoanService {
 			bookDto.setM_area(dto.getM_area());
 			bookDto.setM_book_no(dto.getM_book_no());
 			bookDto.setM_loan_st(dto.getM_status());
+			bookDto.setM_no(dto.getM_no());
 			int applyCnt = connection.update("loan.updateBookInfo", bookDto);
 			
 		} catch (SQLException e) {
