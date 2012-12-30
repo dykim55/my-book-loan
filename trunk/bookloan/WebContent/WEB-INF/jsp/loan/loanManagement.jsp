@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     
-    <title>도서관리</title>
+    <title>대출관리</title>
     
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
@@ -172,12 +172,14 @@
                     return (iCol == 6) ? false : true;
                 },
                 ondblClickRow: function (rowid, iRow, iCol, e) {
-                    gridM.jqGrid('setGridParam', {
-                    	page:1
-                        ,postData:{
-                            m_no:gridB.getCell(iRow, 7)
-                        }
-                    }).trigger("reloadGrid");
+                	if (gridB.getCell(rowid, 7).length >= 6) {
+	                    gridM.jqGrid('setGridParam', {
+	                    	page:1
+	                        ,postData:{
+	                            m_no:gridB.getCell(iRow, 7)
+	                        }
+	                    }).trigger("reloadGrid");
+                	}
                 }                
             });
         	
@@ -392,7 +394,7 @@
 
 <div id="outer">
     <ul id="menu">
-        <li class="sub" id="no1"><a href="#">대출현황</a></li>
+        <li class="sub" id="no1"><a href="${pageContext.request.contextPath}/present/presentView.do">대출현황</a></li>
         <li class="sub" id="no2"><a class="select" href="#">대출관리</a></li>
         <li class="sub" id="no3"><a href="${pageContext.request.contextPath}/book/bookView.do">도서관리</a></li>
         <li class="sub" id="no4"><a href="${pageContext.request.contextPath}/member/memberView.do">회원관리</a></li>
@@ -429,14 +431,16 @@
 	                </tbody>
 	            </table>
             </div>
-			<table id="listMember">
-                <tbody>
-                    <tr>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
+            <div style="padding:5px 0px 5px 0px; background:none; width:800px; border: 0;">
+				<table id="listMember">
+	                <tbody>
+	                    <tr>
+	                        <td></td>
+	                    </tr>
+	                </tbody>
+	            </table>
             <div id="mpager"></div>
+            </div>
 
 		    <div style="padding:25px 0px 5px 0px; background:none; width:800px; border: 0;">
 	            <table id="listHistory">
@@ -473,14 +477,16 @@
                     </tbody>
                 </table>
             </div>
-            <table id="listBook">
-                <tbody>
-                    <tr>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
+            <div style="padding:5px 0px 5px 0px; background:none; width:800px; border: 0;">
+	            <table id="listBook">
+	                <tbody>
+	                    <tr>
+	                        <td></td>
+	                    </tr>
+	                </tbody>
+	            </table>
             <div id="bpager"></div>
+            </div>
 	    </div>
 	    
 	</div>

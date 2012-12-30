@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <!-- 대출현황뷰 -->
+    <bean name="/present/presentView.do" class="com.company.book.present.PresentController">
+        <property name="success"><value>/WEB-INF/jsp/present/loanPresent.jsp</value></property>
+    </bean>
+
+    <!-- 대출현황조회 -->
+    <bean name="/present/searchLoanHistory.ajax" class="com.company.book.present.PresentController">
+        <property name="presentService" ref="presentService" />
+        <property name="success"><value>jsonView</value></property>
+        <property name="failure"><value>common/error.jsp</value></property>
+    </bean>
+
+</beans>

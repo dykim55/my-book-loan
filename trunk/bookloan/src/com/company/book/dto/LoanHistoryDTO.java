@@ -15,6 +15,7 @@ public class LoanHistoryDTO extends PagingBean {
     private String m_reg_id; 
     private String m_mdf_dt; 
     private String m_mdf_id;
+    private String m_name;
     
     private String m_title;
     private String m_author;
@@ -116,6 +117,12 @@ public class LoanHistoryDTO extends PagingBean {
 	}
 	public void setM_genre(String m_genre) {
 		this.m_genre = m_genre;
+	}
+	public String getM_name() {
+		return m_name;
+	}
+	public void setM_name(String m_name) {
+		this.m_name = m_name;
 	} 
 	
 
