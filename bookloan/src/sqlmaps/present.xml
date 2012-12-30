@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="present">
+
+    <typeAlias alias="MemberInfoDTO" type="com.company.book.dto.MemberInfoDTO"/>
+    <typeAlias alias="BookInfoDTO" type="com.company.book.dto.BookInfoDTO"/>
+    <typeAlias alias="LoanHistoryDTO" type="com.company.book.dto.LoanHistoryDTO"/>
+    
+    <sql id="pagingQueryTop">
+    <![CDATA[
+        SELECT * FROM (
+            SELECT
+                ROWNUM AS PAGING_RNUM,
+                PAGING_A.*
+            FROM
+                (
+    ]]>
+    </sql>
+    
+    <sql id="pagingQueryBottom">
+    <![CDATA[
+        ) PAGING_A
+        WHERE
+            ROWNUM <= #rows# * #page#
+        ) PAGING_B
+        WHERE PAGING_RNUM > (#rows# * (#page# - 1))
+    ]]>
+    </sql>
+
+    <sql id="countQueryTop">
+        SELECT COUNT(*) as records FROM (
+    </sql>
+
+    <sql id="countQueryBottom">
+        ) T
+    </sql>
+    
+    <sql id="sqlLoanHistory">
+		select 
+		    lh.m_loan_dt, 
+		    lh.m_book_no, 
+		    lh.m_no, 
+		    (select m_name from member_info where m_no = lh.m_no) as m_name,
+		    lh.m_rcv_plan_dt, 
+		    lh.m_real_rcv_dt, 
+		    case WHEN lh.m_status = '2' AND sysdate > to_datetime(lh.m_rcv_plan_dt||'235959','yyyymmddhh24miss') then '3' else lh.m_status END AS m_status,
+		    lh.m_rcv_tp, 
+		    lh.m_reg_dt, 
+		    lh.m_reg_id, 
+		    lh.m_mdf_dt, 
+		    lh.m_mdf_id,
+		    bi.m_title,
+		    bi.m_author,
+		    bi.m_publisher,
+		    bi.m_genre 
+		from 
+		    loan_history lh, book_info bi
+        where lh.m_area = bi.m_area 
+            and lh.m_book_no = bi.m_book_no 
+            and lh.m_area = #m_area#
+            <isNotEmpty prepend="AND" property="m_no">
+                lh.m_no = #m_no#
+            </isNotEmpty>
+        order by lh.m_loan_dt desc
+    </sql>
+
+    <select id="selectLoanHistory" resultClass="LoanHistoryDTO">
+        <include refid="pagingQueryTop" />
+        <include refid="sqlLoanHistory"/>
+        <include refid="pagingQueryBottom"/>
+    </select>
+    
+    <select id="selectLoanHistory-count" parameterClass="LoanHistoryDTO" resultClass="LoanHistoryDTO">
+        <include refid="countQueryTop" />
+        <include refid="sqlLoanHistory"/>
+        <include refid="countQueryBottom"/>
+    </select>
+	    
+</sqlMap>

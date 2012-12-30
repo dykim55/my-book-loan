@@ -20,4 +20,5 @@
     <sqlMap resource="sqlmaps/member.xml"/>
     <sqlMap resource="sqlmaps/book.xml"/>
     <sqlMap resource="sqlmaps/loan.xml"/>
+    <sqlMap resource="sqlmaps/present.xml"/>
 </sqlMapConfig>
