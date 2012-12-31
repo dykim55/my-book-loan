@@ -34,9 +34,36 @@ public class PresentController extends SIVController {
 		UserSession session = UserSessionManager.getUserSession(req);
 		dto.setM_area(session.getArea());
 
+		if (dto.getM_search_value() != null && dto.getM_search_value().length() > 0) {
+			if (dto.getM_search_tp().equals("1")) {
+				dto.setM_title(dto.getM_search_value());
+			} else if (dto.getM_search_tp().equals("2")) {
+				dto.setM_name(dto.getM_search_value());
+			} else if (dto.getM_search_tp().equals("3")) {
+				dto.setM_tel_no(dto.getM_search_value());
+			}
+		}
+		
 		List<LoanHistoryDTO> list = null;
 		
 		list = presentService.searchLoanHistory(dto);
+		
+		ModelMap map =  dto.createModelMap(list);
+		
+		return new ModelAndView(this.success, map);
+	}
+
+	public ModelAndView searchRcvPresent( HttpServletRequest req, HttpServletResponse res) throws Exception {
+		
+		LoanHistoryDTO dto = (LoanHistoryDTO) DataUtils.dtoBuilder(req, LoanHistoryDTO.class);
+		dto.setSessionData(req);
+		
+		UserSession session = UserSessionManager.getUserSession(req);
+		dto.setM_area(session.getArea());
+
+		List<LoanHistoryDTO> list = null;
+		
+		list = presentService.searchRcvPresent(dto);
 		
 		ModelMap map =  dto.createModelMap(list);
 		

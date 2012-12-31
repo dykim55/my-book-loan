@@ -21,6 +21,7 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jqGrid-4.4.1/ui.multiselect.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jqGrid-4.4.1/i18n/grid.locale-en.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jqGrid-4.4.1/jquery.jqGrid.src.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/utils.js"></script>
 
     <script type="text/javascript">
         //<![CDATA[
@@ -175,36 +176,12 @@
             
             //회원조회
             $("#onBtnSch").click(function () {
-            	grid.jqGrid('setGridParam',	{ 
-            		page:1
-            		,postData:{
-            			m_sdt:$("#m_sdt").val(),
-            			m_edt:$("#m_edt").val(),
-            			m_no:$("#m_no").val(), 
-            			m_name:$("#m_name").val(),
-            			m_birth_dt:$("#m_birth_dt").val(),
-            			m_phone_tp:$("#m_phone_tp").val(),
-            			m_phone_no:$("#m_phone_no").val(),
-            			m_status:$("#m_status").val()
-            		}
-            	}).trigger("reloadGrid");
+            	reloadGrid();
             });
             
             $('#m_sdt, #m_edt, #m_no, #m_name, #m_birth_dt, #m_phone_no').keydown(function(e) {
                 if (e.keyCode==13) {
-                    grid.jqGrid('setGridParam',    {
-                    	page:1
-                		,postData:{
-                			m_sdt:$("#m_sdt").val(),
-                			m_edt:$("#m_edt").val(),
-                			m_no:$("#m_no").val(), 
-                			m_name:$("#m_name").val(),
-                			m_birth_dt:$("#m_birth_dt").val(),
-                			m_phone_tp:$("#m_phone_tp").val(),
-                			m_phone_no:$("#m_phone_no").val(),
-                			m_status:$("#m_status").val()
-                		}
-                    }).trigger("reloadGrid");
+                	reloadGrid();
                     return false;
                 }
             });
@@ -213,8 +190,36 @@
                 $('#'+event.target.id).select();
             });
             
+            $("#m_sdt, #m_edt, #m_birth_dt, #m_status").change(function() {
+                if (($("#m_sdt").val().length > 0 && $("#m_edt").val().length == 0) ||
+           		   ($("#m_sdt").val().length == 0 && $("#m_edt").val().length > 0)) {
+                    return;
+                } else if (getDayInterval($("#m_sdt").val().replace(/\-/g,''), $("#m_edt").val().replace(/\-/g,'')) < 1) {
+                    alert("조회기간이 잘못됐습니다. 조회 종료일이 시작일보다 작습니다.");
+                    return;
+                } 
+
+                reloadGrid();
+            });
+            
         });
         //]]>
+        
+        function reloadGrid () {
+            grid.jqGrid('setGridParam', { 
+                page:1
+                ,postData:{
+                    m_sdt:$("#m_sdt").val(),
+                    m_edt:$("#m_edt").val(),
+                    m_no:$("#m_no").val(), 
+                    m_name:$("#m_name").val(),
+                    m_birth_dt:$("#m_birth_dt").val(),
+                    m_phone_tp:$("#m_phone_tp").val(),
+                    m_phone_no:$("#m_phone_no").val(),
+                    m_status:$("#m_status").val()
+                }
+            }).trigger("reloadGrid");
+       }
         
         $(function() {
             $("button").button();
@@ -285,7 +290,7 @@
 
 <div id="outer">
     <ul id="menu">
-        <li class="sub" id="no1"><a href="#">대출현황</a></li>
+        <li class="sub" id="no1"><a href="${pageContext.request.contextPath}/present/presentView.do">대출현황</a></li>
         <li class="sub" id="no2"><a href="${pageContext.request.contextPath}/loan/loanView.do">대출관리</a></li>
         <li class="sub" id="no3"><a href="${pageContext.request.contextPath}/book/bookView.do">도서관리</a></li>
         <li class="sub" id="no4"><a class="select" href="#">회원관리</a></li>
@@ -296,7 +301,7 @@
 
 <div align=center>
 
-    <div class="title">◆ 회원관리</div>
+    <div class="title"></div>
 
 <form name="frm" method="post" action="${pageContext.request.contextPath}/loan/loanView.do">
     <div style="width:1200px;">

@@ -21,27 +21,37 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jqGrid-4.4.1/ui.multiselect.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jqGrid-4.4.1/i18n/grid.locale-en.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jqGrid-4.4.1/jquery.jqGrid.src.js"></script>
-
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/utils.js"></script>
+    
     <script type="text/javascript">
         //<![CDATA[
         $(document).ready(function () {
 
-        	gridH = $("#listHistory");
+            $("#m_sdt").val(format_YYYYMMDD(shiftTime(getCurrentDay(), 0,-1,0,0),"-"));
+            $("#m_edt").val(format_YYYYMMDD(getCurrentDay(),"-"));
         	
-            gridH.jqGrid({
+        	grid = $("#listHistory");
+        	
+            grid.jqGrid({
             	url:"${pageContext.request.contextPath}/present/searchLoanHistory.ajax",
+            	postData:{
+                    m_sdt:$("#m_sdt").val(),
+                    m_edt:$("#m_edt").val()
+                },            	
                 datatype: "json",
                 mtype: 'POST',
-                colNames:['대출일시','상태','회원번호','회원명','도서번호','제   목','저   자','출판사','회수완료일','회수예정일','회수타입'],
+                colNames:['대출일시','상태','도서번호','제   목','저   자','출판사','회원번호','회원명','집전화번호','휴대폰번호','회수완료일','회수예정일','회수타입'],
                 colModel:[
                     {name:'m_loan_dt',     index:'m_loan_dt',     width:16, align:'center', formatter:dateFormatter}, 
                     {name:'m_status',      index:'m_status',      width:8,  align:'center', formatter:'select',  edittype:'select', editoptions: {value: '<%=CodeSelect.makeEditOption("003") %>'}},
-                    {name:'m_no',          index:'m_no',          width:10, align:'center'}, 
-                    {name:'m_name',        index:'m_name',        width:10, align:'center'},
                     {name:'m_book_no',     index:'m_book_no',     width:8,  align:'center'},
                     {name:'m_title',       index:'m_title',       width:26, align:'left', cellattr: function (rowId, val, rawObject, cm, rdata) { return 'title="저   자: ' + rawObject.m_author + '\n출판사: ' + rawObject.m_publisher + '"'; }},
                     {name:'m_author',      index:'m_author',      width:0,  align:'center', hidden:true},
                     {name:'m_publisher',   index:'m_publisher',   width:0,  align:'center', hidden:true},
+                    {name:'m_no',          index:'m_no',          width:10, align:'center'}, 
+                    {name:'m_name',        index:'m_name',        width:10, align:'center'},
+                    {name:'m_tel_no',      index:'m_tel_no',      width:14, align:'center', formatter:phoneFormatter},
+                    {name:'m_cell_no',     index:'m_cell_no',     width:14, align:'center', formatter:phoneFormatter},
                     {name:'m_real_rcv_dt', index:'m_real_rcv_dt', width:16, align:'center', formatter:dateFormatter},
                     {name:'m_rcv_plan_dt', index:'m_rcv_plan_dt', width:10, align:'center', formatter:dateFormatter},
                     {name:'m_rcv_tp',      index:'m_rcv_tp',      width:10, align:'center', formatter:'select',  edittype:'select', editoptions: {value: '<%=CodeSelect.makeEditOption("006") %>'}}
@@ -57,7 +67,7 @@
                 forceFit : true,
                 caption:'대출이력정보',
                 height: '100%',
-                width: '930',
+                width: '1200',
                 loadComplete: function() {
                     var rowIDs = $(this).getDataIDs(); 
                     for (var i=0;i<rowIDs.length;i=i+1) { 
@@ -66,35 +76,67 @@
                         if (rowData.m_status == '3') {
                             trElement.removeClass('ui-widget-content');
                             trElement.addClass('mStatus3');
-                        } else if (rowData.m_status == '2') {
+                        }
+                        
+                        if (getDayInterval(rowData.m_loan_dt.replace(/\-/g,'').substring(0,8), getCurrentDay()) <= 1) {
                             trElement.removeClass('ui-widget-content');
-                            trElement.addClass('mStatus2');
+                            trElement.addClass('mToday');
                         }
                     }
+                },
+                ondblClickRow: function (rowid, iRow, iCol, e) {
+                    $("#m_no").val(grid.getCell(rowid, 7));
+                    frm.submit();
                 }                
             });
-        	
-            $('#m_no, #m_name, #m_phone_no').keydown(function(e) {
+
+            $('#m_sdt, #m_edt, #m_rcv_plan_dt, #m_search_value').keydown(function(e) {
                 if (e.keyCode==13) {
-                    gridM.jqGrid('setGridParam',    {
-                    	url:"${pageContext.request.contextPath}/loan/searchMemberInfo.ajax"
-                    	,page:1
-                        ,postData:{
-                            m_no:$("#m_no").val(), 
-                            m_name:$("#m_name").val(),
-                            m_phone_no:$("#m_phone_no").val()
-                        }
-                    }).trigger("reloadGrid");
+                	reloadGrid();
+                    return false;
                 }
             });
-        	
-            $("#m_no, #m_name, #m_phone_no,#m_title,#m_author,#m_book_no").focus(function(event) {
+            
+            $("#m_sdt, #m_edt, #m_rcv_plan_dt, #m_search_value").focus(function(event) {
                 $('#'+event.target.id).select();
+            });
+            
+            $("#m_sdt, #m_edt, #m_rcv_plan_dt, #m_status").change(function() {
+            	if (getDayInterval($("#m_sdt").val().replace(/\-/g,''), $("#m_edt").val().replace(/\-/g,'')) < 1) {
+            	    alert("조회기간이 잘못됐습니다. 조회 종료일이 시작일보다 작습니다.");
+            	    return;
+            	}
+            	reloadGrid();
             });
             
         });
         //]]>
         
+        $(function() {
+            $("button").button();
+            $("#m_sdt, #m_edt, #m_rcv_plan_dt").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                yearRange: 'c-10:c',
+                dateFormat: 'yy-mm-dd',
+                monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+                dayNamesMin: ['일', '월', '화', '수', '목', '금', '토']
+            });            
+        });
+        
+         function reloadGrid () {
+             grid.jqGrid('setGridParam',    {
+                 page:1
+                 ,postData:{
+                     m_sdt:$("#m_sdt").val(),
+                     m_edt:$("#m_edt").val(),
+                     m_rcv_plan_dt:$("#m_rcv_plan_dt").val(),
+                     m_search_tp:$("#m_search_tp").val(),
+                     m_search_value:$("#m_search_value").val(),
+                     m_status:$("#m_status").val()
+                 }
+             }).trigger("reloadGrid");
+        }
         
         function dateFormatter(cellval, opts, rwdat, _act) {
         	var num, year, month, day, hh, mi, ss;
@@ -165,81 +207,60 @@
 
     <div class="title"></div>
     
-    <div style="width:1600px;">
-	    <div style="float:left; background:red; width:60%; border: 0;">
-            <div class="ui-dialog-content ui-widget-content search_box" style="margin: 15px; background:none; border: 0;">
+    <div style="width:1200px;">
+	    <div style="position: relative; height: 32px;" class="ui-widget">
+	        <div class="ui-dialog-content ui-widget-content search_box" style="background: none; border: 0;">
 	            <table>
 	                <colgroup>
-	                    <col style="width:14%;" />
-	                    <col style="width:16%;" />
-	                    <col style="width:14%;" />
-	                    <col style="width:16%;" />
-	                    <col style="width:14%;" />
-	                    <col style="width:26%;" />
+	                    <col style="width:10%;" />
+	                    <col style="width:20%;" />
+                        <col style="width:10%;" />
+                        <col style="width:10%;" />
+                        <col style="width:10%;" />
+                        <col style="width:20%;" />
+                        <col style="width:10%;" />
+                        <col style="width:10%;" />
 	                </colgroup>
 	                <tbody>
 	                    <tr>
-	                        <th>회원번호</th>
-	                        <td><input class="text" type="text" style="width:100%" id="m_no" name="m_no" value="${m_no}"/></td>
-	                        <th>회원명</th>
-	                        <td><input class="text" type="text" style="width:100%" id="m_name" name="m_name" /></td>
-	                        <th>전화번호</th>
-	                        <td><input class="text" type="text" style="width:100%" id="m_phone_no" name="m_phone_no" /></td>
+	                        <th>대출기간</th>
+	                        <td><input class="text" type="text" style="width:42%" id="m_sdt" name="m_sdt" readonly/>&nbsp;~&nbsp;<input class="text" type="text" style="width:42%" id="m_edt" name="m_edt" readonly/></td>
+	                        <th>회수예정일</th>
+	                        <td><input class="text" type="text" style="width:100%" id="m_rcv_plan_dt" name="m_rcv_plan_dt" /></td>
+	                        <th>
+	                            <select id="m_search_tp">
+	                                <option value='1'>도서제목</option>
+	                                <option value='2'>회원명</option>
+	                                <option value='3'>전화번호</option>
+	                            </select>
+	                        </th>
+	                        <td><input class="text" type="text" style="width:100%" id="m_search_value" name="m_search_value" /></td>
+	                        <th>대출상태</th>
+	                        <td><%=CodeSelect.makeCodeSelect("m_status", "::전체::", "003", "") %></td>
 	                    </tr>
 	                </tbody>
 	            </table>
-            </div>
-            <div style="padding:5px 0px 5px 0px; background:none; border: 0;">
-				<table id="listHistory">
-	                <tbody>
-	                    <tr>
-	                        <td></td>
-	                    </tr>
-	                </tbody>
-	            </table>
+	        </div>
+	    </div>
+    
+        <div style="padding:5px 0px 5px 0px; background:none; border: 0;">
+            <table id="listHistory">
+                <tbody>
+                    <tr>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
             <div id="hpager"></div>
-            </div>
+        </div>
 
-	    </div>
-
-	    <div style="float:right; background:blue; width:40%; border: 0;">
-            <div class="ui-dialog-content ui-widget-content search_box" style="margin: 15px; background: none; border: 0;">
-                <table>
-                    <colgroup>
-                        <col style="width:14%;" />
-                        <col style="width:16%;" />
-                        <col style="width:14%;" />
-                        <col style="width:26%;" />
-                        <col style="width:14%;" />
-                        <col style="width:16%;" />
-                    </colgroup>
-                    <tbody>
-                        <tr>
-                            <th>도서번호</th>
-                            <td><input class="text" type="text" style="width:100%" id="m_book_no" name="m_book_no" /></td>
-                            <th>도서제목</th>
-                            <td><input class="text" type="text" style="width:100%" id="m_title" name="m_title" /></td>
-                            <th>도서저자</th>
-                            <td><input class="text" type="text" style="width:100%" id="m_author" name="m_author" /></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div style="padding:5px 0px 5px 0px; background:none; width:800px; border: 0;">
-	            <table id="listBook">
-	                <tbody>
-	                    <tr>
-	                        <td></td>
-	                    </tr>
-	                </tbody>
-	            </table>
-            <div id="bpager"></div>
-            </div>
-	    </div>
-	    
 	</div>
+	
+    <form name="frm" method="post" action="${pageContext.request.contextPath}/loan/loanView.do">
+        <input type="hidden" id="m_no" name="m_no"  />
+    </form>
+	
 </div>
-
 
 </body>
 </html>

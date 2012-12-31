@@ -21,6 +21,13 @@ public class LoanHistoryDTO extends PagingBean {
     private String m_author;
     private String m_publisher;
     private String m_genre;
+    private String m_tel_no;
+    private String m_cell_no;
+    
+    private String m_search_tp;
+    private String m_search_value;
+    private String m_sdt;
+    private String m_edt;
     
 	public String getM_area() {
 		return m_area;
@@ -123,6 +130,42 @@ public class LoanHistoryDTO extends PagingBean {
 	}
 	public void setM_name(String m_name) {
 		this.m_name = m_name;
+	}
+	public String getM_tel_no() {
+		return m_tel_no;
+	}
+	public void setM_tel_no(String m_tel_no) {
+		this.m_tel_no = m_tel_no;
+	}
+	public String getM_cell_no() {
+		return m_cell_no;
+	}
+	public void setM_cell_no(String m_cell_no) {
+		this.m_cell_no = m_cell_no;
+	}
+	public String getM_search_tp() {
+		return m_search_tp;
+	}
+	public void setM_search_tp(String m_search_tp) {
+		this.m_search_tp = m_search_tp;
+	}
+	public String getM_search_value() {
+		return m_search_value;
+	}
+	public void setM_search_value(String m_search_value) {
+		this.m_search_value = m_search_value;
+	}
+	public String getM_sdt() {
+		return m_sdt;
+	}
+	public void setM_sdt(String m_sdt) {
+		this.m_sdt = m_sdt;
+	}
+	public String getM_edt() {
+		return m_edt;
+	}
+	public void setM_edt(String m_edt) {
+		this.m_edt = m_edt;
 	} 
 	
 

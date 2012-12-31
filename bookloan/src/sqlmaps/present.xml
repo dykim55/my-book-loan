@@ -37,31 +37,53 @@
     </sql>
     
     <sql id="sqlLoanHistory">
-		select 
-		    lh.m_loan_dt, 
-		    lh.m_book_no, 
-		    lh.m_no, 
-		    (select m_name from member_info where m_no = lh.m_no) as m_name,
-		    lh.m_rcv_plan_dt, 
-		    lh.m_real_rcv_dt, 
-		    case WHEN lh.m_status = '2' AND sysdate > to_datetime(lh.m_rcv_plan_dt||'235959','yyyymmddhh24miss') then '3' else lh.m_status END AS m_status,
-		    lh.m_rcv_tp, 
-		    lh.m_reg_dt, 
-		    lh.m_reg_id, 
-		    lh.m_mdf_dt, 
-		    lh.m_mdf_id,
-		    bi.m_title,
-		    bi.m_author,
-		    bi.m_publisher,
-		    bi.m_genre 
-		from 
-		    loan_history lh, book_info bi
+        select
+            lh.m_loan_dt, 
+            lh.m_book_no, 
+            lh.m_rcv_plan_dt,
+            lh.m_real_rcv_dt,
+            lh.m_rcv_tp,
+            case WHEN lh.m_status = '2' AND sysdate > to_datetime(lh.m_rcv_plan_dt||'235959','yyyymmddhh24miss') then '3' else lh.m_status END AS m_status,
+            mi.m_no,
+            mi.m_name,
+            bi.m_title,
+            bi.m_author,
+            bi.m_publisher,
+            mi.m_tel_no,
+            mi.m_cell_no
+        from 
+            loan_history lh, book_info bi, member_info mi
         where lh.m_area = bi.m_area 
-            and lh.m_book_no = bi.m_book_no 
+            and lh.m_book_no = bi.m_book_no
+            and lh.m_area = mi.m_area
+            and lh.m_no = mi.m_no 
             and lh.m_area = #m_area#
-            <isNotEmpty prepend="AND" property="m_no">
-                lh.m_no = #m_no#
+	        <isNotEmpty prepend="" property="m_sdt">
+	            <isNotEmpty prepend="and" property="m_edt">
+	                lh.m_loan_dt between replace(#m_sdt#,'-','')||'000000' and replace(#m_edt#,'-','')||'235959'
+	            </isNotEmpty>
+	        </isNotEmpty>
+            <isNotEmpty prepend="and" property="m_rcv_plan_dt">
+                lh.m_rcv_plan_dt = replace(#m_rcv_plan_dt#,'-','')
             </isNotEmpty>
+            <isNotEmpty prepend="and" property="m_name">
+                mi.m_name like '%'||#m_name#
+            </isNotEmpty>
+            <isNotEmpty prepend="and" property="m_title">
+                bi.m_title like '%'||#m_title#||'%'
+            </isNotEmpty>
+	        <isNotEmpty prepend="and" property="m_tel_no">
+	            (mi.m_cell_no like '%'||replace(#m_tel_no#,'-','') or mi.m_tel_no like '%'||replace(#m_tel_no#,'-',''))
+	        </isNotEmpty>
+            <isNotEmpty prepend="and" property="m_status">
+                <isEqual property="m_status" compareValue="3">
+                    (lh.m_status  = '2' and lh.m_rcv_plan_dt &lt; sysdate)
+                </isEqual>
+                <isNotEqual property="m_status" compareValue="3">
+                    lh.m_status = #m_status#
+                </isNotEqual>
+            </isNotEmpty>
+
         order by lh.m_loan_dt desc
     </sql>
 
@@ -76,5 +98,41 @@
         <include refid="sqlLoanHistory"/>
         <include refid="countQueryBottom"/>
     </select>
+
+    <sql id="sqlRcvPresent">
+        select
+            lh.m_rcv_plan_dt,
+            case WHEN lh.m_status = '2' AND sysdate > to_datetime(lh.m_rcv_plan_dt||'235959','yyyymmddhh24miss') then '3' else lh.m_status END AS m_status,
+            mi.m_no,
+            mi.m_name,
+            bi.m_book_no,
+            bi.m_title,
+            bi.m_author,
+            bi.m_publisher,
+            mi.m_tel_no,
+            mi.m_cell_no
+        from 
+            loan_history lh, book_info bi, member_info mi
+        where lh.m_area = bi.m_area 
+            and lh.m_book_no = bi.m_book_no
+            and lh.m_area = mi.m_area
+            and lh.m_no = mi.m_no 
+            and lh.m_area = #m_area#
+            and lh.m_status = '2'
+        order by lh.m_rcv_plan_dt asc, mi.m_name asc
+    </sql>
+
+    <select id="selectRcvPresent" resultClass="LoanHistoryDTO">
+        <include refid="pagingQueryTop" />
+        <include refid="sqlRcvPresent"/>
+        <include refid="pagingQueryBottom"/>
+    </select>
+    
+    <select id="selectRcvPresent-count" parameterClass="LoanHistoryDTO" resultClass="LoanHistoryDTO">
+        <include refid="countQueryTop" />
+        <include refid="sqlRcvPresent"/>
+        <include refid="countQueryBottom"/>
+    </select>
+
 	    
 </sqlMap>

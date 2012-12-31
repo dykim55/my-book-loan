@@ -15,4 +15,11 @@
         <property name="failure"><value>common/error.jsp</value></property>
     </bean>
 
+    <!-- 회수현황조회 -->
+    <bean name="/present/searchRcvPresent.ajax" class="com.company.book.present.PresentController">
+        <property name="presentService" ref="presentService" />
+        <property name="success"><value>jsonView</value></property>
+        <property name="failure"><value>common/error.jsp</value></property>
+    </bean>
+
 </beans>

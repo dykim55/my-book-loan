@@ -82,7 +82,8 @@
             m_genre, m_title, 
             m_author, m_publisher, m_no,
             m_buy_dt, m_cmt, 
-            m_status, m_loan_st, m_rcv_plan_dt,
+            m_status, m_rcv_plan_dt,
+            case WHEN m_loan_st = '2' AND sysdate > to_datetime(m_rcv_plan_dt||'235959','yyyymmddhh24miss') then '3' else m_loan_st END AS m_loan_st,
             m_reg_dt, m_reg_id, 
             m_mdf_dt, m_mdf_id 
         from 
