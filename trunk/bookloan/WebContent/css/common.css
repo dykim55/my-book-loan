@@ -40,9 +40,11 @@ a.btn { display:inline-block; height:27px; padding-left:15px; color:#495b88 !imp
 a.btn span { display:inline-block; height:21px; padding:6px 15px 0 0; }
 
 .mStatus1 { background-color: #ffffff !important; border: 1px solid #aaaaaa;}
-.mStatus2 { background-color: #adff2f !important; border: 1px solid #aaaaaa;}
+.mStatus2 { background-color: #fff0f0 !important; border: 1px solid #aaaaaa;}
 .mStatus3 { background-color: #000000 !important; color:yellow; border: 1px solid #aaaaaa;}
 .mStatus4 { background-color: #dcdcdc !important; color:gray; border: 1px solid #aaaaaa;}
+
+.mToday { background-color: #ffffcc !important; border: 1px solid #aaaaaa;}
 
 #errorWrap { margin:auto;}
 .error { width:500px; padding:20px; margin:250px auto 0; background:#ffffff; border:2px solid #a0a0a0; font-family: "¸¼Àº °íµñ", MalgunGothic, Lucida Grande,Lucida Sans,Arial,sans-serif; }

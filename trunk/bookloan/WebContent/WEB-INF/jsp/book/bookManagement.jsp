@@ -21,6 +21,7 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jqGrid-4.4.1/ui.multiselect.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jqGrid-4.4.1/i18n/grid.locale-en.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jqGrid-4.4.1/jquery.jqGrid.src.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/utils.js"></script>
 
     <script type="text/javascript">
         //<![CDATA[
@@ -178,18 +179,7 @@
             
             //조회
             $("#onBtnSch").click(function () {
-            	grid.jqGrid('setGridParam',	{ 
-            		postData:{
-            			m_sdt:$("#m_sdt").val(),
-            			m_edt:$("#m_edt").val(),
-            			m_book_no:$("#m_book_no").val(), 
-            			m_title:$("#m_title").val(),
-            			m_author:$("#m_author").val(),
-            			m_publisher:$("#m_publisher").val(),
-            			m_genre:$("#m_genre").val(),
-            			m_status:$("#m_status").val()
-            		}
-            	}).trigger("reloadGrid");
+            	reloadGrid();
             });
             
             $("#m_sdt, #m_edt, #m_book_no,#m_title,#m_author,#m_publisher").focus(function(event) {
@@ -198,25 +188,41 @@
             
             $('#m_sdt, #m_edt, #m_book_no, #m_title, #m_author, #m_publisher').keydown(function(e) {
                 if (e.keyCode==13) {
-                    grid.jqGrid('setGridParam',    {
-                    	page:1
-                		,postData:{
-                			m_sdt:$("#m_sdt").val(),
-                			m_edt:$("#m_edt").val(),
-                			m_book_no:$("#m_book_no").val(), 
-                			m_title:$("#m_title").val(),
-                			m_author:$("#m_author").val(),
-                			m_publisher:$("#m_publisher").val(),
-                			m_genre:$("#m_genre").val(),
-                			m_status:$("#m_status").val()
-                		}
-                    }).trigger("reloadGrid");
+                	reloadGrid();
                     return false;
                 }
             });
             
+            $("#m_sdt, #m_edt, #m_genre").change(function() {
+                if (($("#m_sdt").val().length > 0 && $("#m_edt").val().length == 0) ||
+                   ($("#m_sdt").val().length == 0 && $("#m_edt").val().length > 0)) {
+                    return;
+                } else if (getDayInterval($("#m_sdt").val().replace(/\-/g,''), $("#m_edt").val().replace(/\-/g,'')) < 1) {
+                    alert("조회기간이 잘못됐습니다. 조회 종료일이 시작일보다 작습니다.");
+                    return;
+                } 
+
+                reloadGrid();
+            });
+            
         });
         //]]>
+        
+        function reloadGrid () {
+            grid.jqGrid('setGridParam',    {
+                page:1
+                ,postData:{
+                    m_sdt:$("#m_sdt").val(),
+                    m_edt:$("#m_edt").val(),
+                    m_book_no:$("#m_book_no").val(), 
+                    m_title:$("#m_title").val(),
+                    m_author:$("#m_author").val(),
+                    m_publisher:$("#m_publisher").val(),
+                    m_genre:$("#m_genre").val(),
+                    m_status:$("#m_status").val()
+                }
+            }).trigger("reloadGrid");
+       }
         
         $(function() {
             $("button").button();
@@ -259,7 +265,7 @@
 
 <div id="outer">
     <ul id="menu">
-        <li class="sub" id="no1"><a href="#">대출현황</a></li>
+        <li class="sub" id="no1"><a href="${pageContext.request.contextPath}/present/presentView.do">대출현황</a></li>
         <li class="sub" id="no2"><a href="${pageContext.request.contextPath}/loan/loanView.do">대출관리</a></li>
         <li class="sub" id="no3"><a class="select" href="#">도서관리</a></li>
         <li class="sub" id="no4"><a href="${pageContext.request.contextPath}/member/memberView.do">회원관리</a></li>
@@ -270,7 +276,7 @@
 
 <div align=center>
 
-    <div class="title">◆도서관리</div>
+    <div class="title"></div>
     
     <div style="width:1200px;">
     <div style="position: relative; height: 32px;" class="ui-widget">

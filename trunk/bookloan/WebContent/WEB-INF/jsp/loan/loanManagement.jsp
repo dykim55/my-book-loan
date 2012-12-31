@@ -21,6 +21,7 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jqGrid-4.4.1/ui.multiselect.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jqGrid-4.4.1/i18n/grid.locale-en.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jqGrid-4.4.1/jquery.jqGrid.src.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/utils.js"></script>
 
     <script type="text/javascript">
         //<![CDATA[
@@ -120,9 +121,12 @@
                     for (var i=0;i<rowIDs.length;i=i+1) { 
                         rowData=$(this).getRowData(rowIDs[i]);
                         var trElement = jQuery("#"+ rowIDs[i],$(this));
-                        if (rowData.m_loan_st != '1') {
+                        if (rowData.m_loan_st == '2') {
                             trElement.removeClass('ui-widget-content');
                             trElement.addClass('mStatus4');
+                        } else if (rowData.m_loan_st == '3') {
+                            trElement.removeClass('ui-widget-content');
+                            trElement.addClass('mStatus3');
                         }
                     }
                 },                
@@ -155,7 +159,7 @@
 	                                dataType: "json",
 	                                success: function(msg){
 	                                    if (msg.err_code=="0000") {
-	                                        alert(msg.err_message);
+	                                        //alert(msg.err_message);
 	                                        gridM.trigger("reloadGrid");
 	                                        gridB.trigger("reloadGrid");
 	                                    } else {
@@ -261,8 +265,9 @@
                             dataType: "json",
                             success: function(msg){
                                 if (msg.err_code=="0000") {
-                                    alert(msg.err_message);
+                                    //alert(msg.err_message);
                                     gridM.trigger("reloadGrid");
+                                    gridB.trigger("reloadGrid");
                                 } else {
                                     alert("[" + msg.err_code + "] " + msg.err_message);
                                 }
@@ -409,7 +414,7 @@
     
     <div style="width:1600px;">
 	    <div style="float:left; background:none; width:50%; border: 0;">
-            <div class="ui-dialog-content ui-widget-content search_box" style="margin: 15px; background:none; border: 0;">
+            <div class="ui-dialog-content ui-widget-content search_box" style="margin: 0px 15px 0px 15px; background:none; border: 0;">
 	            <table>
 	                <colgroup>
 	                    <col style="width:14%;" />
@@ -455,7 +460,7 @@
 	    </div>
 
 	    <div style="float:right; background:none; width:50%; border: 0;">
-            <div class="ui-dialog-content ui-widget-content search_box" style="margin: 15px; background: none; border: 0;">
+            <div class="ui-dialog-content ui-widget-content search_box" style="margin: 0px 15px 0px 15px; background: none; border: 0;">
                 <table>
                     <colgroup>
                         <col style="width:14%;" />

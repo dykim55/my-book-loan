@@ -53,7 +53,7 @@
 			</isNotEmpty>
 		</isNotEmpty>
         <isNotEmpty prepend="and" property="m_book_no">
-            m_book_no = #m_book_no#
+            m_book_no like '%'||#m_book_no#
         </isNotEmpty>
         <isNotEmpty prepend="and" property="m_title">
             m_title like '%'||#m_title#||'%'
