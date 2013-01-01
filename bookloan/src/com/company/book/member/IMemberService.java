@@ -18,4 +18,6 @@ public interface IMemberService {
 	public List<MemberInfoDTO> searchMemberInfoName(MemberInfoDTO dto) throws Exception;
 	
 	public String getNextMemberNo() throws Exception;
+	
+	public List<MemberInfoDTO> searchMemberInfoExcel(MemberInfoDTO dto) throws Exception;
 }

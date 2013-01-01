@@ -86,7 +86,8 @@
                 },
                 ondblClickRow: function (rowid, iRow, iCol, e) {
                     $("#m_no").val(grid.getCell(rowid, 7));
-                    frm.submit();
+                    $('#frm').attr("action", "${pageContext.request.contextPath}/loan/loanView.do" );
+                    $('#frm').submit();                      
                 }                
             });
 
@@ -101,13 +102,25 @@
                 $('#'+event.target.id).select();
             });
             
-            $("#m_sdt, #m_edt, #m_rcv_plan_dt, #m_status").change(function() {
+            $("#m_sdt, #m_edt, #m_rcv_plan_dt, #m_status, #m_rcv_tp").change(function() {
             	if (getDayInterval($("#m_sdt").val().replace(/\-/g,''), $("#m_edt").val().replace(/\-/g,'')) < 1) {
             	    alert("조회기간이 잘못됐습니다. 조회 종료일이 시작일보다 작습니다.");
             	    return;
             	}
             	reloadGrid();
             });
+            
+            //회원조회
+            $("#onBtnSch").click(function () {
+            	reloadGrid();
+            });
+            
+            $("#onBtnExcel").click(function () {
+                $('#frm').attr("action", "${pageContext.request.contextPath}/present/searchLoanHistoryExcel.do" );
+                $('#frm').submit();                      
+            });
+
+            
             
         });
         //]]>
@@ -133,7 +146,8 @@
                      m_rcv_plan_dt:$("#m_rcv_plan_dt").val(),
                      m_search_tp:$("#m_search_tp").val(),
                      m_search_value:$("#m_search_value").val(),
-                     m_status:$("#m_status").val()
+                     m_status:$("#m_status").val(),
+                     m_rcv_tp:$("#m_rcv_tp").val()
                  }
              }).trigger("reloadGrid");
         }
@@ -207,19 +221,24 @@
 
     <div class="title"></div>
     
+    <form id="frm" name="frm" method="post" action="">
+    <input type="hidden" id="m_no" name="m_no" />
     <div style="width:1200px;">
 	    <div style="position: relative; height: 32px;" class="ui-widget">
 	        <div class="ui-dialog-content ui-widget-content search_box" style="background: none; border: 0;">
 	            <table>
 	                <colgroup>
-	                    <col style="width:10%;" />
-	                    <col style="width:20%;" />
-                        <col style="width:10%;" />
-                        <col style="width:10%;" />
-                        <col style="width:10%;" />
+	                    <col style="width:8%;" />
+	                    <col style="width:16%;" />
+                        <col style="width:8%;" />
+                        <col style="width:8%;" />
+                        <col style="width:8%;" />
                         <col style="width:20%;" />
-                        <col style="width:10%;" />
-                        <col style="width:10%;" />
+                        <col style="width:8%;" />
+                        <col style="width:8%;" />
+                        <col style="width:8%;" />
+                        <col style="width:8%;" />
+                        
 	                </colgroup>
 	                <tbody>
 	                    <tr>
@@ -237,9 +256,18 @@
 	                        <td><input class="text" type="text" style="width:100%" id="m_search_value" name="m_search_value" /></td>
 	                        <th>대출상태</th>
 	                        <td><%=CodeSelect.makeCodeSelect("m_status", "::전체::", "003", "") %></td>
+	                        <th>회수형태</th>
+	                        <td><%=CodeSelect.makeCodeSelect("m_rcv_tp", "::전체::", "006", "") %></td>
 	                    </tr>
 	                </tbody>
 	            </table>
+	        </div>
+	    </div>
+    
+	    <div class="grid_box clfix">
+	        <div class="g_areaR clfix">
+	            <button id="onBtnSch">현황조회</button>
+	            <button id="onBtnExcel">엑셀저장</button>
 	        </div>
 	    </div>
     
@@ -255,11 +283,8 @@
         </div>
 
 	</div>
-	
-    <form name="frm" method="post" action="${pageContext.request.contextPath}/loan/loanView.do">
-        <input type="hidden" id="m_no" name="m_no"  />
     </form>
-	
+
 </div>
 
 </body>

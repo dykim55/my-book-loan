@@ -22,4 +22,11 @@
         <property name="failure"><value>common/error.jsp</value></property>
     </bean>
 
+    <!-- Excel다운로드 -->
+    <bean name="/present/searchLoanHistoryExcel.do" class="com.company.book.present.PresentController">
+        <property name="presentService" ref="presentService" />
+        <property name="success"><value>/WEB-INF/jsp/present/loanPresentExcel.jsp</value></property>
+        <property name="failure"><value>common/error.jsp</value></property>
+    </bean>
+
 </beans>

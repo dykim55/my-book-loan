@@ -72,7 +72,8 @@
                 },
                 ondblClickRow: function (rowid, iRow, iCol, e) {
                		$("#m_no").val(grid.getCell(rowid, 1));
-                    frm.submit();
+                    $('#frm').attr("action", "${pageContext.request.contextPath}/loan/loanView.do" );
+                    $('#frm').submit();                      
                 }                
                 
             });
@@ -177,6 +178,11 @@
             //회원조회
             $("#onBtnSch").click(function () {
             	reloadGrid();
+            });
+            
+            $("#onBtnExcel").click(function () {
+                $('#frm').attr("action", "${pageContext.request.contextPath}/member/searchMemberInfoExcel.do" );
+                $('#frm').submit();                      
             });
             
             $('#m_sdt, #m_edt, #m_no, #m_name, #m_birth_dt, #m_phone_no').keydown(function(e) {
@@ -303,7 +309,7 @@
 
     <div class="title"></div>
 
-<form name="frm" method="post" action="${pageContext.request.contextPath}/loan/loanView.do">
+<form id="frm" name="frm" method="post" action="">
     <div style="width:1200px;">
     <div style="position: relative; height: 32px;" class="ui-widget">
         <div class="ui-dialog-content ui-widget-content search_box" style="background: none; border: 0;">
@@ -351,7 +357,7 @@
         </div>
         <div class="g_areaR clfix">
             <button id="onBtnSch">회원조회</button>
-            <button id="">엑셀저장</button>
+            <button id="onBtnExcel">엑셀저장</button>
         </div>
     </div>
        

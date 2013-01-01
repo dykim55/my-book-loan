@@ -18,4 +18,6 @@ public interface IBookService {
 	public List<BookInfoDTO> searchBookInfoName(BookInfoDTO dto) throws Exception;
 	
 	public String getNextBookNo() throws Exception;
+	
+	public List<BookInfoDTO> searchBookInfoExcel(BookInfoDTO dto) throws Exception;
 }

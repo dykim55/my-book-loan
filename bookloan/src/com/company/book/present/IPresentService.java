@@ -15,5 +15,7 @@ public interface IPresentService {
 	public List<LoanHistoryDTO> searchLoanHistory(LoanHistoryDTO dto) throws Exception;
 	
 	public List<LoanHistoryDTO> searchRcvPresent(LoanHistoryDTO dto) throws Exception;
+	
+	public List<LoanHistoryDTO> searchLoanHistoryExcel(LoanHistoryDTO dto) throws Exception;
 
 }

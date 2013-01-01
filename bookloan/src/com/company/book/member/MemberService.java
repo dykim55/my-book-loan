@@ -37,6 +37,11 @@ public class MemberService implements IMemberService {
 		} finally {
 		}
 	}
+
+	@SuppressWarnings("unchecked")
+	public List<MemberInfoDTO> searchMemberInfoExcel(MemberInfoDTO dto) throws Exception {
+		return connection.queryForList("member.selectMemberInfoExcel", dto);
+	}
 	
 	public void setConnection(SqlMapClient connection) {
 		this.connection = connection;

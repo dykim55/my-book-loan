@@ -137,4 +137,63 @@
 		select member_m_no_seq.next_value	
     </select>	    
 
+    <sql id="sqlMemberInfoExcel">
+    
+    	select 	mi.m_area, mi.m_no, 
+			    mi.m_name, mi.m_status, mi.m_gender,
+			    mi.m_birth_dt, 
+			    mi.m_tel_no, mi.m_cell_no, 
+			    mi.m_addr, mi.m_entry_dt,
+			    mi.m_dly_cnt, mi.m_cmt, 
+			    mi.m_reg_dt, mi.m_reg_id, 
+			    mi.m_mdf_dt, mi.m_mdf_id, lh.m_loan_cnt
+ 		from (
+			select 
+			    m_area, m_no,
+			    (select code_name from common_code where code_group_cd = '001' and code_cd = m_status) as m_status,
+			    m_name, 
+			    (select code_name from common_code where code_group_cd = '005' and code_cd = m_gender) as m_gender,
+			    m_birth_dt, 
+			    m_tel_no, m_cell_no, 
+			    m_email, m_addr, 
+			    m_entry_dt, m_mbr_cd,
+			    m_dly_cnt, m_cmt, 
+			    m_reg_dt, m_reg_id, 
+			    m_mdf_dt, m_mdf_id
+			from 
+			    member_info 
+			where m_area = #m_area# 
+			<isNotEmpty prepend="" property="m_sdt">
+				<isNotEmpty prepend="and" property="m_edt">
+					m_entry_dt between replace(#m_sdt#,'-','')||'000000' and replace(#m_edt#,'-','')||'235959'
+				</isNotEmpty>
+			</isNotEmpty>
+	        <isNotEmpty prepend="and" property="m_no">
+	            m_no like '%'||#m_no#
+	        </isNotEmpty>
+	        <isNotEmpty prepend="and" property="m_name">
+	            m_name like '%'||#m_name#
+	        </isNotEmpty>
+	        <isNotEmpty prepend="and" property="m_status">
+	            m_status = #m_status#
+	        </isNotEmpty>
+	        <isNotEmpty prepend="and" property="m_birth_dt">
+	            m_birth_dt = #m_birth_dt#
+	        </isNotEmpty>
+	        <isNotEmpty prepend="and" property="m_phone_no">
+    	        (m_cell_no like '%'||#m_phone_no# or m_tel_no like '%'||#m_phone_no#)
+        	</isNotEmpty>
+	        
+        ) mi, (
+			select m_no, count(m_book_no) as m_loan_cnt 
+			from loan_history where m_area = #m_area# and m_status='2' 
+			group by m_no        
+        ) lh
+		where mi.m_no = lh.m_no(+)    
+	</sql>
+
+    <select id="selectMemberInfoExcel" resultClass="MemberInfoDTO">
+        <include refid="sqlMemberInfoExcel"/>
+    </select>
+
 </sqlMap>
