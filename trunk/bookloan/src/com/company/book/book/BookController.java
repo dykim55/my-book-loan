@@ -70,6 +70,23 @@ public class BookController extends SIVController {
 		map.addAttribute("err_message", "정상처리 되었습니다.");
 		return new ModelAndView(this.success, map);
 	}
+
+	public ModelAndView searchBookInfoExcel( HttpServletRequest req, HttpServletResponse res) throws Exception {
+		
+		BookInfoDTO dto = (BookInfoDTO) DataUtils.dtoBuilder(req, BookInfoDTO.class);
+		dto.setSessionData(req);
+		
+		UserSession session = UserSessionManager.getUserSession(req);
+		dto.setM_area(session.getArea());
+		
+		List<BookInfoDTO> list = null;
+		
+		list = bookService.searchBookInfoExcel(dto);
+		
+		ModelMap map =  dto.createModelMap(list);
+		
+		return new ModelAndView(this.success, map);
+	}
 	
 	public void setBookService(IBookService bookService) {
 		this.bookService = bookService;

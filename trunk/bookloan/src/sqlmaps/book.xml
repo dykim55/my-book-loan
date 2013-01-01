@@ -126,4 +126,50 @@
 		select member_m_book_no_seq.next_value	
     </select>	    
 
+    <sql id="sqlBookInfoExcel">
+		select 
+		    m_area, m_book_no, 
+		    (select code_name from common_code where code_group_cd = '004' and code_cd = m_genre) as m_genre,
+		    m_title, 
+		    m_author, m_publisher, 
+		    m_buy_dt, m_cmt, 
+		    (select code_name from common_code where code_group_cd = '002' and code_cd = m_status) as m_status,
+		    (select code_name from common_code where code_group_cd = '003' and code_cd = m_loan_st) as m_loan_st,
+		    m_no,
+		    m_reg_dt, m_reg_id, 
+		    m_mdf_dt, m_mdf_id 
+		from 
+		    book_info 
+		where
+			m_area = #m_area#
+		<isNotEmpty prepend="" property="m_sdt">
+			<isNotEmpty prepend="and" property="m_edt">
+				m_buy_dt between replace(#m_sdt#,'-','') and replace(#m_edt#,'-','')
+			</isNotEmpty>
+		</isNotEmpty>
+        <isNotEmpty prepend="and" property="m_book_no">
+            m_book_no like '%'||#m_book_no#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="m_title">
+            m_title like '%'||#m_title#||'%'
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="m_author">
+            m_author = #m_author#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="m_publisher">
+            m_publisher like '%'||#m_publisher#||'%'
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="m_genre">
+            m_genre = #m_genre#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="m_loan_st">
+            m_loan_st = #m_loan_st#
+        </isNotEmpty>
+		    
+	</sql>
+	    
+    <select id="selectBookInfoExcel" resultClass="BookInfoDTO">
+        <include refid="sqlBookInfoExcel"/>
+    </select>
+
 </sqlMap>

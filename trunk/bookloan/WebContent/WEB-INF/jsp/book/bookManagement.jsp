@@ -36,7 +36,7 @@
                 colNames:['도서번호','도서제목','저자','출판사','장르','구입일자','도서상태','대출여부','비고','대출회원'],
                 colModel:[
                     {name:'m_book_no',	index:'m_book_no',	width:50, 	align:'center'}, 
-                    {name:'m_title',	index:'m_title', 	width:200, 	align:'center'},
+                    {name:'m_title',	index:'m_title', 	width:200, 	align:'left'},
                     {name:'m_author',	index:'m_author',	width:80, 	align:'center'},
                     {name:'m_publisher',index:'m_publisher',width:100, 	align:'center'},
                     {name:'m_genre',	index:'m_genre',	width:80, 	align:'center', formatter:'select',  edittype:'select', editoptions: {value: '<%=CodeSelect.makeEditOption("004") %>'}},
@@ -72,7 +72,8 @@
                 ondblClickRow: function (rowid, iRow, iCol, e) {
                 	if (grid.getCell(rowid, 10).length >= 6) {
                 		$("#m_no").val(grid.getCell(rowid, 10));
-                        frm.submit();
+                        $('#frm').attr("action", "${pageContext.request.contextPath}/loan/loanView.do" );
+                        $('#frm').submit();                      
                 	}
                 }                
                 
@@ -182,6 +183,11 @@
             	reloadGrid();
             });
             
+            $("#onBtnExcel").click(function () {
+                $('#frm').attr("action", "${pageContext.request.contextPath}/book/searchBookInfoExcel.do" );
+                $('#frm').submit();                      
+            });
+            
             $("#m_sdt, #m_edt, #m_book_no,#m_title,#m_author,#m_publisher").focus(function(event) {
                 $('#'+event.target.id).select();
             });
@@ -279,6 +285,8 @@
     <div class="title"></div>
     
     <div style="width:1200px;">
+    <form id="frm" name="frm" method="post" action="">
+    <input type="hidden" id="m_no" name="m_no"  />
     <div style="position: relative; height: 32px;" class="ui-widget">
         <div class="ui-dialog-content ui-widget-content search_box" style="background: none; border: 0;">
 	        <table>
@@ -315,6 +323,7 @@
 			</table>
         </div>
     </div>
+    </form>
     </div>
     <div class="grid_box clfix">
         <div class="g_areaL clfix">
@@ -323,7 +332,7 @@
         </div>
         <div class="g_areaR clfix">
             <button id="onBtnSch">도서조회</button>
-            <button id="">엑셀저장</button>
+            <button id="onBtnExcel">엑셀저장</button>
         </div>
     </div>
        
@@ -384,9 +393,6 @@
 			</tbody>
 		</table>
 	</div>
-	<form name="frm" method="post" action="${pageContext.request.contextPath}/loan/loanView.do">
-		<input type="hidden" id="m_no" name="m_no"  />
-	</form>
 </div>
 
 </body>

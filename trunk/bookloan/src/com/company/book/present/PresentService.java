@@ -20,6 +20,10 @@ public class PresentService implements IPresentService {
 		dto.searchRowCount(connection, "present.selectRcvPresent-count");
 		return connection.queryForList("present.selectRcvPresent", dto);
 	}
+
+	public List<LoanHistoryDTO> searchLoanHistoryExcel(LoanHistoryDTO dto) throws Exception {
+		return connection.queryForList("present.selectLoanHistoryExcel", dto);
+	}
 	
 	public void setConnection(SqlMapClient connection) {
 		this.connection = connection;

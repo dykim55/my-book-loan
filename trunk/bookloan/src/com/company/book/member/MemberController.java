@@ -96,6 +96,28 @@ public class MemberController extends SIVController {
 		return new ModelAndView(this.success, map);
 	}
 	
+	public ModelAndView searchMemberInfoExcel( HttpServletRequest req, HttpServletResponse res) throws Exception {
+		
+		//학생정보 조회		
+		MemberInfoDTO dto = (MemberInfoDTO) DataUtils.dtoBuilder(req, MemberInfoDTO.class);
+		dto.setSessionData(req);
+		
+		UserSession session = UserSessionManager.getUserSession(req);
+		dto.setM_area(session.getArea());
+
+		if (dto.getM_birth_dt() != null) {
+			dto.setM_birth_dt(dto.getM_birth_dt().replace("-", ""));
+		}
+		
+		List<MemberInfoDTO> list = null;
+		
+		list = memberService.searchMemberInfoExcel(dto);
+		
+		ModelMap map =  dto.createModelMap(list);
+		
+		return new ModelAndView(this.success, map);
+	}
+	
 	public void setMemberService(IMemberService memberService) {
 		this.memberService = memberService;
 	}

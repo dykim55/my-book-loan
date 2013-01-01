@@ -68,6 +68,11 @@ public class BookService implements IBookService {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<BookInfoDTO> searchBookInfoExcel(BookInfoDTO dto) throws Exception {
+		return connection.queryForList("book.selectBookInfoExcel", dto);
+	}
+	
 	public void setConnection(SqlMapClient connection) {
 		this.connection = connection;
 	}
