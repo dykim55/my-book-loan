@@ -72,6 +72,8 @@ public class LoginController extends SIVController {
 	    	strNext = "/WEB-INF/jsp/login/login.jsp";
 	    }
 		
+	    logger.info(":::: [INFO] [" + userSession.getArea() + "][" + userSession.getUserId() + "] 로그인 성공!!!");
+	    
 		return new ModelAndView(strNext);
 	}
 	
