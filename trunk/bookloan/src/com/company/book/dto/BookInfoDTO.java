@@ -23,6 +23,10 @@ public class BookInfoDTO extends PagingBean {
     private String m_sdt;
     private String m_edt;
     private String m_buy_cnt;
+    private String m_loan_dt;
+    
+    private String sord;
+    private String sidx;
     
 	public String getM_area() {
 		return m_area;
@@ -137,6 +141,24 @@ public class BookInfoDTO extends PagingBean {
 	}
 	public void setM_no(String m_no) {
 		this.m_no = m_no;
+	}
+	public String getSord() {
+		return sord;
+	}
+	public void setSord(String sord) {
+		this.sord = sord;
+	}
+	public String getSidx() {
+		return sidx;
+	}
+	public void setSidx(String sidx) {
+		this.sidx = sidx;
+	}
+	public String getM_loan_dt() {
+		return m_loan_dt;
+	}
+	public void setM_loan_dt(String m_loan_dt) {
+		this.m_loan_dt = m_loan_dt;
 	}
 
     

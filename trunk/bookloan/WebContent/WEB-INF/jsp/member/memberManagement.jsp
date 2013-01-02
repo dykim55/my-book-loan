@@ -181,7 +181,9 @@
             });
             
             $("#onBtnExcel").click(function () {
-                $('#frm').attr("action", "${pageContext.request.contextPath}/member/searchMemberInfoExcel.do" );
+            	var _sidx = grid.jqGrid('getGridParam','sortname');
+            	var _sord = grid.jqGrid('getGridParam','sortorder');
+                $('#frm').attr("action", "${pageContext.request.contextPath}/member/searchMemberInfoExcel.do?sidx="+_sidx+"&sord="+_sord );
                 $('#frm').submit();                      
             });
             

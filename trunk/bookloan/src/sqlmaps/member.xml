@@ -35,7 +35,7 @@
     </sql>
     
     <sql id="sqlMemberInfo">
-    
+    select * from (
     	select 	mi.m_area, mi.m_no, 
 			    mi.m_name, mi.m_status, mi.m_gender,
 			    mi.m_birth_dt, 
@@ -84,12 +84,16 @@
 			from loan_history where m_area = #m_area# and m_status='2' 
 			group by m_no        
         ) lh
-		where mi.m_no = lh.m_no(+)    
+		where mi.m_no = lh.m_no(+)
+    ) tb
 	</sql>
 	    
     <select id="selectMemberInfo" resultClass="MemberInfoDTO">
         <include refid="pagingQueryTop" />
         <include refid="sqlMemberInfo"/>
+        <isNotEmpty prepend="" property="sidx">
+            order by $sidx$ $sord$
+        </isNotEmpty>
         <include refid="pagingQueryBottom"/>
     </select>
     
@@ -138,7 +142,18 @@
     </select>	    
 
     <sql id="sqlMemberInfoExcel">
-    
+    select
+		m_area, m_no, 
+		(select code_name from common_code where code_group_cd = '001' and code_cd = tb.m_status) as m_status,
+		m_name,
+		(select code_name from common_code where code_group_cd = '005' and code_cd = tb.m_gender) as m_gender,
+		m_birth_dt, 
+		m_tel_no, m_cell_no, 
+		m_addr, m_entry_dt,
+		m_dly_cnt, m_cmt, 
+		m_reg_dt, m_reg_id, 
+		m_mdf_dt, m_mdf_id, m_loan_cnt
+    from (
     	select 	mi.m_area, mi.m_no, 
 			    mi.m_name, mi.m_status, mi.m_gender,
 			    mi.m_birth_dt, 
@@ -150,9 +165,9 @@
  		from (
 			select 
 			    m_area, m_no,
-			    (select code_name from common_code where code_group_cd = '001' and code_cd = m_status) as m_status,
+			    m_status,
 			    m_name, 
-			    (select code_name from common_code where code_group_cd = '005' and code_cd = m_gender) as m_gender,
+			    m_gender,
 			    m_birth_dt, 
 			    m_tel_no, m_cell_no, 
 			    m_email, m_addr, 
@@ -189,11 +204,15 @@
 			from loan_history where m_area = #m_area# and m_status='2' 
 			group by m_no        
         ) lh
-		where mi.m_no = lh.m_no(+)    
+		where mi.m_no = lh.m_no(+)  
+    ) tb  
 	</sql>
 
     <select id="selectMemberInfoExcel" resultClass="MemberInfoDTO">
         <include refid="sqlMemberInfoExcel"/>
+        <isNotEmpty prepend="" property="sidx">
+            order by $sidx$ $sord$
+        </isNotEmpty>
     </select>
 
 </sqlMap>

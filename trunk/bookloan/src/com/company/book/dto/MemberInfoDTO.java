@@ -29,6 +29,9 @@ public class MemberInfoDTO extends PagingBean {
     private String m_phone_tp;
     private String m_phone_no;
     
+    private String sord;
+    private String sidx;
+    
 	public String getM_area() {
 		return m_area;
 	}
@@ -172,6 +175,18 @@ public class MemberInfoDTO extends PagingBean {
 	}
 	public void setM_gender(String m_gender) {
 		this.m_gender = m_gender;
+	}
+	public String getSord() {
+		return sord;
+	}
+	public void setSord(String sord) {
+		this.sord = sord;
+	}
+	public String getSidx() {
+		return sidx;
+	}
+	public void setSidx(String sidx) {
+		this.sidx = sidx;
 	}
 	
 }
