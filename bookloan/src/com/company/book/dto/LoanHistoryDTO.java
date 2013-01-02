@@ -23,11 +23,14 @@ public class LoanHistoryDTO extends PagingBean {
     private String m_genre;
     private String m_tel_no;
     private String m_cell_no;
+    private String m_loan_st;
     
     private String m_search_tp;
     private String m_search_value;
     private String m_sdt;
     private String m_edt;
+    private String sord;
+    private String sidx;
     
 	public String getM_area() {
 		return m_area;
@@ -166,6 +169,24 @@ public class LoanHistoryDTO extends PagingBean {
 	}
 	public void setM_edt(String m_edt) {
 		this.m_edt = m_edt;
+	}
+	public String getSord() {
+		return sord;
+	}
+	public void setSord(String sord) {
+		this.sord = sord;
+	}
+	public String getSidx() {
+		return sidx;
+	}
+	public void setSidx(String sidx) {
+		this.sidx = sidx;
+	}
+	public String getM_loan_st() {
+		return m_loan_st;
+	}
+	public void setM_loan_st(String m_loan_st) {
+		this.m_loan_st = m_loan_st;
 	} 
 	
 

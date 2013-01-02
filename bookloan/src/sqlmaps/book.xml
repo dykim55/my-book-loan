@@ -70,7 +70,9 @@
         <isNotEmpty prepend="and" property="m_loan_st">
             m_loan_st = #m_loan_st#
         </isNotEmpty>
-		    
+        <isNotEmpty prepend="" property="sidx">
+            order by $sidx$ $sord$
+        </isNotEmpty>
 	</sql>
 	    
     <select id="selectBookInfo" resultClass="BookInfoDTO">
@@ -165,7 +167,9 @@
         <isNotEmpty prepend="and" property="m_loan_st">
             m_loan_st = #m_loan_st#
         </isNotEmpty>
-		    
+        <isNotEmpty prepend="" property="sidx">
+            order by $sidx$ $sord$
+        </isNotEmpty>
 	</sql>
 	    
     <select id="selectBookInfoExcel" resultClass="BookInfoDTO">

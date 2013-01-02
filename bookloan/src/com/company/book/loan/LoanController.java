@@ -115,9 +115,13 @@ public class LoanController extends SIVController {
 		dto.setSessionData(req);
 		
 		try { 
-			loanService.updateReceiveLoan(dto);
-			if (dto.getM_rcv_tp().equals("2")) {//대출연장
-				loanService.insertLoanHistory(dto);
+			if (dto.getM_rcv_tp().equals("1") || dto.getM_rcv_tp().equals("2")) {
+				loanService.updateReceiveLoan(dto);
+				if (dto.getM_rcv_tp().equals("2")) {//대출연장
+					loanService.insertLoanHistory(dto);
+				}
+			} else {
+				loanService.updateCancelReceiveLoan(dto);
 			}
 		} catch (Exception e) {
 			map.addAttribute("err_code", "0003");

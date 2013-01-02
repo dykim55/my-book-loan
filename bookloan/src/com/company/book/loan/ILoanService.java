@@ -23,5 +23,7 @@ public interface ILoanService {
 	public void insertLoanHistory(LoanHistoryDTO dto) throws Exception;
 	
 	public void updateReceiveLoan(LoanHistoryDTO dto) throws Exception;
+	
+	public void updateCancelReceiveLoan(LoanHistoryDTO dto) throws Exception;
 
 }

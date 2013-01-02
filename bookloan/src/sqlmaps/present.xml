@@ -37,6 +37,7 @@
     </sql>
     
     <sql id="sqlLoanHistory">
+    select * from (
         select
             lh.m_loan_dt, 
             lh.m_book_no, 
@@ -86,13 +87,16 @@
             <isNotEmpty prepend="and" property="m_rcv_tp">
             	lh.m_rcv_tp = #m_rcv_tp#
             </isNotEmpty>
-
         order by lh.m_loan_dt desc
+    ) tb
     </sql>
 
     <select id="selectLoanHistory" resultClass="LoanHistoryDTO">
         <include refid="pagingQueryTop" />
         <include refid="sqlLoanHistory"/>
+        <isNotEmpty prepend="" property="sidx">
+            order by $sidx$ $sord$
+        </isNotEmpty>
         <include refid="pagingQueryBottom"/>
     </select>
     
@@ -103,14 +107,28 @@
     </select>
 
     <sql id="sqlLoanHistoryExcel">
+    select
+		m_loan_dt, 
+		m_book_no, 
+		m_rcv_plan_dt,
+		m_real_rcv_dt,
+		(select code_name from common_code where code_group_cd = '006' and code_cd = tb.m_rcv_tp) as m_rcv_tp,
+		(select code_name from common_code where code_group_cd = '003' and code_cd = tb.m_status) as m_status,
+		m_no,
+		m_name,
+		m_title,
+		m_author,
+		m_publisher,
+		m_tel_no,
+		m_cell_no
+    from (
         select
             lh.m_loan_dt, 
             lh.m_book_no, 
             lh.m_rcv_plan_dt,
             lh.m_real_rcv_dt,
-            (select code_name from common_code where code_group_cd = '006' and code_cd = lh.m_rcv_tp) as m_rcv_tp,
-            (select code_name from common_code where code_group_cd = '003' and code_cd = (
-            case WHEN lh.m_status = '2' AND sysdate > to_datetime(lh.m_rcv_plan_dt||'235959','yyyymmddhh24miss') then '3' else lh.m_status END)) AS m_status,
+            lh.m_rcv_tp,
+            case WHEN lh.m_status = '2' AND sysdate > to_datetime(lh.m_rcv_plan_dt||'235959','yyyymmddhh24miss') then '3' else lh.m_status END AS m_status,
             mi.m_no,
             mi.m_name,
             bi.m_title,
@@ -153,12 +171,15 @@
             <isNotEmpty prepend="and" property="m_rcv_tp">
             	lh.m_rcv_tp = #m_rcv_tp#
             </isNotEmpty>
-
         order by lh.m_loan_dt desc
+    ) tb
     </sql>
 
     <select id="selectLoanHistoryExcel" resultClass="LoanHistoryDTO">
         <include refid="sqlLoanHistoryExcel"/>
+        <isNotEmpty prepend="" property="sidx">
+            order by $sidx$ $sord$
+        </isNotEmpty>
     </select>
 
     <sql id="sqlRcvPresent">

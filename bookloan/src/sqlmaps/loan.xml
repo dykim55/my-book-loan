@@ -131,7 +131,8 @@
 		    bi.m_title,
 		    bi.m_author,
 		    bi.m_publisher,
-		    bi.m_genre 
+		    bi.m_genre,
+		    bi.m_loan_st
 		from 
 		    loan_history lh, book_info bi
         where lh.m_area = bi.m_area 
@@ -208,6 +209,28 @@
             m_mdf_id = #m_mdf_id#
         where m_area = #m_area#
             and m_loan_dt = #m_loan_dt#
+            and m_book_no = #m_book_no#
+    </update>
+
+    <!-- 회수취소 대출이력 업데이트 -->
+    <update id="updateCancelLoanHistory" parameterClass="LoanHistoryDTO">
+        update loan_history set
+            m_real_rcv_dt = #m_real_rcv_dt#, 
+            m_status = #m_status#, 
+            m_rcv_tp = '',
+            m_mdf_dt = #m_mdf_dt#, 
+            m_mdf_id = #m_mdf_id#
+        where m_area = #m_area#
+            and m_loan_dt = #m_loan_dt#
+            and m_book_no = #m_book_no#
+    </update>
+	    
+    <update id="updateCancelBookInfo" parameterClass="BookInfoDTO">
+        update book_info set
+            m_loan_st = #m_loan_st#
+            ,m_rcv_plan_dt = TO_CHAR(ADDDATE(TO_DATETIME(#m_loan_dt#,'YYYYMMDDHH24MISS'),7),'YYYYMMDD')
+            ,m_no = #m_no#
+        where m_area = #m_area#
             and m_book_no = #m_book_no#
     </update>
 	    

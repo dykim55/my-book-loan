@@ -190,7 +190,7 @@
             gridH.jqGrid({
                 datatype: "json",
                 mtype: 'POST',
-                colNames:['대출일시','상태','도서번호','제   목','저   자','출판사','회수완료일','회수예정일','회수','연장'],
+                colNames:['대출일시','상태','도서번호','제   목','저   자','출판사','회수완료일','회수예정일','회수','연장','도서대출상태'],
                 colModel:[
                     {name:'m_loan_dt',     index:'m_loan_dt',     width:16,  align:'center', formatter:dateFormatter}, 
                     {name:'m_status',      index:'m_status',      width:8,  align:'center', formatter:'select',  edittype:'select', editoptions: {value: '<%=CodeSelect.makeEditOption("003") %>'}},
@@ -205,8 +205,10 @@
                         formatter:function(cellval, opts, rwdat, _act) {
                             if (rwdat.m_status >= "2") {
                                 return "<span style=\"cursor:pointer;\"><u>회수처리</u></span>"
+                            } else if (rwdat.m_loan_st == "1") {
+                            	return "<span style=\"cursor:pointer;\"><u>회수취소</u></span>"
                             } else {
-                                return "";
+                            	return "";
                             }
                         }
                     },
@@ -218,7 +220,8 @@
                                 return "";
                             }
                         }
-                    }
+                    },
+                    {name:'m_loan_st',     index:'m_loan_st',     width:0,  align:'center', hidden:true}
                 ],
                 jsonReader : {
                     repeatitems:false
@@ -240,13 +243,15 @@
                     if (iCol < 9) { return true; }
 
                     if (iCol == 9) {//회수
-                        if (gridH.getCell(rowid, iCol) != "") {
+                        if (eval(gridH.getCell(rowid, 2)) >= 2) {
                         	confirmMsg = "회수처리를 하시겠습니까?";
                             vRcvType="1";
+                        } else if (eval(gridH.getCell(rowid, 11)) < 2) {
+                            confirmMsg = "회수 취소처리를 하시겠습니까?";
+                            vRcvType="3";
                         }
-                    }
-                    if (iCol == 10) {//연장
-                        if (gridH.getCell(rowid, iCol) != "") {
+                    } else if (iCol == 10) {//연장
+                    	if (eval(gridH.getCell(rowid, 2)) >= 2) {
                         	confirmMsg = "대출연장을 하시겠습니까?";
                         	vRcvType="2";
                         }
