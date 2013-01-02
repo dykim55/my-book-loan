@@ -102,6 +102,8 @@ public class LoanController extends SIVController {
 			return new ModelAndView(this.success, map);
 		}
 		
+		logger.info(":::: [INFO] 회원번호[" + dto.getM_no() + "] 도서번호[" + dto.getM_book_no() + "] 대출 성공!!!");
+		
 		map.addAttribute("err_code", "0000");
 		map.addAttribute("err_message", "정상처리 되었습니다.");
 		return new ModelAndView(this.success, map);
@@ -120,8 +122,10 @@ public class LoanController extends SIVController {
 				if (dto.getM_rcv_tp().equals("2")) {//대출연장
 					loanService.insertLoanHistory(dto);
 				}
+				logger.info(":::: [INFO] 회원번호[" + dto.getM_no() + "] 도서번호[" + dto.getM_book_no() + "] 회수 성공!!!");
 			} else {
 				loanService.updateCancelReceiveLoan(dto);
+				logger.info(":::: [INFO] 회원번호[" + dto.getM_no() + "] 도서번호[" + dto.getM_book_no() + "] 회수취소 성공!!!");
 			}
 		} catch (Exception e) {
 			map.addAttribute("err_code", "0003");
