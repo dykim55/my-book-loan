@@ -1,45 +1,59 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-<title>Insert title here</title>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge, chrome=1" />
+<meta name="description" content="JavaScript desktop environment built with jQuery." />
+<title>jQuery Desktop</title>
 
-<script type="text/javascript" src="http://localhost:8080/PromUI/js/jquery/jquery.js"></script>
-<script type="text/javascript" src="http://localhost:8080/PromUI/js/json2.js"></script>
+<link rel="stylesheet" href="http://localhost:8080/css/reset.css" />
+<link rel="stylesheet" href="http://localhost:8080/css/desktop.css" />
 
-<script type="text/javascript">
-	
-	$(document).ready(function() {
-		
-/* 		$.ajax({
-			type:"GET",
-			url:"http://localhost:8080/PromUI/servlet/HelloServlet",
-			dataType:"JSON",
-			error:function(request, status, error) { alert('error'); },
-			success:function(data, status, request) { alert(data); }
-		});	
- */		
-	});
-	
-	function init() {
-		$.ajax({
-			type:"GET",
-			url:"http://localhost:8080/PromUI/servlet/HelloServlet",
-			dataType:"JSON",
-			error:function(request, status, error) { 
-				alert('error'); 
-			},
-			success:function(data, status, request) { 
-				alert(data);
-				alert(JSON.parse(data));
-			}
-		});	
-	}
-
-</script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
 
 </head>
-<body onLoad="init()">
-안녕하세요.
+<body>
+
+<div class="abs" id="wrapper">
+  <div class="abs" id="desktop">
+	
+	<a class="abs icon" style="left:20px;top:20px;" href="#icon_dock_computer">
+      <img src="http://desktop.sonspring.com/assets/images/icons/icon_32_computer.png" />
+      Computer
+    </a>
+    
+    <div id="window_computer" class="abs window" style="width:1024px;"></div>
+    <script>$('#window_computer').load('computer_window.html');</script>    
+  </div>
+	  
+  <div id="bartop"></div>
+
+  <div class="abs" id="bar_bottom">
+    <ul id="dock">
+      <li id="icon_dock_computer">
+        <a href="#window_computer">
+          <img src="http://desktop.sonspring.com/assets/images/icons/icon_22_computer.png" />
+          Computer
+        </a>
+      </li>
+    </ul>
+  </div>
+
+</div>
+
+<script type="text/javascript" src="http://localhost:8080/js/socket.js"></script>
+<script src="http://localhost:8080/js/jquery.desktop.js"></script>
+<script>
+  var _gaq = [['_setAccount', 'UA-166674-8'], ['_trackPageview']];
+
+  (function(d, t) {
+    var g = d.createElement(t),
+    s = d.getElementsByTagName(t)[0];
+    g.async = true;
+    g.src = '//www.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g, s);
+  })(this.document, 'script');
+</script>
 </body>
 </html>
